@@ -1,0 +1,17 @@
+{
+  "name": "@spottobe/dtos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "postinstall": "pnpm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/mapped-types": "^2.0.6",
+    "class-validator": "^0.14.1"
+  }
+}
