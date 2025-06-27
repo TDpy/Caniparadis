@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +9,8 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthenticationService } from './authentication/authentication.service';
 import { EmailModule } from './email/email.module';
 import { AuthenticationGuard } from './guard/authentication.guard';
+import { SeederModule } from './seeder/seeder.module';
+import { SeederService } from './seeder/seeder.service';
 import { UserModule } from './user/user.module';
 import { PasswordUtilsService } from './utils/password-utils.service';
 
@@ -30,7 +32,8 @@ import { PasswordUtilsService } from './utils/password-utils.service';
     }),
     UserModule,
     AuthenticationModule,
-    EmailModule,
+    EmailModule.register(),
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [
@@ -43,4 +46,12 @@ import { PasswordUtilsService } from './utils/password-utils.service';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly seederService: SeederService) {}
+
+  async onModuleInit() {
+    if (process.env.NODE_ENV === 'test') {
+      await this.seederService.run();
+    }
+  }
+}

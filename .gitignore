@@ -29,4 +29,25 @@ temp/
 # Typescript
 *.tsbuildinfo
 /.eslintcache
-/pnpm-lock.yaml
+/apps/api/src/coverage/lcov-report/src/app.controller.ts.html
+/apps/api/src/coverage/lcov-report/src/app.service.ts.html
+/apps/api/src/coverage/lcov-report/base.css
+/apps/api/src/coverage/lcov-report/block-navigation.js
+/apps/api/src/coverage/clover.xml
+/apps/api/src/coverage/coverage-final.json
+/apps/api/src/coverage/lcov-report/favicon.png
+/apps/api/src/coverage/lcov-report/src/seeder/index.html
+/apps/api/src/coverage/lcov-report/src/user/entities/index.html
+/apps/api/src/coverage/lcov-report/src/user/index.html
+/apps/api/src/coverage/lcov-report/src/utils/index.html
+/apps/api/src/coverage/lcov-report/src/index.html
+/apps/api/src/coverage/lcov-report/index.html
+/apps/api/src/coverage/lcov.info
+/apps/api/src/coverage/lcov-report/src/utils/password-utils.service.ts.html
+/apps/api/src/coverage/lcov-report/prettify.css
+/apps/api/src/coverage/lcov-report/prettify.js
+/apps/api/src/coverage/lcov-report/src/seeder/seeder.service.ts.html
+/apps/api/src/coverage/lcov-report/sort-arrow-sprite.png
+/apps/api/src/coverage/lcov-report/sorter.js
+/apps/api/src/coverage/lcov-report/src/user/user.service.ts.html
+/apps/api/src/coverage/lcov-report/src/user/entities/user.ts.html

@@ -9,7 +9,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from '@spottobe/dtos/dist/userDTO';
+import { CreateUserDto, UpdateUserDto } from '@caniparadis/dtos/dist/userDTO';
 import { plainToInstance } from 'class-transformer';
 
 import { CheckUserParamId } from '../decorators/userId.decorator';

@@ -27,6 +27,6 @@ import { AuthenticationService } from './authentication.service';
   ],
   controllers: [AuthenticationController],
   providers: [AuthenticationService, EmailService, PasswordUtilsService],
-  exports: [],
+  exports: [RedisModule],
 })
 export class AuthenticationModule {}

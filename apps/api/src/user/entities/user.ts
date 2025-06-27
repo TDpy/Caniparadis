@@ -1,4 +1,4 @@
-import {Role} from "@spottobe/dtos/dist/userDTO";
+import {Role} from "@caniparadis/dtos/dist/userDTO";
 import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
