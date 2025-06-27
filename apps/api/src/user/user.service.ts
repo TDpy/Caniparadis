@@ -4,7 +4,7 @@ import {
   CreateUserDto,
   Role,
   UpdateUserDto,
-} from '@spottobe/dtos/dist/userDTO';
+} from '@caniparadis/dtos/dist/userDTO';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 

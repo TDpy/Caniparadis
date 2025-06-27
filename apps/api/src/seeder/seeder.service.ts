@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Role } from '@spottobe/dtos/dist/userDTO';
+import { Role } from '@caniparadis/dtos/dist/userDTO';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()

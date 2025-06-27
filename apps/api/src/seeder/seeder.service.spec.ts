@@ -1,5 +1,5 @@
+import { Role } from '@caniparadis/dtos/dist/userDTO';
 import { Test, type TestingModule } from '@nestjs/testing';
-import { Role } from '@spottobe/dtos/dist/userDTO';
 
 import { UserService } from '../user/user.service';
 import { SeederService } from './seeder.service';

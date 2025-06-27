@@ -1,5 +1,5 @@
 {
-  "name": "yday_spottobe",
+  "name": "caniparadis",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,7 +12,7 @@
     "api:test:e2e": "pnpm --filter api test:e2e",
     "lint:ui": "pnpm --filter ui lint",
     "lint:api": "pnpm --filter api lint",
-    "build:packages": "pnpm --filter @spottobe/dtos build"
+    "build:packages": "pnpm --filter @caniparadis/dtos build"
   },
   "keywords": [],
   "author": "",

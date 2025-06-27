@@ -5,7 +5,7 @@ import {
   PasswordDto,
   SignUpDto,
   TokenDto,
-} from '@spottobe/dtos/dist/authDto';
+} from '@caniparadis/dtos/dist/authDto';
 import { plainToInstance } from 'class-transformer';
 
 import { Public } from '../decorators/public.decorator';
