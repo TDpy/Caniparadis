@@ -29,7 +29,6 @@ temp/
 # Typescript
 *.tsbuildinfo
 /.eslintcache
-/pnpm-lock.yaml
 /apps/api/src/coverage/lcov-report/src/app.controller.ts.html
 /apps/api/src/coverage/lcov-report/src/app.service.ts.html
 /apps/api/src/coverage/lcov-report/base.css
