@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthenticationService } from '../authentication/authentication.service';
 import { EmailService } from '../email/email.service';
-import { PasswordUtilsService } from '../utils/password-utils.service';
 import { User } from './entities/user';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
@@ -13,7 +12,6 @@ import { UserService } from './user.service';
   controllers: [UserController],
   providers: [
     UserService,
-    PasswordUtilsService,
     AuthenticationService,
     EmailService,
   ],

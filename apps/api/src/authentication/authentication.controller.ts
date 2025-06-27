@@ -1,4 +1,5 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+// src/auth/authentication.controller.ts
+
 import {
   EmailDto,
   LoginDto,
@@ -6,9 +7,10 @@ import {
   SignUpDto,
   TokenDto,
 } from '@caniparadis/dtos/dist/authDto';
-import { plainToInstance } from 'class-transformer';
+import { Body, Controller, Post, Req } from '@nestjs/common';
 
 import { Public } from '../decorators/public.decorator';
+import { AuthMapper } from './authentication.mapper';
 import { AuthenticationService } from './authentication.service';
 
 @Controller('auth')
@@ -18,13 +20,14 @@ export class AuthenticationController {
   @Public()
   @Post('signup')
   signup(@Body() signUpDto: SignUpDto): Promise<boolean> {
-    return this.authenticationService.signup(signUpDto);
+    return this.authenticationService.signup(AuthMapper.toSignUpInput(signUpDto));
   }
 
   @Public()
   @Post('login')
-  async login(@Body() loginUser: LoginDto): Promise<TokenDto> {
-    return plainToInstance(TokenDto, {token: await this.authenticationService.login(loginUser)});
+  async login(@Body() loginDto: LoginDto): Promise<TokenDto> {
+    const token = await this.authenticationService.login(AuthMapper.toLoginInput(loginDto));
+    return AuthMapper.toTokenDto(token);
   }
 
   @Post('logout')
@@ -34,15 +37,15 @@ export class AuthenticationController {
 
   @Public()
   @Post('forgot-password')
-  forgotPassword(@Body() forgotPassword: EmailDto) {
-    return this.authenticationService.forgotPassword(forgotPassword);
+  forgotPassword(@Body() forgotPasswordDto: EmailDto) {
+    return this.authenticationService.forgotPassword(AuthMapper.toEmailInput(forgotPasswordDto));
   }
 
   @Post('update-password')
-  updatePassword(@Body() password: PasswordDto, @Req() req: Request) {
+  updatePassword(@Body() passwordDto: PasswordDto, @Req() req: Request) {
     return this.authenticationService.updateUserByResetToken(
       req['token'],
-      password,
+      AuthMapper.toPasswordInput(passwordDto),
     );
   }
 }
