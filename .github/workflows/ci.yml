@@ -31,7 +31,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Rebuild native modules
+      - name: Rebuild bcrypt inside API workspace
+        working-directory: apps/api
         run: pnpm rebuild bcrypt
 
       - name: Lint API
