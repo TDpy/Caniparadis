@@ -10,6 +10,8 @@ const config: Config = {
   },
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/$1',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    '^bcrypt$': "bcryptjs"
   },
   testEnvironment: 'node',
 };
