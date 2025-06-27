@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmailDto } from '@spottobe/dtos/dist/authDto';
-import { CreateUserDto, UpdateUserDto } from '@spottobe/dtos/dist/userDTO';
+import {
+  CreateUserDto,
+  Role,
+  UpdateUserDto,
+} from '@spottobe/dtos/dist/userDTO';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
@@ -24,6 +27,9 @@ export class UserService {
       +process.env.BCRYPT_PASSWORD_SALT,
     );
 
+    if (!createUserDto.role) {
+      createUserDto.role = Role.USER;
+    }
     const userData = this.userRepository.create(createUserDto);
     return this.userRepository.save(userData);
   }
@@ -50,18 +56,10 @@ export class UserService {
     return userData;
   }
 
-  async findByEmail(email: EmailDto): Promise<User> {
-    const userData = await this.userRepository.findOne({
-      where: {
-        email: email.email,
-      },
+  async findByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { email },
     });
-
-    if (!userData) {
-      throw new NotFoundException('User Not Found');
-    }
-
-    return userData;
   }
 
   async findByToken(token: string): Promise<User> {

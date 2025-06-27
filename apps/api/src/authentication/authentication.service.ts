@@ -32,13 +32,9 @@ export class AuthenticationService {
   ) {}
 
   async login(login: LoginDto): Promise<string> {
-    let userDb;
-    try {
-    userDb = await this.userService.findByEmail(login);
-    } catch (error){
-      if (error instanceof  NotFoundException){
-        throw new UnauthorizedException();
-      }
+    const userDb = await this.userService.findByEmail(login.email);
+    if (!userDb) {
+      throw new UnauthorizedException();
     }
 
     if (!(login.password && userDb?.password)) {
@@ -57,12 +53,12 @@ export class AuthenticationService {
 
     const payload = { id: userDb.id, email: userDb.email, role: userDb.role };
     return this.jwtService.signAsync(payload, {
-        secret: process.env.JWT_SECRET,
-      })
+      secret: process.env.JWT_SECRET,
+    });
   }
 
   async signup(login: SignUpDto): Promise<boolean> {
-    await this.userService.create(plainToInstance(CreateUserDto, login ));
+    await this.userService.create(plainToInstance(CreateUserDto, login));
     return true;
   }
 
@@ -94,7 +90,7 @@ export class AuthenticationService {
   }
 
   async forgotPassword(email: EmailDto) {
-    const user = await this.userService.findByEmail(email);
+    const user = await this.userService.findByEmail(email.email);
     if (!user) {
       throw new NotFoundException(`No user found for email: ${email.email}`);
     }

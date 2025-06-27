@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:ui": "pnpm --filter ui start",
-    "dev:api": "pnpm --filter api start:dev",
+    "ui:dev": "pnpm --filter ui start",
+    "api:dev": "pnpm --filter api start:dev",
+    "api:test": "pnpm --filter api test",
+    "api:test:cov": "pnpm --filter api test:cov",
+    "api:test:e2e": "pnpm --filter api test:e2e",
     "lint:ui": "pnpm --filter ui lint",
-    "lint:api": "pnpm --filter api link",
+    "lint:api": "pnpm --filter api lint",
     "build:packages": "pnpm --filter @spottobe/dtos build"
   },
   "keywords": [],
