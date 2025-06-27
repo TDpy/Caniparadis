@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "ui:dev": "pnpm --filter ui start",
+    "ui:lint": "pnpm --filter ui lint",
     "api:dev": "pnpm --filter api start:dev",
     "api:test": "pnpm --filter api test",
     "api:test:cov": "pnpm --filter api test:cov",
     "api:test:e2e": "pnpm --filter api test:e2e",
-    "lint:ui": "pnpm --filter ui lint",
-    "lint:api": "pnpm --filter api lint",
+    "api:lint": "pnpm --filter api lint",
     "build:packages": "pnpm --filter @caniparadis/dtos build"
   },
   "keywords": [],
