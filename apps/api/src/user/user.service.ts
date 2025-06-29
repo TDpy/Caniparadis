@@ -1,11 +1,10 @@
-import { Role } from '@caniparadis/dtos/dist/userDTO';
-// user.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
 import { passwordFormatValidation } from '../utils/password-utils.service';
+import {sanitizeUserRole} from "../utils/user-utils.service";
 import { User } from './entities/user';
 import { CreateUserInput, UpdateUserInput } from './user.type';
 
@@ -24,9 +23,7 @@ export class UserService {
       +process.env.BCRYPT_PASSWORD_SALT,
     );
 
-    if (!input.role) {
-      input.role = Role.USER;
-    }
+    input.role = sanitizeUserRole(input.role)
 
     const userData = this.userRepository.create(input);
     return this.userRepository.save(userData);
