@@ -85,7 +85,7 @@ jobs:
         run: pnpm rebuild bcrypt
 
       - name: Lint API
-        run: pnpm lint:api
+        run: pnpm api:lint
 
       - name: Run API unit tests
         run: pnpm api:test:cov

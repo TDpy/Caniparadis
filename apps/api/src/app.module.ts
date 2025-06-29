@@ -12,7 +12,6 @@ import { AuthenticationGuard } from './guard/authentication.guard';
 import { SeederModule } from './seeder/seeder.module';
 import { SeederService } from './seeder/seeder.service';
 import { UserModule } from './user/user.module';
-import { PasswordUtilsService } from './utils/password-utils.service';
 
 @Module({
   imports: [
@@ -38,7 +37,6 @@ import { PasswordUtilsService } from './utils/password-utils.service';
   controllers: [AppController],
   providers: [
     AppService,
-    PasswordUtilsService,
     AuthenticationService,
     {
       provide: APP_GUARD,

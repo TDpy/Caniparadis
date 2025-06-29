@@ -1,4 +1,8 @@
 import {
+  CreateUserDto,
+  UpdateUserDto,
+} from '@caniparadis/dtos/dist/userDTO';
+import {
   Body,
   Controller,
   Delete,
@@ -9,35 +13,39 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from '@caniparadis/dtos/dist/userDTO';
-import { plainToInstance } from 'class-transformer';
 
 import { CheckUserParamId } from '../decorators/userId.decorator';
 import { CheckUserParamIdGuard } from '../guard/userId.guard';
-import { User } from './entities/user';
+import { UserMapper } from './user.mapper';
 import { UserService } from './user.service';
+import { CreateUserInput, UpdateUserInput } from './user.type';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    const data = await this.userService.create(createUserDto);
+  async create(@Body() dto: CreateUserDto) {
+    const input: CreateUserInput = {
+      email: dto.email,
+      password: dto.password,
+      role: dto.role,
+    };
 
+    const data = await this.userService.create(input);
     return {
       success: true,
-      data: plainToInstance(User, data),
+      data: UserMapper.toDto(data),
       message: 'User Created Successfully',
     };
   }
 
   @Get()
   async findAll() {
-    const data: User[] = await this.userService.findAll();
+    const data = await this.userService.findAll();
     return {
       success: true,
-      data: data.map((user: User) => plainToInstance(User, user)),
+      data: UserMapper.toDtos(data),
       message: 'User Fetched Successfully',
     };
   }
@@ -47,26 +55,31 @@ export class UserController {
     const data = await this.userService.findById(+id);
     return {
       success: true,
-      data: plainToInstance(User, data),
+      data: UserMapper.toDto(data),
       message: 'User Fetched Successfully',
     };
   }
 
   @Patch(':id')
   @UseGuards(CheckUserParamIdGuard)
-  @CheckUserParamId('id') // ici on dit que c'est le paramètre 'id' (route param ou body.id) à vérifier
+  @CheckUserParamId('id')
   async update(
     @Req() req: Request,
     @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() dto: UpdateUserDto,
   ) {
+    const input: UpdateUserInput = {
+      ...dto,
+    };
+
     if (req['user']?.role !== 'ADMIN') {
-      delete updateUserDto.role;
+      delete input.role;
     }
-    const data = await this.userService.update(+id, updateUserDto);
+
+    const data = await this.userService.update(+id, input);
     return {
       success: true,
-      data: plainToInstance(User, data),
+      data: UserMapper.toDto(data),
       message: 'User Updated Successfully',
     };
   }
@@ -76,7 +89,7 @@ export class UserController {
     const data = await this.userService.remove(+id);
     return {
       success: true,
-      data: plainToInstance(User, data),
+      data: UserMapper.toDto(data),
       message: 'User Deleted Successfully',
     };
   }

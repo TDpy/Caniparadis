@@ -5,7 +5,6 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 
 import { EmailService } from '../email/email.service';
 import { UserModule } from '../user/user.module';
-import { PasswordUtilsService } from '../utils/password-utils.service';
 import { AuthenticationController } from './authentication.controller';
 import { AuthenticationService } from './authentication.service';
 
@@ -26,7 +25,7 @@ import { AuthenticationService } from './authentication.service';
     UserModule,
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, EmailService, PasswordUtilsService],
+  providers: [AuthenticationService, EmailService],
   exports: [RedisModule],
 })
 export class AuthenticationModule {}
