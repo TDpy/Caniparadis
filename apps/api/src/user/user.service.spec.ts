@@ -23,6 +23,8 @@ describe('UserService', () => {
       password: 'hashed',
       role: Role.USER,
       resetPasswordToken: null,
+      firstName: 'First',
+      lastName: 'LAST',
     },
     {
       id: 2,
@@ -31,6 +33,8 @@ describe('UserService', () => {
       password: 'hashed2',
       role: Role.ADMIN,
       resetPasswordToken: null,
+      firstName: 'First',
+      lastName: 'LAST',
     },
   ];
 
@@ -63,6 +67,8 @@ describe('UserService', () => {
         email: 'new@example.com',
         // eslint-disable-next-line sonarjs/no-hardcoded-credentials
         password: 'Secure1!',
+        firstName: 'First',
+        lastName: 'LAST',
       };
 
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashedPw');
@@ -210,6 +216,8 @@ function mockUser(overrides: Partial<User> = {}): User {
     password: 'hashedPassword',
     role: Role.USER,
     resetPasswordToken: null,
+    firstName: 'First',
+    lastName: 'LAST',
     ...overrides,
   };
 }

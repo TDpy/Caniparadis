@@ -43,6 +43,8 @@ describe('SeederService', () => {
       email: 'test@e2e.com',
       // eslint-disable-next-line sonarjs/no-hardcoded-credentials
       password: 'Test1234',
+      firstName: 'firstName',
+      lastName: 'lastName',
       role: Role.ADMIN,
     });
   });
