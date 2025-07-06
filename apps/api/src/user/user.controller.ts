@@ -30,6 +30,10 @@ export class UserController {
       email: dto.email,
       password: dto.password,
       role: dto.role,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      address: dto.address,
+      phoneNumber: dto.phoneNumber,
     };
 
     const data = await this.userService.create(input);
@@ -85,6 +89,8 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('id')
   async remove(@Param('id') id: string) {
     const data = await this.userService.remove(+id);
     return {

@@ -20,6 +20,8 @@ export class SeederService {
         // eslint-disable-next-line sonarjs/no-hardcoded-credentials
         password: 'Test1234',
         role: Role.ADMIN,
+        lastName: "lastName",
+        firstName: "firstName",
       });
       this.logger.log('Utilisateur de test ajouté');
     }
