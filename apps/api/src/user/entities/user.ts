@@ -20,4 +20,17 @@ export class User {
   @Column({ nullable: true })
   @Exclude()
   resetPasswordToken: string;
+
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column({ nullable: true })
+  phoneNumber?: string;
+
+  @Column({ nullable: true })
+  address?: string;
+
 }

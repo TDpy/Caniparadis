@@ -60,6 +60,8 @@ export class AuthenticationService {
     await this.userService.create({
       email: input.email,
       password: input.password,
+      firstName: input.firstName,
+      lastName: input.lastName,
       role: Role.USER,
     });
     return true;

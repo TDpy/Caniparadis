@@ -16,6 +16,22 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
+  @IsNotEmpty()
+  @IsString()
+  firstName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  lastName: string;
+
+  @IsOptional()
+  @IsString()
+  phoneNumber?: string;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
+
   @IsOptional()
   @IsEnum(Role)
   role?: Role;
@@ -28,4 +44,8 @@ export class UserDto {
   id: number;
   email: string;
   role: Role;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  address?: string;
 }

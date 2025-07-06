@@ -25,6 +25,8 @@ export const AuthMapper = {
     return {
       email: dto.email,
       password: dto.password,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
     };
   },
 
