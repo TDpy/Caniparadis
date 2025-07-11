@@ -11,5 +11,6 @@ Then, run```npm i -g pnpm```
 From project root:
 
 - Install dependencies : ```pnpm i```
+- Launch docker container (DB, mail, redis) : ```make up```
 - Run front : ```pnpm dev:ui```
 - Run back : ```pnpm dev:api```
