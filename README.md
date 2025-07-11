@@ -1,5 +1,10 @@
-# agenda
-Un agenda/calendrier en ligne qui permet aux utilisateurs de créer, modifier, supprimer des événements, et de les partager avec d'autres utilisateurs.
+# Caniparadis
+Outil de gestion de prestations animales
+
+## Setup
+Using nvm, install node v22.17.0 ```nvm install v22.17.0``` or ```nvm use v22.17.0``` if version already installed
+
+Then, run```npm i -g pnpm```
 
 ## Launch project
 

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRedis } from '@nestjs-modules/ioredis';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import Redis from 'ioredis';
 

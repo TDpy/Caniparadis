@@ -2,7 +2,7 @@ import { Role } from '@caniparadis/dtos/dist/userDTO';
 import { NotFoundException } from '@nestjs/common';
 import { Test, type TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { type Repository } from 'typeorm';
 
 import { User } from './entities/user';
