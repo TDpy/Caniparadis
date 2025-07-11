@@ -187,6 +187,9 @@ importers:
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.3
+      '@types/jest':
+        specifier: ^29.5.14
+        version: 29.5.14
       '@types/node':
         specifier: ^20.17.19
         version: 20.19.1
