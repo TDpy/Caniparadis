@@ -63,26 +63,11 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Install system dependencies for native modules
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential python3 g++ make
-
-      - name: Clean node_modules and caches
-        run: |
-          rm -rf node_modules
-          rm -rf apps/api/node_modules
-          pnpm store prune
-
       - name: Install dependencies
         run: pnpm install
 
       - name: Build shared packages
         run: pnpm build:packages
-
-      - name: Rebuild bcrypt inside API workspace
-        working-directory: apps/api
-        run: pnpm rebuild bcrypt
 
       - name: Lint API
         run: pnpm api:lint
