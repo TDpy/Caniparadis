@@ -26,42 +26,22 @@ export class UserController {
 
   @Post()
   async create(@Body() dto: CreateUserDto) {
-    const input: CreateUserInput = {
-      email: dto.email,
-      password: dto.password,
-      role: dto.role,
-      firstName: dto.firstName,
-      lastName: dto.lastName,
-      address: dto.address,
-      phoneNumber: dto.phoneNumber,
-    };
+    const input: CreateUserInput = {...dto};
 
     const data = await this.userService.create(input);
-    return {
-      success: true,
-      data: UserMapper.toDto(data),
-      message: 'User Created Successfully',
-    };
+    return UserMapper.toDto(data);
   }
 
   @Get()
   async findAll() {
     const data = await this.userService.findAll();
-    return {
-      success: true,
-      data: UserMapper.toDtos(data),
-      message: 'User Fetched Successfully',
-    };
+    return UserMapper.toDtos(data);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const data = await this.userService.findById(+id);
-    return {
-      success: true,
-      data: UserMapper.toDto(data),
-      message: 'User Fetched Successfully',
-    };
+    return UserMapper.toDto(data);
   }
 
   @Patch(':id')
@@ -81,11 +61,7 @@ export class UserController {
     }
 
     const data = await this.userService.update(+id, input);
-    return {
-      success: true,
-      data: UserMapper.toDto(data),
-      message: 'User Updated Successfully',
-    };
+    return UserMapper.toDto(data);
   }
 
   @Delete(':id')
@@ -93,10 +69,6 @@ export class UserController {
   @CheckUserParamId('id')
   async remove(@Param('id') id: string) {
     const data = await this.userService.remove(+id);
-    return {
-      success: true,
-      data: UserMapper.toDto(data),
-      message: 'User Deleted Successfully',
-    };
+    return UserMapper.toDto(data);
   }
 }
