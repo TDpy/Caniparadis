@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AnimalModule } from './animal/animal.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -11,8 +12,8 @@ import { EmailModule } from './email/email.module';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { SeederModule } from './seeder/seeder.module';
 import { SeederService } from './seeder/seeder.service';
+import { ServiceTypeModule } from './service-type/service-type.module';
 import { UserModule } from './user/user.module';
-import { AnimalModule } from './animal/animal.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { AnimalModule } from './animal/animal.module';
     EmailModule.register(),
     SeederModule,
     AnimalModule,
+    ServiceTypeModule,
   ],
   controllers: [AppController],
   providers: [
