@@ -1,4 +1,4 @@
-import { Role } from '@caniparadis/dtos/dist/userDTO';
+import { Role } from '@caniparadis/dtos/dist/userDto';
 
 import { sanitizeUserRole } from './user-utils.service';
 
