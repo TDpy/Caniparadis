@@ -1,6 +1,4 @@
-// src/user/user.mapper.ts
-
-import { type UserDto } from '@caniparadis/dtos/dist/userDTO';
+import { type UserDto } from '@caniparadis/dtos/dist/userDto';
 
 import { type User } from './entities/user';
 

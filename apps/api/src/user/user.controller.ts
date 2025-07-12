@@ -1,7 +1,7 @@
 import {
   CreateUserDto,
   UpdateUserDto,
-} from '@caniparadis/dtos/dist/userDTO';
+} from '@caniparadis/dtos/dist/userDto';
 import {
   Body,
   Controller,

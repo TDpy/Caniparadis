@@ -1,6 +1,7 @@
-import {Role} from "@caniparadis/dtos/dist/userDTO";
+import {Role} from "@caniparadis/dtos/dist/userDto";
 import { Exclude } from 'class-transformer';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
 import {AnimalEntity} from "../../animal/animal.entity";
 
 @Entity()

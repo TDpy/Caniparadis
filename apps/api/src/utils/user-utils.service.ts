@@ -1,4 +1,4 @@
-import {Role} from "@caniparadis/dtos/dist/userDTO";
+import {Role} from "@caniparadis/dtos/dist/userDto";
 
 /**
  * Setting default role when no data found, else return data

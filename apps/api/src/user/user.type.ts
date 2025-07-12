@@ -1,4 +1,4 @@
-import { type Role } from '@caniparadis/dtos/dist/userDTO';
+import {type Role} from "@caniparadis/dtos/dist/userDto";
 
 export interface CreateUserInput {
   email: string;
