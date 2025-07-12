@@ -12,6 +12,7 @@ import { AuthenticationGuard } from './guard/authentication.guard';
 import { SeederModule } from './seeder/seeder.module';
 import { SeederService } from './seeder/seeder.service';
 import { UserModule } from './user/user.module';
+import { AnimalModule } from './animal/animal.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UserModule } from './user/user.module';
     AuthenticationModule,
     EmailModule.register(),
     SeederModule,
+    AnimalModule,
   ],
   controllers: [AppController],
   providers: [
