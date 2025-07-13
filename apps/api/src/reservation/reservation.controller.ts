@@ -14,6 +14,7 @@ import {
   Post,
 } from '@nestjs/common';
 
+import { ReservationMapper } from './reservation.mapper';
 import { ReservationService } from './reservation.service';
 
 @Controller('reservations')
@@ -21,58 +22,73 @@ export class ReservationController {
   constructor(private readonly reservationService: ReservationService) {}
 
   @Post()
-  create(@Body() createReservationDto: CreateReservationDto) {
-    return this.reservationService.create({ ...createReservationDto });
+  async create(@Body() createReservationDto: CreateReservationDto) {
+    const data = await this.reservationService.create({
+      ...createReservationDto,
+    });
+    return ReservationMapper.toDto(data);
   }
 
   @Get()
-  findAll() {
-    return this.reservationService.findAll();
+  async findAll() {
+    const data = await this.reservationService.findAll();
+    return ReservationMapper.toDtos(data);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reservationService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.reservationService.findOne(+id);
+    return ReservationMapper.toDto(data);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateReservationDto: UpdateReservationDto,
   ) {
-    return this.reservationService.update(+id, { ...updateReservationDto });
+    const data = await this.reservationService.update(+id, {
+      ...updateReservationDto,
+    });
+    return ReservationMapper.toDto(data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reservationService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const data = await this.reservationService.remove(+id);
+    return ReservationMapper.toDto(data);
   }
 
   @Post(':id/accept')
-  accept(@Param('id') id: string) {
-    return this.reservationService.accept(+id);
+  async accept(@Param('id') id: string) {
+    const data = await this.reservationService.accept(+id);
+    return ReservationMapper.toDto(data);
   }
 
   @Post(':id/propose')
-  proposeNewSlot(
+  async proposeNewSlot(
     @Param('id') id: string,
     @Body() proposeNewSlotDto: ProposeNewSlotDto,
   ) {
-    return this.reservationService.proposeNewSlot(+id, {
+    const data = await this.reservationService.proposeNewSlot(+id, {
       ...proposeNewSlotDto,
     });
+    return ReservationMapper.toDto(data);
   }
 
   @Post(':id/cancel')
-  cancel(@Param('id') id: string) {
-    return this.reservationService.cancel(+id);
+  async cancel(@Param('id') id: string) {
+    const data = await this.reservationService.cancel(+id);
+    return ReservationMapper.toDto(data);
   }
 
   @Post(':id/payment')
-  updatePaymentStatus(
+  async updatePaymentStatus(
     @Param('id') id: string,
     @Body() updatePaymentDto: UpdatePaymentDto,
   ) {
-    return this.reservationService.updatePayment(+id, { ...updatePaymentDto });
+    const data = await this.reservationService.updatePayment(+id, {
+      ...updatePaymentDto,
+    });
+    return ReservationMapper.toDto(data);
   }
 }

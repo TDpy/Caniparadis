@@ -48,11 +48,14 @@ export class ReservationService {
       );
     }
 
+
     const reservation = this.reservationRepository.create({
       ...createReservation,
       animal,
       serviceType,
     });
+    reservation.startDate = new Date(createReservation.startDate);
+    reservation.endDate = new Date(createReservation.endDate);
     return this.reservationRepository.save(reservation);
   }
 
