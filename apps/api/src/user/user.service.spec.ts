@@ -5,17 +5,17 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { type Repository } from 'typeorm';
 
-import { User } from './entities/user';
 import { UserService } from './user.service';
 import { type CreateUserInput, type UpdateUserInput } from './user.type';
+import { UserEntity } from './userEntity';
 
 jest.mock('bcrypt');
 
 describe('UserService', () => {
   let service: UserService;
-  let repo: jest.Mocked<Repository<User>>;
+  let repo: jest.Mocked<Repository<UserEntity>>;
 
-  const userArray: User[] = [
+  const userArray: UserEntity[] = [
     {
       id: 1,
       email: 'john@example.com',
@@ -25,7 +25,6 @@ describe('UserService', () => {
       resetPasswordToken: null,
       firstName: 'First',
       lastName: 'LAST',
-      animals: [],
     },
     {
       id: 2,
@@ -36,7 +35,6 @@ describe('UserService', () => {
       resetPasswordToken: null,
       firstName: 'First',
       lastName: 'LAST',
-      animals: [],
     },
   ];
 
@@ -45,7 +43,7 @@ describe('UserService', () => {
       providers: [
         UserService,
         {
-          provide: getRepositoryToken(User),
+          provide: getRepositoryToken(UserEntity),
           useValue: {
             find: jest.fn(),
             findOne: jest.fn(),
@@ -59,7 +57,7 @@ describe('UserService', () => {
     }).compile();
 
     service = module.get<UserService>(UserService);
-    repo = module.get(getRepositoryToken(User));
+    repo = module.get(getRepositoryToken(UserEntity));
     process.env.BCRYPT_PASSWORD_SALT = '10';
   });
 
@@ -210,7 +208,7 @@ describe('UserService', () => {
 /**
  * create basic user for mock functions
  */
-function mockUser(overrides: Partial<User> = {}): User {
+function mockUser(overrides: Partial<UserEntity> = {}): UserEntity {
   return {
     id: 1,
     email: 'test@example.com',
@@ -220,7 +218,6 @@ function mockUser(overrides: Partial<User> = {}): User {
     resetPasswordToken: null,
     firstName: 'First',
     lastName: 'LAST',
-    animals: [],
     ...overrides,
   };
 }

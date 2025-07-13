@@ -1,5 +1,6 @@
 import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
+import {UserDto} from "./userDto";
 
 export enum AnimalSex {
   MALE = 'MALE',
@@ -41,5 +42,5 @@ export class AnimalDto {
   breed: string;
   sex: AnimalSex;
   isSterilized: boolean;
-  ownerId: number;
+  owner: UserDto;
 }

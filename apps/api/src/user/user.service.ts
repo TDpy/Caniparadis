@@ -5,17 +5,17 @@ import { Repository } from 'typeorm';
 
 import { passwordFormatValidation } from '../utils/password-utils.service';
 import {sanitizeUserRole} from "../utils/user-utils.service";
-import { User } from './entities/user';
 import { CreateUserInput, UpdateUserInput } from './user.type';
+import { UserEntity } from './userEntity';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async create(input: CreateUserInput): Promise<User> {
+  async create(input: CreateUserInput): Promise<UserEntity> {
     passwordFormatValidation(input.password);
 
     input.password = await bcrypt.hash(
@@ -29,21 +29,21 @@ export class UserService {
     return this.userRepository.save(userData);
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<UserEntity[]> {
     return this.userRepository.find({ order: { id: 'ASC' } });
   }
 
-  async findById(id: number): Promise<User> {
+  async findById(id: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) throw new NotFoundException('User Not Found');
     return user;
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<UserEntity> {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async findByToken(token: string): Promise<User> {
+  async findByToken(token: string): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: { resetPasswordToken: token },
     });
@@ -57,7 +57,7 @@ export class UserService {
     await this.userRepository.save(user);
   }
 
-  async update(id: number, input: UpdateUserInput): Promise<User> {
+  async update(id: number, input: UpdateUserInput): Promise<UserEntity> {
     if (input.password) {
       passwordFormatValidation(input.password);
       input.password = await bcrypt.hash(
@@ -71,7 +71,7 @@ export class UserService {
     return this.userRepository.save(merged);
   }
 
-  async remove(id: number): Promise<User> {
+  async remove(id: number): Promise<UserEntity> {
     const user = await this.findById(id);
     return this.userRepository.remove(user);
   }

@@ -1,5 +1,7 @@
 import {PartialType} from "@nestjs/mapped-types";
 import {IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min} from "class-validator";
+import {AnimalDto} from "./animalDto";
+import {ServiceTypeDto} from "./serviceTypeDto";
 
 export enum ReservationStatus {
   PENDING = 'PENDING',
@@ -54,16 +56,14 @@ export class UpdateReservationDto extends PartialType(CreateReservationDto) {
 
 export class ReservationDto {
   id: number;
-  animalId: number;
-  serviceTypeId: number;
+  animal: AnimalDto;
+  serviceType: ServiceTypeDto;
   startDate: string;
   endDate: string;
   status: ReservationStatus;
   paymentStatus: PaymentStatus;
   amountPaid?: number;
   comment?: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export class ProposeNewSlotDto {

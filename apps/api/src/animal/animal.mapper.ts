@@ -1,5 +1,6 @@
 import { type AnimalDto } from '@caniparadis/dtos/dist/animalDto';
 
+import { UserMapper } from '../user/user.mapper';
 import { type AnimalEntity } from './animal.entity';
 
 export const AnimalMapper = {
@@ -11,7 +12,7 @@ export const AnimalMapper = {
       breed: animal.breed,
       sex: animal.sex,
       isSterilized: animal.isSterilized,
-      ownerId: animal.owner.id,
+      owner: UserMapper.toDto(animal.owner),
     };
   },
 
