@@ -25,7 +25,6 @@ describe('UserService', () => {
       resetPasswordToken: null,
       firstName: 'First',
       lastName: 'LAST',
-      animals: [],
     },
     {
       id: 2,
@@ -36,7 +35,6 @@ describe('UserService', () => {
       resetPasswordToken: null,
       firstName: 'First',
       lastName: 'LAST',
-      animals: [],
     },
   ];
 
@@ -220,7 +218,6 @@ function mockUser(overrides: Partial<User> = {}): User {
     resetPasswordToken: null,
     firstName: 'First',
     lastName: 'LAST',
-    animals: [],
     ...overrides,
   };
 }

@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { User } from '../user/entities/user';
 
@@ -30,9 +36,11 @@ export class AnimalEntity {
   @Column({ default: false })
   isSterilized: boolean;
 
-  @ManyToOne(() => User, (user) => user.animals, {
+  @ManyToOne(() => User, {
     nullable: false,
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
+    eager: true,
   })
+  @JoinColumn({ name: 'ownerId' })
   owner: User;
 }

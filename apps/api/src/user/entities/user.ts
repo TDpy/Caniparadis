@@ -34,8 +34,4 @@ export class User {
 
   @Column({ nullable: true })
   address?: string;
-
-  @OneToMany(() => AnimalEntity, (animal) => animal.owner)
-  animals: AnimalEntity[];
-
 }
