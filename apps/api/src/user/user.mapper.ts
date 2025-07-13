@@ -1,9 +1,9 @@
 import { type UserDto } from '@caniparadis/dtos/dist/userDto';
 
-import { type User } from './entities/user';
+import { type UserEntity } from './userEntity';
 
 export const UserMapper = {
-  toDto(user: User): UserDto {
+  toDto(user: UserEntity): UserDto {
     return {
       id: user.id,
       email: user.email,
@@ -15,7 +15,7 @@ export const UserMapper = {
     };
   },
 
-  toDtos(users: User[]): UserDto[] {
+  toDtos(users: UserEntity[]): UserDto[] {
     return users.map(UserMapper.toDto);
   },
 };

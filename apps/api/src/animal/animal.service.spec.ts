@@ -4,7 +4,7 @@ import { Test, type TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { type Repository } from 'typeorm';
 
-import { User } from '../user/entities/user';
+import { UserEntity } from '../user/userEntity';
 import { AnimalEntity } from './animal.entity';
 import { AnimalService } from './animal.service';
 
@@ -23,7 +23,7 @@ const mockUserRepository = () => ({
 describe('AnimalService', () => {
   let service: AnimalService;
   let animalRepo: jest.Mocked<Repository<AnimalEntity>>;
-  let userRepo: jest.Mocked<Repository<User>>;
+  let userRepo: jest.Mocked<Repository<UserEntity>>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,7 +34,7 @@ describe('AnimalService', () => {
           useFactory: mockAnimalRepository,
         },
         {
-          provide: getRepositoryToken(User),
+          provide: getRepositoryToken(UserEntity),
           useFactory: mockUserRepository,
         },
       ],
@@ -42,7 +42,7 @@ describe('AnimalService', () => {
 
     service = module.get<AnimalService>(AnimalService);
     animalRepo = module.get(getRepositoryToken(AnimalEntity));
-    userRepo = module.get(getRepositoryToken(User));
+    userRepo = module.get(getRepositoryToken(UserEntity));
   });
 
   it('should be defined', () => {
@@ -60,7 +60,7 @@ describe('AnimalService', () => {
         isSterilized: true,
       };
 
-      const user = { id: 1 } as User;
+      const user = { id: 1 } as UserEntity;
       const createdAnimal = { ...input, id: 123, owner: user } as AnimalEntity;
 
       userRepo.findOne.mockResolvedValue(user);

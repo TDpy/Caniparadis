@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { User } from '../user/entities/user';
+import { UserEntity } from '../user/userEntity';
 
 export enum AnimalSex {
   FEMALE = 'FEMALE',
@@ -36,11 +36,11 @@ export class AnimalEntity {
   @Column({ default: false })
   isSterilized: boolean;
 
-  @ManyToOne(() => User, {
+  @ManyToOne(() => UserEntity, {
     nullable: false,
     onDelete: 'CASCADE',
     eager: true,
   })
   @JoinColumn({ name: 'ownerId' })
-  owner: User;
+  owner: UserEntity;
 }
