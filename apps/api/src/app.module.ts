@@ -10,6 +10,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthenticationService } from './authentication/authentication.service';
 import { EmailModule } from './email/email.module';
 import { AuthenticationGuard } from './guard/authentication.guard';
+import { ReservationModule } from './reservation/reservation.module';
 import { SeederModule } from './seeder/seeder.module';
 import { SeederService } from './seeder/seeder.service';
 import { ServiceTypeModule } from './service-type/service-type.module';
@@ -37,6 +38,7 @@ import { UserModule } from './user/user.module';
     SeederModule,
     AnimalModule,
     ServiceTypeModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [
