@@ -1,0 +1,16 @@
+<!-- login.component.html -->
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-primary">
+  <div class="card p-5 shadow rounded-5" style="width: 100%; max-width: 600px;">
+    <img src="logo_caniparadis.png" alt="Photo" class="card-img-top mb-4 mx-auto" style="width:270px;"/>
+    <h4 class="mx-auto mb-4">{{ title }}</h4>
+    <div class="card p-4">
+      <form (submit)="submitForm($event)">
+        <ng-content select="[form-fields]"></ng-content>
+        <button type="submit" class="btn w-100 bg-black text-light" style="">{{ title }}</button>
+      </form>
+    </div>
+    <div class="mt-3">
+      <ng-content select="[form-footer]"></ng-content>
+    </div>
+  </div>
+</div>

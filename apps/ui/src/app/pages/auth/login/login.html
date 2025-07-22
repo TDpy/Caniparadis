@@ -1,0 +1,65 @@
+<app-login-signup
+  [title]="'Se connecter'"
+  (onFormSubmit)="onSubmit()">
+
+  <ng-container form-fields>
+    <div class="mb-3 position-relative">
+      <input [(ngModel)]="login.email"
+             class="form-control"
+             id="email"
+             placeholder="Entrez votre email"
+             type="email"
+             name="email"
+             required
+             pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+             #emailRef="ngModel"
+             [class.is-invalid]="emailRef.invalid && (emailRef.dirty || emailRef.touched || formSubmitted)"
+      />
+      <label class="form-label text-dark"
+             for="email"
+             style="font-size: 0.8em;">
+        Saisissez votre e-mail
+      </label>
+      <div class="tooltip-error"
+           *ngIf="emailRef.errors?.['pattern'] && (emailRef.dirty || emailRef.touched || formSubmitted)">
+        Format d'email invalide.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <input type="password"
+             id="password"
+             class="form-control"
+             [(ngModel)]="login.password"
+             placeholder="Entrez votre mot de passe"
+             name="password"
+             required
+             [pattern]="passwordPattern"
+             #passwordRef="ngModel"
+             [class.is-invalid]="passwordRef.invalid && (passwordRef.dirty || passwordRef.touched || formSubmitted)"
+      />
+      <label for="password"
+             class="form-label text-dark"
+             style="font-size: 0.8em;">
+        Saisissez votre mot de passe
+      </label>
+      <div class="tooltip-error"
+           *ngIf="passwordRef.errors?.['pattern'] && (passwordRef.dirty || passwordRef.touched || formSubmitted)">
+        Min 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre.
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container form-footer>
+    <div class="d-flex justify-content-between">
+      <button class="p-2 rounded-3 border border-1 start"
+              (click)="redirectToSignUp()">
+        S'inscrire
+      </button>
+      <a (click)="redirectToForgotPassword()"
+         class="text-end">
+        Mot de passe oublié ?
+      </a>
+    </div>
+  </ng-container>
+</app-login-signup>
