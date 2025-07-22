@@ -19,7 +19,6 @@ export class CheckUserParamIdGuard implements CanActivate {
     );
 
     if (!paramName) {
-      // Pas de paramètre, on laisse passer
       return true;
     }
 
@@ -30,7 +29,6 @@ export class CheckUserParamIdGuard implements CanActivate {
       throw new ForbiddenException('User not authenticated');
     }
 
-    // Admin bypass
     if (user.role === 'ADMIN') {
       return true;
     }
