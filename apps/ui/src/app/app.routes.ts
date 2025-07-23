@@ -8,9 +8,15 @@ import {ForgotPassword} from './pages/auth/forgot-password/forgot-password';
 import {ResetPassword} from './pages/auth/reset-password/reset-password';
 import {NoAuthGuard} from './guards/no-auth-guard';
 import {AuthApp} from './pages/auth/auth-app';
+import {AnimalsPage} from './pages/animals-page/animals-page';
+import {UserPage} from './pages/user/user';
 
 export const routes: Routes = [
-
+  {
+    path: "",
+    redirectTo: "auth/login",
+    pathMatch: "full"
+  },
   {
     path: 'auth',
     component: AuthApp,
@@ -58,9 +64,5 @@ export const routes: Routes = [
       }
     ]
   },
-  {
-    path: "",
-    redirectTo: "auth/login",
-    pathMatch: "full"
-  }
+
 ];
