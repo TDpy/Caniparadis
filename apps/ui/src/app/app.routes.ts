@@ -46,7 +46,7 @@ export const routes: Routes = [
       },
       {
         path: 'user',
-        component: Dashboard,
+        component: UserPage,
       },
       {
         path: 'animal',
