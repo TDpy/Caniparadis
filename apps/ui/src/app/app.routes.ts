@@ -50,7 +50,7 @@ export const routes: Routes = [
       },
       {
         path: 'animal',
-        component: Dashboard,
+        component: AnimalsPage,
       },
       {
         path: 'booking',
