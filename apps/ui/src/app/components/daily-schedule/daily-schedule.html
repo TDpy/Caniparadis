@@ -1,0 +1,31 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Planning de la journée</h5>
+    <div class="d-flex">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="tabMode === 'nursery'" (click)="tabMode = 'nursery'">Garderie</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="tabMode === 'other'" (click)="tabMode = 'other'">Autre</a>
+        </li>
+      </ul>
+    </div>
+
+    @if (tabMode === 'nursery') {
+      <app-table
+        [columns]="['Chien', 'Heure de début', 'Heure de fin', 'Prix TTC']"
+        (rowClick)="dataClicked($event)"
+        [datas]="dtaDtos"
+        [dataKeys]="['name', 'startDate', 'endDate', 'price']">
+      </app-table>
+    } @else if (tabMode === 'other') {
+      <app-table
+        [columns]="['Type de reservation', 'Prestation', 'Humain', 'Animal', 'Mode de paiement']"
+        (rowClick)="dataClicked($event)"
+        [datas]="otherDataDtos"
+        [dataKeys]="['val1', 'val2', 'val3', 'val4']">
+      </app-table>
+    }
+  </div>
+</div>

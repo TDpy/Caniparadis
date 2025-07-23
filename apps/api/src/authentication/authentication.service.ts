@@ -64,6 +64,13 @@ export class AuthenticationService {
       lastName: input.lastName,
       role: Role.USER,
     });
+
+    await this.emailService.sendSignUpEmail(
+      input.email,
+      input.firstName,
+      input.lastName,
+    );
+
     return true;
   }
 

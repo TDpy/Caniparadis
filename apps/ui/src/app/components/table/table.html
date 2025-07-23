@@ -1,0 +1,18 @@
+<table class="table">
+  <thead>
+  <tr>
+    @for (column of columns; track column) {
+      <th scope="col">{{ column }}</th>
+    }
+  </tr>
+  </thead>
+  <tbody>
+    @for (data of datas; track data.id) {
+      <tr (click)="onRowClick(data)">
+        @for (key of dataKeys; track key) {
+          <td>{{ data[key] }}</td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>

@@ -162,6 +162,21 @@ importers:
       '@angular/ssr':
         specifier: ^20.1.0
         version: 20.1.0(421cd2c6bae9f5c0844f2ed031408c06)
+      '@caniparadis/dtos':
+        specifier: workspace:^
+        version: link:../../packages/dtos
+      '@fortawesome/fontawesome-free':
+        specifier: ^6.7.2
+        version: 6.7.2
+      '@ng-bootstrap/ng-bootstrap':
+        specifier: ^19.0.1
+        version: 19.0.1(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/forms@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))(@angular/localize@20.1.0(@angular/compiler-cli@20.1.0(@angular/compiler@20.1.0)(typescript@5.8.3))(@angular/compiler@20.1.0))(@popperjs/core@2.11.8)(rxjs@7.8.2)
+      '@popperjs/core':
+        specifier: ^2.11.8
+        version: 2.11.8
+      bootstrap:
+        specifier: ^5.3.6
+        version: 5.3.7(@popperjs/core@2.11.8)
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -177,13 +192,16 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^20.1.0
-        version: 20.1.0(a481a9e7fe97cc80cde959fa4d87eb91)
+        version: 20.1.0(27ed3c6d2561a50482f85f6996db284d)
       '@angular/cli':
         specifier: ^20.1.0
         version: 20.1.0(@types/node@20.19.1)(chokidar@4.0.3)
       '@angular/compiler-cli':
         specifier: ^20.1.0
         version: 20.1.0(@angular/compiler@20.1.0)(typescript@5.8.3)
+      '@angular/localize':
+        specifier: ^20.1.0
+        version: 20.1.0(@angular/compiler-cli@20.1.0(@angular/compiler@20.1.0)(typescript@5.8.3))(@angular/compiler@20.1.0)
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.3
@@ -431,6 +449,14 @@ packages:
       '@angular/core': 20.1.0
       '@angular/platform-browser': 20.1.0
       rxjs: ^6.5.3 || ^7.4.0
+
+  '@angular/localize@20.1.0':
+    resolution: {integrity: sha512-ZTAxJkLmYxBxeHVSf3VMY1qivlypxGsJy90LRzZl8KeYROt6g8NQ0MXO8M4Y+0+dXUTZDQcYcGq8TFxpMw1fqQ==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
+    hasBin: true
+    peerDependencies:
+      '@angular/compiler': 20.1.0
+      '@angular/compiler-cli': 20.1.0
 
   '@angular/platform-browser@20.1.0':
     resolution: {integrity: sha512-l3+Ijq5SFxT0v10DbOyMc7NzGdbK76yot2i8pXyArlPSPmpWvbbjXbiBqzrv3TSTrksHBhG3mMvyhTmHQ1cQFA==}
@@ -1439,6 +1465,10 @@ packages:
     resolution: {integrity: sha512-ZAoA40rNMPwSm+AeHpCq8STiNAwzWLJuP8Xv4CHIc9wv/PSuExjMrmjfYNj682vW0OOiZ1HKxzvjQr9XZIisQA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@fortawesome/fontawesome-free@6.7.2':
+    resolution: {integrity: sha512-JUOtgFW6k9u4Y+xeIaEiLr3+cjoUPiAuLXoyKOJSia6Duzb7pq+A76P9ZdPDoAoxHdHzq6gE9/jKBGXlZT8FbA==}
+    engines: {node: '>=6'}
+
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
     engines: {node: '>=10.10.0'}
@@ -2041,6 +2071,16 @@ packages:
       rxjs: ^7.2.0
       typeorm: ^0.3.0
 
+  '@ng-bootstrap/ng-bootstrap@19.0.1':
+    resolution: {integrity: sha512-1lErAkwh0F+gWkzpiddViY4GfA9LVXkwLpgBsV9Mb3IC0zo6WNkY8WxCC+LqajirBTu20DCkZSqeRzrwaVLpZw==}
+    peerDependencies:
+      '@angular/common': ^20.0.0
+      '@angular/core': ^20.0.0
+      '@angular/forms': ^20.0.0
+      '@angular/localize': ^20.0.0
+      '@popperjs/core': ^2.11.8
+      rxjs: ^6.5.3 || ^7.4.0
+
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
 
@@ -2197,6 +2237,9 @@ packages:
   '@pkgr/core@0.2.7':
     resolution: {integrity: sha512-YLT9Zo3oNPJoBjBc4q8G2mjU4tqIbf5CEOORbUUr48dCD9q3umJ3IPlVqOqDakPfd2HuwccBaqlGhN4Gmr5OWg==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@popperjs/core@2.11.8':
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
 
   '@rollup/rollup-android-arm-eabi@4.44.1':
     resolution: {integrity: sha512-JAcBr1+fgqx20m7Fwe1DxPUl/hPkee6jA6Pl7n1v2EFiktAHenTaXl5aIFjUIEsfn9w3HE4gK1lEgNGMzBDs1w==}
@@ -2978,6 +3021,11 @@ packages:
 
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
+
+  bootstrap@5.3.7:
+    resolution: {integrity: sha512-7KgiD8UHjfcPBHEpDNg+zGz8L3LqR3GVwqZiBRFX04a1BCArZOz1r2kjly2HQ0WokqTO0v1nF+QAt8dsW4lKlw==}
+    peerDependencies:
+      '@popperjs/core': ^2.11.8
 
   boxen@5.1.2:
     resolution: {integrity: sha512-9gYgQKXx+1nP8mP7CzFyaUARhg7D3n1dF/FnErWmu9l6JvGpNUN278h0aSb+QjoiKSWG+iZ3uHrcqk0qrY9RQQ==}
@@ -7335,7 +7383,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular/build@20.1.0(a481a9e7fe97cc80cde959fa4d87eb91)':
+  '@angular/build@20.1.0(27ed3c6d2561a50482f85f6996db284d)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2001.0(chokidar@4.0.3)
@@ -7369,6 +7417,7 @@ snapshots:
       watchpack: 2.4.4
     optionalDependencies:
       '@angular/core': 20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)
+      '@angular/localize': 20.1.0(@angular/compiler-cli@20.1.0(@angular/compiler@20.1.0)(typescript@5.8.3))(@angular/compiler@20.1.0)
       '@angular/platform-browser': 20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))
       '@angular/platform-server': 20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/compiler@20.1.0)(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@angular/ssr': 20.1.0(421cd2c6bae9f5c0844f2ed031408c06)
@@ -7454,6 +7503,17 @@ snapshots:
       '@angular/platform-browser': 20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))
       rxjs: 7.8.2
       tslib: 2.8.1
+
+  '@angular/localize@20.1.0(@angular/compiler-cli@20.1.0(@angular/compiler@20.1.0)(typescript@5.8.3))(@angular/compiler@20.1.0)':
+    dependencies:
+      '@angular/compiler': 20.1.0
+      '@angular/compiler-cli': 20.1.0(@angular/compiler@20.1.0)(typescript@5.8.3)
+      '@babel/core': 7.28.0
+      '@types/babel__core': 7.20.5
+      tinyglobby: 0.2.14
+      yargs: 18.0.0
+    transitivePeerDependencies:
+      - supports-color
 
   '@angular/platform-browser@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))':
     dependencies:
@@ -7628,7 +7688,7 @@ snapshots:
   '@babel/helper-member-expression-to-functions@7.27.1':
     dependencies:
       '@babel/traverse': 7.27.7
-      '@babel/types': 7.27.7
+      '@babel/types': 7.28.0
     transitivePeerDependencies:
       - supports-color
 
@@ -7668,7 +7728,7 @@ snapshots:
 
   '@babel/helper-optimise-call-expression@7.27.1':
     dependencies:
-      '@babel/types': 7.27.7
+      '@babel/types': 7.28.0
 
   '@babel/helper-plugin-utils@7.27.1': {}
 
@@ -7693,7 +7753,7 @@ snapshots:
   '@babel/helper-skip-transparent-expression-wrappers@7.27.1':
     dependencies:
       '@babel/traverse': 7.27.7
-      '@babel/types': 7.27.7
+      '@babel/types': 7.28.0
     transitivePeerDependencies:
       - supports-color
 
@@ -8686,6 +8746,8 @@ snapshots:
       '@eslint/core': 0.13.0
       levn: 0.4.1
 
+  '@fortawesome/fontawesome-free@6.7.2': {}
+
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
@@ -9365,6 +9427,16 @@ snapshots:
       typeorm: 0.3.25(ioredis@5.6.1)(pg@8.16.2)(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3))
       uuid: 9.0.1
 
+  '@ng-bootstrap/ng-bootstrap@19.0.1(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/forms@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))(@angular/localize@20.1.0(@angular/compiler-cli@20.1.0(@angular/compiler@20.1.0)(typescript@5.8.3))(@angular/compiler@20.1.0))(@popperjs/core@2.11.8)(rxjs@7.8.2)':
+    dependencies:
+      '@angular/common': 20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      '@angular/core': 20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)
+      '@angular/forms': 20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
+      '@angular/localize': 20.1.0(@angular/compiler-cli@20.1.0(@angular/compiler@20.1.0)(typescript@5.8.3))(@angular/compiler@20.1.0)
+      '@popperjs/core': 2.11.8
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     dependencies:
       eslint-scope: 5.1.1
@@ -9522,6 +9594,8 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.2.7': {}
+
+  '@popperjs/core@2.11.8': {}
 
   '@rollup/rollup-android-arm-eabi@4.44.1':
     optional: true
@@ -10512,6 +10586,10 @@ snapshots:
 
   boolbase@1.0.0: {}
 
+  bootstrap@5.3.7(@popperjs/core@2.11.8):
+    dependencies:
+      '@popperjs/core': 2.11.8
+
   boxen@5.1.2:
     dependencies:
       ansi-align: 3.0.1
@@ -10829,8 +10907,8 @@ snapshots:
 
   constantinople@4.0.1:
     dependencies:
-      '@babel/parser': 7.27.7
-      '@babel/types': 7.27.7
+      '@babel/parser': 7.28.0
+      '@babel/types': 7.28.0
     optional: true
 
   content-disposition@0.5.4:
@@ -15852,8 +15930,8 @@ snapshots:
 
   with@7.0.2:
     dependencies:
-      '@babel/parser': 7.27.7
-      '@babel/types': 7.27.7
+      '@babel/parser': 7.28.0
+      '@babel/types': 7.28.0
       assert-never: 1.4.0
       babel-walk: 3.0.0-canary-5
     optional: true

@@ -1,12 +1,21 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component, inject, signal} from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router';
+import {AuthService} from './services/auth.service';
+import {ToasterContainer} from './components/toaster-container/toaster-container';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ToasterContainer],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
+  authService = inject(AuthService);
+  router = inject(Router);
   protected readonly title = signal('ui');
+
+  ngOnInit() {
+    this.authService.initializeToken();
+  }
+
 }

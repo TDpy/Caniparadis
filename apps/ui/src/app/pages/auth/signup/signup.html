@@ -1,0 +1,91 @@
+<app-login-signup
+  [title]="'S\'inscrire'"
+  (onFormSubmit)="onSubmit()"
+>
+
+  <ng-container form-fields>
+    <div class="row mb-3">
+      <div class="col position-relative">
+        <input class="form-control"
+               [(ngModel)]="signUp.firstName"
+               name="firstName"
+               required
+               #firstNameRef="ngModel"
+               [class.is-invalid]="firstNameRef.invalid && (firstNameRef.dirty || firstNameRef.touched || formSubmitted)"
+               placeholder="Entrez votre prénom"/>
+        <label class="form-label text-dark" style="font-size: 0.8em;">Prénom</label>
+      </div>
+
+      <div class="col position-relative">
+        <input class="form-control "
+               [(ngModel)]="signUp.lastName"
+               name="lastName"
+               required
+               #lastNameRef="ngModel"
+               [class.is-invalid]="lastNameRef.invalid && (lastNameRef.dirty || lastNameRef.touched || formSubmitted)"
+               placeholder="Entrez votre nom"/>
+        <label class="form-label text-dark" style="font-size: 0.8em;">Nom</label>
+      </div>
+    </div>
+
+    <div class="mb-3 col position-relative">
+      <input class="form-control"
+             [(ngModel)]="signUp.email"
+             name="email"
+             required
+             type="email"
+             pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+             #emailRef="ngModel"
+             [class.is-invalid]="emailRef.invalid && (emailRef.dirty || emailRef.touched || formSubmitted)"
+             placeholder="Entrez votre email"/>
+      <label class="form-label text-dark" style="font-size: 0.8em;">Saisissez votre e-mail</label>
+      <div class="tooltip-error"
+           *ngIf="emailRef.errors?.['pattern'] && (emailRef.dirty || emailRef.touched || formSubmitted)">
+        Format d'email invalide.
+      </div>
+    </div>
+
+    <div class="mb-3 col position-relative">
+      <input class="form-control"
+             type="password"
+             [(ngModel)]="signUp.password"
+             name="password"
+             required
+             [pattern]="passwordPattern"
+             #passwordRef="ngModel"
+             [class.is-invalid]="passwordRef.invalid && (passwordRef.dirty || passwordRef.touched || formSubmitted)"
+             placeholder="Entrez votre mot de passe"/>
+      <label class="form-label text-dark" style="font-size: 0.8em;">Saisissez votre mot de passe</label>
+      <div class="tooltip-error"
+           *ngIf="passwordRef.errors?.['pattern'] && (passwordRef.dirty || passwordRef.touched || formSubmitted)">
+        Min 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre.
+      </div>
+    </div>
+
+    <div class="mb-3 col position-relative">
+      <input class="form-control"
+             type="password"
+             [(ngModel)]="confirmPassword"
+             name="confirmPassword"
+             required
+             #confirmRef="ngModel"
+             [class.is-invalid]="(confirmRef.dirty || formSubmitted) && signUp.password !== confirmPassword"
+             placeholder="Confirmez votre mot de passe"
+             (blur)="confirmTouched = true"/>
+      <label class="form-label text-dark" style="font-size: 0.8em;">Confirmation mot de passe</label>
+      <div class="tooltip-error" *ngIf="(confirmTouched || formSubmitted) && signUp.password !== confirmPassword">
+        Les mots de passe ne correspondent pas.
+      </div>
+    </div>
+
+
+  </ng-container>
+
+  <ng-container form-footer>
+    <div class="d-flex justify-content-between mt-3">
+      <button class="p-2 rounded-3 border border-1 start" (click)="redirectToLogIn()">
+        Se connecter
+      </button>
+    </div>
+  </ng-container>
+</app-login-signup>
