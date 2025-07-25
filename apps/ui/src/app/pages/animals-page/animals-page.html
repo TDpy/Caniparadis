@@ -3,11 +3,29 @@
     <h1>Animaux</h1>
     <div class="card me-2">
       <div class="card-body d-flex flex-column align-items-center">
-        <app-table
-          class="w-100"
-          [columns]="['Nom', 'Espèce', 'Race', 'Sexe', 'Stérilisé', 'Propriétaire']"
-          [datas]="animals"
-          [dataKeys]="['name', 'type', 'breed', 'sex', 'isSterilized', 'owner']">
+        <app-table [data]="animals"
+                   [getDeleteConfirmText]="getConfirmText"
+                   [isActionColumnDisplayed]="true"
+                   (delete)="onDelete($event)"
+                   (edit)="onEdit($event)">
+          <ng-template column="Nom" let-data>
+            {{ data.name }}
+          </ng-template>
+          <ng-template column="Espèce" let-data>
+            {{ data.type }}
+          </ng-template>
+          <ng-template column="Race" let-data>
+            {{ data.breed }}
+          </ng-template>
+          <ng-template column="Sexe" let-data>
+            {{ data.sex }}
+          </ng-template>
+          <ng-template column="Stérilisé" let-data>
+            {{ data.isSterilized }}
+          </ng-template>
+          <ng-template column="Propriétaire" let-data>
+            {{ data.owner }}
+          </ng-template>
         </app-table>
       </div>
     </div>

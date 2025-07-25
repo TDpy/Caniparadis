@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { Table } from '../table/table';
-import { formatDate } from '@angular/common';
+import {Component} from '@angular/core';
+import {Table, TableColumnDirective} from '../table/table';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-daily-schedule',
-  imports: [Table],
+  imports: [Table, TableColumnDirective],
   templateUrl: './daily-schedule.html',
   styleUrl: './daily-schedule.scss',
 })

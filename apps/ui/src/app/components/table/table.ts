@@ -1,19 +1,58 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  Directive,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  TemplateRef
+} from '@angular/core';
+
+@Directive({
+  selector: '[column]'
+})
+export class TableColumnDirective {
+  @Input('column') name!: string;
+
+  constructor(public template: TemplateRef<any>) {
+  }
+}
 
 @Component({
   selector: 'app-table',
-  imports: [],
+  imports: [
+    CommonModule
+  ],
   templateUrl: './table.html',
   styleUrl: './table.scss',
 })
-export class Table {
-  @Input() columns: string[] = [];
-  @Input() datas: any[] = [];
-  @Input() dataKeys: string[] = [];
+export class Table implements AfterContentInit {
+  @Input() data: any[] = [];
+  @Input() isActionColumnDisplayed: boolean = false;
+  @Input() getDeleteConfirmText!: (row: any) => string;
 
-  @Output() rowClick: EventEmitter<any> = new EventEmitter();
+  @Output() delete = new EventEmitter<any>();
+  @Output() edit = new EventEmitter<any>();
 
-  onRowClick(data: any) {
-    this.rowClick.emit(data);
+  @ContentChildren(TableColumnDirective) columnTemplates!: QueryList<TableColumnDirective>;
+
+  columns: { name: string, template: TemplateRef<any> }[] = [];
+
+  ngAfterContentInit(): void {
+    this.columns = this.columnTemplates.map(col => ({
+      name: col.name,
+      template: col.template
+    }));
   }
+
+  confirmDelete(row: any) {
+    const text = this.getDeleteConfirmText ? this.getDeleteConfirmText(row) : 'Êtes-vous sûr ?';
+    if (confirm(text)) {
+      this.delete.emit(row);
+    }
+  }
+
 }
