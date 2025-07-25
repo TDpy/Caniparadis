@@ -3,10 +3,27 @@
     <h1>Humains</h1>
     <div class="card me-2">
       <div class="card-body d-flex flex-column align-items-center">
-        <app-table class="w-100"
-                   [columns]="['Nom Prenom', 'Animaux', 'Email', 'Téléphone', 'Adresse']"
-                   [datas]="usersDtos"
-                   [dataKeys]="['fullName', 'animals', 'email', 'phoneNumber', 'address']"></app-table>
+        <app-table [data]="usersDtos"
+                   [getDeleteConfirmText]="getConfirmText"
+                   [isActionColumnDisplayed]="true"
+                   (delete)="onDelete($event)"
+                   (edit)="onEdit($event)">
+          <ng-template column="Identité" let-data>
+            {{ data.fullName }}
+          </ng-template>
+          <ng-template column="Animaux" let-data>
+            {{ data.animals }}
+          </ng-template>
+          <ng-template column="Email" let-data>
+            {{ data.email }}
+          </ng-template>
+          <ng-template column="Téléphone" let-data>
+            {{ data.phoneNumber }}
+          </ng-template>
+          <ng-template column="Adresse" let-data>
+            {{ data.address }}
+          </ng-template>
+        </app-table>
       </div>
     </div>
   </div>
