@@ -3,10 +3,12 @@ import {UserService} from '../../services/user.service';
 import {UserDto} from '@caniparadis/dtos/dist/userDto';
 import {Table, TableColumnDirective} from '../../components/table/table';
 import {ToasterService} from '../../services/toaster.service';
+import {RouterModule} from '@angular/router';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-user',
-  imports: [Table, TableColumnDirective],
+  imports: [Table, TableColumnDirective, RouterModule, CommonModule],
   templateUrl: './user.html',
   styleUrl: './user.scss',
 })

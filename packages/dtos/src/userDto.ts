@@ -1,5 +1,6 @@
 import {IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString,} from 'class-validator';
 import {PartialType} from '@nestjs/mapped-types';
+import {AnimalDto} from "./animalDto";
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -48,4 +49,5 @@ export class UserDto {
   lastName: string;
   phoneNumber?: string;
   address?: string;
+  animals?: AnimalDto[];
 }

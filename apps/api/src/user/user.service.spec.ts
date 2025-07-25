@@ -25,6 +25,7 @@ describe('UserService', () => {
       resetPasswordToken: null,
       firstName: 'First',
       lastName: 'LAST',
+      animals: []
     },
     {
       id: 2,
@@ -35,6 +36,7 @@ describe('UserService', () => {
       resetPasswordToken: null,
       firstName: 'First',
       lastName: 'LAST',
+      animals: []
     },
   ];
 
@@ -94,7 +96,7 @@ describe('UserService', () => {
       const result = await service.findAll();
 
       expect(result).toEqual(userArray);
-      expect(repo.find).toHaveBeenCalledWith({ order: { id: 'ASC' } });
+      expect(repo.find).toHaveBeenCalledWith({ order: { id: 'ASC' }, relations: ['animals'] });
     });
   });
 
@@ -218,6 +220,7 @@ function mockUser(overrides: Partial<UserEntity> = {}): UserEntity {
     resetPasswordToken: null,
     firstName: 'First',
     lastName: 'LAST',
+    animals: [],
     ...overrides,
   };
 }
