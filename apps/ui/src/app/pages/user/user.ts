@@ -3,7 +3,7 @@ import {UserService} from '../../services/user.service';
 import {UserDto} from '@caniparadis/dtos/dist/userDto';
 import {Table, TableColumnDirective} from '../../components/table/table';
 import {ToasterService} from '../../services/toaster.service';
-import {RouterModule} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
 
 @Component({
@@ -16,7 +16,9 @@ export class UserPage implements OnInit {
   public users: UserDto[] = [];
 
   constructor(private userService: UserService,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private router: Router,
+  ) {
   }
 
   get usersDtos() {
@@ -53,8 +55,14 @@ export class UserPage implements OnInit {
     )
   }
 
-  onEdit($event: any) {
-    console.log("edit", $event)
+  onCreate() {
+    this.router.navigate(['/user/create']);
   }
 
+  onEdit(event: any) {
+    console.log("edit", event);
+    if (event && event.id) {
+      this.router.navigate(['/user', event.id]);
+    }
+  }
 }

@@ -1,6 +1,11 @@
 @if (!!users) {
   <div class="d-flex flex-column p-4 m-4">
-    <h1>Humains</h1>
+    <div class="d-flex justify-content-between align-items-center w-100 mb-3">
+      <h1 class="m-0">Humains</h1>
+      <button class="btn btn-primary" (click)="onCreate()">
+        + Créer
+      </button>
+    </div>
     <div class="card me-2">
       <div class="card-body d-flex flex-column align-items-center">
         <app-table [data]="usersDtos"
@@ -29,6 +34,9 @@
           </ng-template>
           <ng-template column="Adresse" let-data>
             {{ data.address }}
+          </ng-template>
+          <ng-template column="Rôle" let-data>
+            {{ data.role }}
           </ng-template>
         </app-table>
       </div>

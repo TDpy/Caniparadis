@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {CreateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
+import {CreateUserDto, UpdateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ export class UserService {
   }
 
   create(userDto: CreateUserDto) {
-    return this.http.post<UserDto>("/user", userDto)
+    return this.http.post<UserDto>("/users", userDto)
   }
 
   findAll() {
@@ -21,8 +21,8 @@ export class UserService {
     return this.http.get<UserDto>(`/users/${id}`)
   }
 
-  update(userDto: UserDto) {
-    return this.http.patch<UserDto>(`/users/${userDto.id}`, userDto)
+  update(userId: string, userDto: UpdateUserDto) {
+    return this.http.patch<UserDto>(`/users/${userId}`, userDto)
   }
 
   remove(id: number) {

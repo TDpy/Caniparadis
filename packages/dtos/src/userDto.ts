@@ -1,5 +1,3 @@
-import {IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString,} from 'class-validator';
-import {PartialType} from '@nestjs/mapped-types';
 import {AnimalDto} from "./animalDto";
 
 export enum Role {
@@ -8,40 +6,7 @@ export enum Role {
   RESET_TOKEN = 'RESET_TOKEN',
 }
 
-export class CreateUserDto {
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  password: string;
-
-  @IsNotEmpty()
-  @IsString()
-  firstName: string;
-
-  @IsNotEmpty()
-  @IsString()
-  lastName: string;
-
-  @IsOptional()
-  @IsString()
-  phoneNumber?: string;
-
-  @IsOptional()
-  @IsString()
-  address?: string;
-
-  @IsOptional()
-  @IsEnum(Role)
-  role?: Role;
-}
-
-export class UpdateUserDto extends PartialType(CreateUserDto) {
-}
-
-export class UserDto {
+export interface UserDto {
   id: number;
   email: string;
   role: Role;
@@ -51,3 +16,16 @@ export class UserDto {
   address?: string;
   animals?: AnimalDto[];
 }
+
+export interface CreateUserDto {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  address?: string;
+  role?: Role;
+  animals?: AnimalDto[];
+}
+
+export type UpdateUserDto = Partial<CreateUserDto>;

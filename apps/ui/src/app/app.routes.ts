@@ -10,6 +10,7 @@ import {NoAuthGuard} from './guards/no-auth-guard';
 import {AuthApp} from './pages/auth/auth-app';
 import {AnimalsPage} from './pages/animals-page/animals-page';
 import {UserPage} from './pages/user/user';
+import {UserDetails} from './pages/user/user-details/user-details';
 
 export const routes: Routes = [
   {
@@ -52,7 +53,20 @@ export const routes: Routes = [
       },
       {
         path: 'user',
-        component: UserPage,
+        children: [
+          {
+            path: 'create',
+            component: UserDetails,
+          },
+          {
+            path: ':id',
+            component: UserDetails,
+          },
+          {
+            path: '',
+            component: UserPage,
+          },
+        ],
       },
       {
         path: 'animal',
