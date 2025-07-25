@@ -1,6 +1,8 @@
 import { Role } from '@caniparadis/dtos/dist/userDto';
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { AnimalEntity } from '../animal/animal.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -32,4 +34,7 @@ export class UserEntity {
 
   @Column({ nullable: true })
   address?: string;
+
+  @OneToMany(() => AnimalEntity, (animal) => animal.owner)
+  animals: AnimalEntity[];
 }

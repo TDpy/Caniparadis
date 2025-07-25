@@ -36,7 +36,7 @@ export class AnimalEntity {
   @Column({ default: false })
   isSterilized: boolean;
 
-  @ManyToOne(() => UserEntity, {
+  @ManyToOne(() => UserEntity,(user) => user.animals, {
     nullable: false,
     onDelete: 'CASCADE',
     eager: true,

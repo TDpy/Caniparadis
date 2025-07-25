@@ -4,7 +4,7 @@ import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
 
 import { passwordFormatValidation } from '../utils/password-utils.service';
-import {sanitizeUserRole} from "../utils/user-utils.service";
+import { sanitizeUserRole } from '../utils/user-utils.service';
 import { CreateUserInput, UpdateUserInput } from './user.type';
 import { UserEntity } from './userEntity';
 
@@ -23,18 +23,24 @@ export class UserService {
       +process.env.BCRYPT_PASSWORD_SALT,
     );
 
-    input.role = sanitizeUserRole(input.role)
+    input.role = sanitizeUserRole(input.role);
 
     const userData = this.userRepository.create(input);
     return this.userRepository.save(userData);
   }
 
   async findAll(): Promise<UserEntity[]> {
-    return this.userRepository.find({ order: { id: 'ASC' } });
+    return this.userRepository.find({
+      relations: ['animals'],
+      order: { id: 'ASC' },
+    });
   }
 
   async findById(id: number): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['animals'],
+    });
     if (!user) throw new NotFoundException('User Not Found');
     return user;
   }

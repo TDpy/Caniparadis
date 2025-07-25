@@ -12,7 +12,14 @@
             {{ data.fullName }}
           </ng-template>
           <ng-template column="Animaux" let-data>
-            {{ data.animals }}
+            <ng-container *ngIf="data.animals?.length; else noAnimals">
+              <span *ngFor="let animal of data.animals; let last = last">
+                <a [routerLink]="['/animal', animal.id]">{{ animal.name }}</a>{{ last ? '' : ', ' }}
+              </span>
+            </ng-container>
+            <ng-template #noAnimals>
+              <em>-</em>
+            </ng-template>
           </ng-template>
           <ng-template column="Email" let-data>
             {{ data.email }}

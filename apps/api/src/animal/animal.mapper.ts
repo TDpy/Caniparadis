@@ -17,6 +17,6 @@ export const AnimalMapper = {
   },
 
   toDtos(animals: AnimalEntity[]): AnimalDto[] {
-    return animals.map((animal) => this.toDto(animal));
+    return animals?.map((animal) => this.toDto(animal));
   },
 };
