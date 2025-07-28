@@ -1,5 +1,3 @@
-import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
 import {UserDto} from "./userDto";
 
 export enum AnimalSex {
@@ -7,35 +5,18 @@ export enum AnimalSex {
   FEMALE = 'FEMALE',
 }
 
-export class CreateAnimalDto {
-  @IsNotEmpty()
-  @IsString()
+export interface CreateAnimalDto {
   name: string;
-
-  @IsNotEmpty()
-  @IsString()
   type: string;
-
-  @IsNotEmpty()
-  @IsString()
   breed: string;
-
-  @IsNotEmpty()
-  @IsNumber()
   ownerId: number;
-
-  @IsNotEmpty()
-  @IsEnum(AnimalSex)
   sex: AnimalSex;
-
-  @IsNotEmpty()
-  @IsBoolean()
   isSterilized: boolean;
 }
 
-export class UpdateAnimalDto extends PartialType(CreateAnimalDto) {}
+export type UpdateAnimalDto = Partial<CreateAnimalDto>;
 
-export class AnimalDto {
+export interface AnimalDto {
   id: number;
   name: string;
   type: string;
