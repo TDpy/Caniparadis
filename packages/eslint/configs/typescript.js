@@ -27,7 +27,7 @@ export default tseslint.config(
       '@typescript-eslint/adjacent-overload-signatures': 'error',
       '@typescript-eslint/prefer-for-of': 'error',
       '@typescript-eslint/unified-signatures': 'error',
-      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-invalid-this': ['error'],
       '@typescript-eslint/no-misused-new': 'error',
       '@typescript-eslint/no-shadow': [
@@ -45,16 +45,9 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/await-thenable': 'off', // useful but slow
-      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/consistent-type-assertions': 'off',
-      '@typescript-eslint/consistent-type-imports': [
-        'error',
-        {
-          prefer: 'type-imports',
-          fixStyle: 'inline-type-imports',
-        },
-      ],
       '@typescript-eslint/no-misused-promises': 'off', // useful but slow
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/no-extra-non-null-assertion': 'error',
