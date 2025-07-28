@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {AnimalDto, CreateAnimalDto} from '@caniparadis/dtos/dist/animalDto';
+import {AnimalDto, CreateAnimalDto, UpdateAnimalDto} from '@caniparadis/dtos/dist/animalDto';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,8 @@ export class AnimalService {
     return this.http.get<AnimalDto>(`/animals/${id}`)
   }
 
-  update(serviceTypeDto: AnimalDto) {
-    return this.http.patch<AnimalDto>(`/animals/${serviceTypeDto.id}`, serviceTypeDto)
+  update(animalId: number, animalDto: UpdateAnimalDto) {
+    return this.http.patch<AnimalDto>(`/animals/${animalId}`, animalDto)
   }
 
   remove(id: number) {
