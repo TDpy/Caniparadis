@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {AnimalDto, AnimalSex, CreateAnimalDto, UpdateAnimalDto} from '@caniparadis/dtos/dist/animalDto';
 import {AnimalService} from '../../../services/animal.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -14,7 +14,7 @@ import {UserService} from '../../../services/user.service';
   templateUrl: './animal-details.html',
   styleUrl: './animal-details.scss'
 })
-export class AnimalDetails {
+export class AnimalDetails implements OnInit {
   animal: Partial<CreateAnimalDto & UpdateAnimalDto> = {
     sex: AnimalSex.MALE,
     isSterilized: false
@@ -31,7 +31,7 @@ export class AnimalDetails {
   private toasterService = inject(ToasterService);
   private userService = inject(UserService);
 
-  constructor() {
+  ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {

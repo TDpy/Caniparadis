@@ -11,7 +11,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((err) => {
       if (err.status === 401 && !req.url.includes('/auth/logout') && !req.url.includes('/auth/login')) {
-        console.log(req)
         authService.logout(false);
         toasterService.error('Session expirée. Veuillez vous reconnecter.');
       }

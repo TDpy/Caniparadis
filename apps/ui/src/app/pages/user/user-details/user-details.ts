@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Role, CreateUserDto, UpdateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
+import {CreateUserDto, Role, UpdateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
 import {UserService} from '../../../services/user.service';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
@@ -14,20 +14,19 @@ import {ToasterService} from '../../../services/toaster.service';
   templateUrl: './user-details.html',
   styleUrl: './user-details.scss'
 })
-export class UserDetails {
+export class UserDetails implements OnInit {
   user: Partial<CreateUserDto & UpdateUserDto> = {};
   formSubmitted = false;
   isEditMode = false;
   userId?: number;
   roles = Object.values(Role);
   passwordPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$';
-
   private userService = inject(UserService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private toasterService = inject(ToasterService);
 
-  constructor() {
+  ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -42,7 +41,7 @@ export class UserDetails {
     this.userService.findOne(id).subscribe({
       next: (user: UserDto) => {
         this.user = user;
-        delete this.user.password; // pas de mot de passe en édition
+        delete this.user.password;
       },
       error: () => {
         this.router.navigateByUrl('/users');

@@ -1,10 +1,11 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SignUpDto} from '@caniparadis/dtos/dist/authDto';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {LoginSignup} from "../../../components/login-signup/login-signup";
 import {AuthService} from '../../../services/auth.service';
+import {ToasterService} from '../../../services/toaster.service';
 
 @Component({
   selector: 'app-signup',
@@ -24,10 +25,10 @@ export class Signup {
   formSubmitted: boolean = false;
   errorMessage: string = '';
   passwordPattern: string = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$';
-  private authService = inject(AuthService);
 
-  constructor(private router: Router) {
-  }
+  private authService = inject(AuthService);
+  private toasterService = inject(ToasterService);
+  private router = inject(Router);
 
   onSubmit() {
     this.formSubmitted = true;
@@ -42,13 +43,12 @@ export class Signup {
       lastName: this.signUp.lastName,
     };
 
-    this.authService.signUp(dto).subscribe((success) => {
-      if (success) {
-        this.redirectToLogIn();
-      } else {
-
-      }
-    });
+    this.authService.signUp(dto).subscribe(
+      _ => {
+        this.redirectToLogin();
+        this.toasterService.success("Compte créé avec succès");
+      },
+      _ => this.toasterService.error("Un soucis est apparu. Veuillez réessayer."));
   }
 
   isValid(): boolean {
@@ -79,7 +79,7 @@ export class Signup {
     return true;
   }
 
-  redirectToLogIn() {
+  redirectToLogin() {
     this.router.navigateByUrl('auth/login');
   }
 }

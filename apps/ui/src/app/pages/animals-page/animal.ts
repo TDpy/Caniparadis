@@ -3,7 +3,7 @@ import {Table, TableColumnDirective} from '../../components/table/table';
 import {AnimalService} from '../../services/animal.service';
 import {AnimalDto} from '@caniparadis/dtos/dist/animalDto';
 import {ToasterService} from "../../services/toaster.service";
-import { Router, RouterModule } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-animal',
@@ -16,26 +16,25 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './animal.scss'
 })
 export class Animal implements OnInit {
-  toasterService = inject(ToasterService);
-  public animals?: AnimalDto[];
+  router = inject(Router);
+  animals?: AnimalDto[];
 
-  constructor(public readonly service: AnimalService,
-              private router: Router) {
-  }
+  private toasterService = inject(ToasterService);
+  private animalService = inject(AnimalService);
 
   getConfirmText = (row: AnimalDto) => `Supprimer l’animal ${row.name} ?`;
 
   ngOnInit() {
-    this.service.findAll().subscribe(animals => {
+    this.animalService.findAll().subscribe(animals => {
       this.animals = animals;
     });
   }
 
   onDelete($event: any) {
-    this.service.remove($event.id).subscribe(
+    this.animalService.remove($event.id).subscribe(
       (animal) => {
         this.toasterService.success(`L'animal ${animal.name} a correctement été supprimé`)
-        this.service.findAll().subscribe(animals => {
+        this.animalService.findAll().subscribe(animals => {
           this.animals = animals;
         });
 

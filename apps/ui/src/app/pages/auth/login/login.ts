@@ -22,13 +22,10 @@ export class Login {
   formSubmitted: boolean = false;
   errorMessage: string = '';
   passwordPattern: string = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$';
+
   private authService = inject(AuthService);
   private toasterService = inject(ToasterService);
-
-  constructor(
-    private router: Router) {
-  }
-
+  private router = inject(Router);
 
   onSubmit() {
     this.formSubmitted = true;
@@ -81,6 +78,7 @@ export class Login {
   redirectToSignUp() {
     this.router.navigateByUrl('auth/signup').then();
   }
+
   redirectToForgotPassword() {
     this.router.navigateByUrl('auth/forgot-password').then();
   }

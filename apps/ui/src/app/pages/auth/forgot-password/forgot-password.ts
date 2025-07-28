@@ -3,7 +3,8 @@ import {LoginSignup} from '../../../components/login-signup/login-signup';
 import {EmailDto} from '@caniparadis/dtos/dist/authDto';
 import {AuthService} from '../../../services/auth.service';
 import {FormsModule} from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
+import {ToasterService} from '../../../services/toaster.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -19,7 +20,9 @@ export class ForgotPassword {
   email: EmailDto = new EmailDto();
   formSubmitted: boolean = false;
   errorMessage: string = '';
+
   private authService = inject(AuthService);
+  private toasterService = inject(ToasterService);
 
   onSubmit() {
     this.formSubmitted = true;
@@ -31,9 +34,9 @@ export class ForgotPassword {
       email: this.email.email,
     };
 
-    this.authService.forgotPassword(dto).subscribe((success) => {
-
-    });
+    this.authService.forgotPassword(dto).subscribe(
+      _ => this.toasterService.success("Email de réinitialisation de mot de passe envoyé."),
+      _ => this.toasterService.error("Erreur lors de l'envoi de l'email de réinitialisation du mot de passe."));
   }
 
   isValid(): boolean {

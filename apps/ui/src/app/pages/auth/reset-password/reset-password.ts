@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {LoginSignup} from '../../../components/login-signup/login-signup';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {PasswordDto, SignUpDto} from '@caniparadis/dtos/dist/authDto';
 import {AuthService} from '../../../services/auth.service';
-import {ActivatedRoute, Route, Router } from '@angular/router';
+import {ActivatedRoute, Route, Router} from '@angular/router';
+import {ToasterService} from '../../../services/toaster.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -16,7 +17,7 @@ import {ActivatedRoute, Route, Router } from '@angular/router';
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss'
 })
-export class ResetPassword {
+export class ResetPassword implements OnInit {
   signUp: PasswordDto = new PasswordDto();
   confirmPassword: string = '';
   confirmTouched: boolean = false;
@@ -26,6 +27,7 @@ export class ResetPassword {
   private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private toasterService = inject(ToasterService);
   private resetToken: string = '';
 
   ngOnInit() {
@@ -44,14 +46,17 @@ export class ResetPassword {
       password: this.signUp.password,
     };
 
-    this.authService.resetPassword(dto, this.resetToken).subscribe((success) => {
-
-    });
+    this.authService.resetPassword(dto, this.resetToken).subscribe(
+      _ => {
+        this.toasterService.success("Nouveau mot de passe enregistré. Vous pouvez vous connecter.")
+        this.router.navigateByUrl('auth/login');
+      },
+      _ => this.toasterService.error("Erreur lors de la réinitialisation. Veuillez réessayer.")
+    );
   }
 
   isValid(): boolean {
-    const { password} = this.signUp;
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    const {password} = this.signUp;
     const pwdRegex = new RegExp(this.passwordPattern);
 
     if (!password || !this.confirmPassword) {
@@ -70,10 +75,6 @@ export class ResetPassword {
     }
 
     return true;
-  }
-
-  redirectToLogIn() {
-    this.router.navigateByUrl('login');
   }
 
 }

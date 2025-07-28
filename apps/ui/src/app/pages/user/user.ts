@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {UserDto} from '@caniparadis/dtos/dist/userDto';
 import {Table, TableColumnDirective} from '../../components/table/table';
@@ -14,12 +14,9 @@ import {CommonModule} from '@angular/common';
 })
 export class UserPage implements OnInit {
   public users: UserDto[] = [];
-
-  constructor(private userService: UserService,
-              private toasterService: ToasterService,
-              private router: Router,
-  ) {
-  }
+  private userService = inject(UserService);
+  private toasterService = inject(ToasterService);
+  private router = inject(Router);
 
   get usersDtos() {
     return this.users.map((data: UserDto) => ({
@@ -34,10 +31,9 @@ export class UserPage implements OnInit {
     this.userService.findAll().subscribe({
       next: (users: UserDto[]) => {
         this.users = users;
-        console.log('Users fetched successfully:', this.users);
       },
       error: (error: any) => {
-        console.error('Error fetching users:', error);
+        this.toasterService.error(`Erreur lors de la récupération des utilisateurs.`)
       },
     });
   }
@@ -49,7 +45,6 @@ export class UserPage implements OnInit {
         this.userService.findAll().subscribe(users => {
           this.users = users;
         });
-
       },
       _ => this.toasterService.error("Impossible de supprimer l'utilisateur.trice. Veuillez réessayer")
     )
@@ -60,7 +55,6 @@ export class UserPage implements OnInit {
   }
 
   onEdit(event: any) {
-    console.log("edit", event);
     if (event && event.id) {
       this.router.navigate(['/user', event.id]);
     }
