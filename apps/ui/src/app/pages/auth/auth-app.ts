@@ -9,6 +9,4 @@ import {RouterOutlet} from '@angular/router';
   templateUrl: './auth-app.html',
   styleUrl: './auth-app.scss'
 })
-export class AuthApp {
-
-}
+export class AuthApp {}

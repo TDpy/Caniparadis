@@ -48,7 +48,7 @@ export class Table implements AfterContentInit {
     }));
   }
 
-  confirmDelete(row: any) {
+  confirmDelete(row: any): void {
     const text = this.getDeleteConfirmText ? this.getDeleteConfirmText(row) : 'Êtes-vous sûr ?';
     if (confirm(text)) {
       this.delete.emit(row);

@@ -1,10 +1,12 @@
+import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
-import {UserService} from '../../services/user.service';
+import {Router, RouterModule} from '@angular/router';
 import {UserDto} from '@caniparadis/dtos/dist/userDto';
+import {catchError, of, switchMap, tap} from 'rxjs';
+
 import {Table, TableColumnDirective} from '../../components/table/table';
 import {ToasterService} from '../../services/toaster.service';
-import {Router, RouterModule} from '@angular/router';
-import {CommonModule} from '@angular/common';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -18,44 +20,49 @@ export class UserPage implements OnInit {
   private toasterService = inject(ToasterService);
   private router = inject(Router);
 
-  get usersDtos() {
+  get usersDtos(): any {
     return this.users.map((data: UserDto) => ({
       ...data,
       fullName: data.firstName + ' ' + data.lastName
     }));
   }
 
-  getConfirmText = (row: UserDto) => `Supprimer l’utilisateur.trice ${row.firstName} ${row.lastName} ?`;
+  getConfirmText: any = (row: UserDto) => `Supprimer l’utilisateur.trice ${row.firstName} ${row.lastName} ?`;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userService.findAll().subscribe({
       next: (users: UserDto[]) => {
         this.users = users;
       },
-      error: (error: any) => {
+      error: (_) => {
         this.toasterService.error(`Erreur lors de la récupération des utilisateurs.`)
       },
     });
   }
 
-  onDelete($event: any) {
-    this.userService.remove($event.id).subscribe(
-      (user) => {
-        this.toasterService.success(`L'utilisateur.trice ${user.firstName}  ${user.lastName} a correctement été supprimé.e`)
-        this.userService.findAll().subscribe(users => {
-          this.users = users;
-        });
-      },
-      _ => this.toasterService.error("Impossible de supprimer l'utilisateur.trice. Veuillez réessayer")
-    )
+  onDelete(user: { id: number }): void {
+    this.userService.remove(user.id).pipe(
+      tap((removedUser) => {
+        this.toasterService.success(
+          `L'utilisateur.trice ${removedUser.firstName} ${removedUser.lastName} a correctement été supprimé.e`
+        );
+      }),
+      switchMap(() => this.userService.findAll()),
+      catchError(() => {
+        this.toasterService.error("Impossible de supprimer l'utilisateur.trice. Veuillez réessayer");
+        return of([]);
+      })
+    ).subscribe((users) => {
+      this.users = users;
+    });
   }
 
-  onCreate() {
+  onCreate(): void {
     this.router.navigate(['/user/create']);
   }
 
-  onEdit(event: any) {
-    if (event && event.id) {
+  onEdit(event: any): void {
+    if (event?.id) {
       this.router.navigate(['/user', event.id]);
     }
   }

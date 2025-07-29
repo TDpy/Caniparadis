@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component} from '@angular/core';
+import {Subscription, timer} from 'rxjs';
+
 import {ToasterService, ToastMessage} from '../../services/toaster.service';
-import { Subscription, timer } from 'rxjs';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-toaster-container',
@@ -13,9 +14,10 @@ export class ToasterContainer {
   toasts: ToastMessage[] = [];
   private sub!: Subscription;
 
-  constructor(private toaster: ToasterService) {}
+  constructor(private toaster: ToasterService) {
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sub = this.toaster.toast$.subscribe(toast => {
       this.toasts.push(toast);
       timer(5000).subscribe(() => {
@@ -24,47 +26,37 @@ export class ToasterContainer {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
-  remove(toast: ToastMessage) {
+  remove(toast: ToastMessage): void {
     this.toasts = this.toasts.filter(t => t !== toast);
   }
 
   getCombinedClasses(type: string = 'info'): string[] {
+    return type === 'error' || type === 'success' ? ['bg-' + this.mapToBootstrapColor(type), 'text-white'] : ['bg-' + this.mapToBootstrapColor(type), 'text-dark'];
+  }
+
+  getIconClass(type: string = 'info'): string {
     switch (type) {
-      case 'success':
-      case 'error':
-        return ['bg-' + this.mapToBootstrapColor(type), 'text-white'];
-      case 'warning':
-      case 'info':
-      case 'primary':
-      default:
-        return ['bg-' + this.mapToBootstrapColor(type), 'text-dark'];
+      case 'error': {
+        return 'fa fa-exclamation-triangle';
+      }
+      case 'success': {
+        return 'fa fa-check';
+      }
+      case 'warning': {
+        return 'fa fa-exclamation-circle';
+      }
+      default: {
+        return 'fa fa-info-circle';
+      }
     }
   }
 
   private mapToBootstrapColor(type: string): string {
-    switch (type) {
-      case 'error': return 'danger';
-      default: return type;
-    }
-  }
-
-
-  getIconClass(type: string = 'info'): string {
-    switch (type) {
-      case 'success':
-        return 'fa fa-check';
-      case 'error':
-        return 'fa fa-exclamation-triangle';
-      case 'warning':
-        return 'fa fa-exclamation-circle';
-      case 'info':
-      default:
-        return 'fa fa-info-circle';
-    }
+    return type === 'error' ? 'danger' : type;
   }
 
 

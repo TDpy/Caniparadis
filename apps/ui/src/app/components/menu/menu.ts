@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
-import {MenuItem} from './menu-item/menu-item';
+
 import {AuthService} from '../../services/auth.service';
-import { Router } from '@angular/router';
+import {MenuItem} from './menu-item/menu-item';
 
 @Component({
   selector: 'app-menu',
@@ -11,9 +11,8 @@ import { Router } from '@angular/router';
 })
 export class Menu {
   private authService = inject(AuthService);
-  private router = inject(Router);
 
-  logout() {
+  logout(): void {
     this.authService.logout(true);
   }
 }

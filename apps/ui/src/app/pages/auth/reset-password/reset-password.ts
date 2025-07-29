@@ -1,10 +1,12 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {LoginSignup} from '../../../components/login-signup/login-signup';
 import {CommonModule} from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {PasswordDto, SignUpDto} from '@caniparadis/dtos/dist/authDto';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PasswordDto} from '@caniparadis/dtos/dist/authDto';
+import {catchError, EMPTY, tap} from 'rxjs';
+
+import {LoginSignup} from '../../../components/login-signup/login-signup';
 import {AuthService} from '../../../services/auth.service';
-import {ActivatedRoute, Route, Router} from '@angular/router';
 import {ToasterService} from '../../../services/toaster.service';
 
 @Component({
@@ -23,20 +25,20 @@ export class ResetPassword implements OnInit {
   confirmTouched: boolean = false;
   formSubmitted: boolean = false;
   errorMessage: string = '';
-  passwordPattern: string = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$';
+  passwordPattern: string = String.raw`^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$`;
   private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private toasterService = inject(ToasterService);
   private resetToken: string = '';
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.resetToken = params.get('id') ?? '';
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.formSubmitted = true;
     this.errorMessage = '';
 
@@ -46,13 +48,16 @@ export class ResetPassword implements OnInit {
       password: this.signUp.password,
     };
 
-    this.authService.resetPassword(dto, this.resetToken).subscribe(
-      _ => {
-        this.toasterService.success("Nouveau mot de passe enregistré. Vous pouvez vous connecter.")
+    this.authService.resetPassword(dto, this.resetToken).pipe(
+      tap(() => {
+        this.toasterService.success("Nouveau mot de passe enregistré. Vous pouvez vous connecter.");
         this.router.navigateByUrl('auth/login');
-      },
-      _ => this.toasterService.error("Erreur lors de la réinitialisation. Veuillez réessayer.")
-    );
+      }),
+      catchError(() => {
+        this.toasterService.error("Erreur lors de la réinitialisation. Veuillez réessayer.");
+        return EMPTY;
+      })
+    ).subscribe();
   }
 
   isValid(): boolean {

@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 
 export interface ToastMessage {
   text: string;
-  type?: 'success' | 'info' | 'warning' | 'error';
+  type?: 'error' | 'info' | 'success' | 'warning';
 }
 
 @Injectable({
@@ -13,19 +13,19 @@ export class ToasterService {
   private toastSubject = new Subject<ToastMessage>();
   toast$ = this.toastSubject.asObservable();
 
-  error(message: string) {
+  error(message: string): void {
     this.toastSubject.next({text: message, type: 'error'});
   }
 
-  info(message: string) {
+  info(message: string): void {
     this.toastSubject.next({text: message, type: 'info'});
   }
 
-  success(message: string) {
+  success(message: string): void {
     this.toastSubject.next({text: message, type: 'success'});
   }
 
-  warning(message: string) {
+  warning(message: string): void {
     this.toastSubject.next({text: message, type: 'warning'});
   }
 }
