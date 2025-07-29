@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {EmailDto} from '@caniparadis/dtos/dist/authDto';
-import {catchError, EMPTY, tap } from 'rxjs';
+import {catchError, EMPTY, tap} from 'rxjs';
 
 import {LoginSignup} from '../../../components/login-signup/login-signup';
 import {AuthService} from '../../../services/auth.service';
@@ -26,7 +26,7 @@ export class ForgotPassword {
   private authService = inject(AuthService);
   private toasterService = inject(ToasterService);
 
-  onSubmit() {
+  onSubmit(): void {
     this.formSubmitted = true;
     this.errorMessage = '';
 

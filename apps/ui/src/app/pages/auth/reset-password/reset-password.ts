@@ -3,7 +3,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PasswordDto} from '@caniparadis/dtos/dist/authDto';
-import {catchError, EMPTY, tap } from 'rxjs';
+import {catchError, EMPTY, tap} from 'rxjs';
 
 import {LoginSignup} from '../../../components/login-signup/login-signup';
 import {AuthService} from '../../../services/auth.service';
@@ -32,13 +32,13 @@ export class ResetPassword implements OnInit {
   private toasterService = inject(ToasterService);
   private resetToken: string = '';
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.resetToken = params.get('id') ?? '';
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.formSubmitted = true;
     this.errorMessage = '';
 

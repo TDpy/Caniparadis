@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AnimalDto, AnimalSex, CreateAnimalDto, UpdateAnimalDto} from '@caniparadis/dtos/dist/animalDto';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {catchError, EMPTY, tap } from 'rxjs';
+import {catchError, EMPTY, tap} from 'rxjs';
 
 import {AnimalService} from '../../../services/animal.service';
 import {ToasterService} from '../../../services/toaster.service';
@@ -33,7 +33,7 @@ export class AnimalDetails implements OnInit {
   private toasterService = inject(ToasterService);
   private userService = inject(UserService);
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -45,7 +45,7 @@ export class AnimalDetails implements OnInit {
     this.loadOwners();
   }
 
-  loadAnimal(id: number) {
+  loadAnimal(id: number): void {
     this.animalService.findOne(id).subscribe({
       next: (animal: AnimalDto) => {
         this.animal = {
@@ -63,7 +63,7 @@ export class AnimalDetails implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.formSubmitted = true;
     if (!this.isValid()) return;
 
@@ -107,7 +107,7 @@ export class AnimalDetails implements OnInit {
     );
   }
 
-  private loadOwners() {
+  private loadOwners(): void {
     this.userService.findAll().subscribe({
       next: users => {
         this.owners = users.map(user => ({

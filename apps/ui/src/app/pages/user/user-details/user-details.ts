@@ -3,7 +3,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CreateUserDto, Role, UpdateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
-import {catchError, EMPTY, tap } from 'rxjs';
+import {catchError, EMPTY, tap} from 'rxjs';
 
 import {ToasterService} from '../../../services/toaster.service';
 import {UserService} from '../../../services/user.service';
@@ -28,7 +28,7 @@ export class UserDetails implements OnInit {
   private route = inject(ActivatedRoute);
   private toasterService = inject(ToasterService);
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -39,7 +39,7 @@ export class UserDetails implements OnInit {
     });
   }
 
-  loadUser(id: number) {
+  loadUser(id: number): void {
     this.userService.findOne(id).subscribe({
       next: (user: UserDto) => {
         this.user = user;
@@ -51,12 +51,12 @@ export class UserDetails implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.formSubmitted = true;
     if (!this.isValid()) return;
 
     if (this.isEditMode && this.userId) {
-      const updateDto: UpdateUserDto = { ...this.user };
+      const updateDto: UpdateUserDto = {...this.user};
 
       this.userService.update(this.userId.toString(), updateDto).pipe(
         tap((user) => {
@@ -71,7 +71,7 @@ export class UserDetails implements OnInit {
         })
       ).subscribe();
     } else {
-      const createDto: CreateUserDto = { ...(this.user as CreateUserDto) };
+      const createDto: CreateUserDto = {...(this.user as CreateUserDto)};
 
       this.userService.create(createDto).pipe(
         tap((user) => {

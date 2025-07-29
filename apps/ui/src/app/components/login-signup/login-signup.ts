@@ -11,7 +11,7 @@ export class LoginSignup {
   @Input({required: true}) title: string = "";
   @Output() onFormSubmit: EventEmitter<any> = new EventEmitter();
 
-  submitForm(event: any) {
+  submitForm(event: any): void {
     event.preventDefault();
     this.onFormSubmit.emit();
   }

@@ -39,7 +39,7 @@ export class DailySchedule {
     },
   ];
 
-  get dtaDtos() {
+  get dtaDtos(): any {
     return this.datas.map((data) => ({
       name: data.name,
       startDate: formatDate(data.startDate, 'HH:mm', 'en-US'),
@@ -48,7 +48,7 @@ export class DailySchedule {
     }));
   }
 
-  get otherDataDtos() {
+  get otherDataDtos(): any {
     return this.otherDatas.map((data) => ({
       val1: data.name,
       val2: formatDate(data.startDate, 'HH:mm', 'en-US'),
@@ -58,7 +58,7 @@ export class DailySchedule {
     }));
   }
 
-  dataClicked($event: any) {
+  dataClicked($event: any): void {
     console.log($event);
   }
 }

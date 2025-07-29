@@ -15,7 +15,7 @@ export class App {
   router = inject(Router);
   protected readonly title = signal('ui');
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.authService.initializeToken();
   }
 

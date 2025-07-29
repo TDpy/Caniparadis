@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Subscription, timer } from 'rxjs';
+import {CommonModule} from '@angular/common';
+import {Component} from '@angular/core';
+import {Subscription, timer} from 'rxjs';
 
 import {ToasterService, ToastMessage} from '../../services/toaster.service';
 
@@ -14,9 +14,10 @@ export class ToasterContainer {
   toasts: ToastMessage[] = [];
   private sub!: Subscription;
 
-  constructor(private toaster: ToasterService) {}
+  constructor(private toaster: ToasterService) {
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sub = this.toaster.toast$.subscribe(toast => {
       this.toasts.push(toast);
       timer(5000).subscribe(() => {
@@ -25,22 +26,17 @@ export class ToasterContainer {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
-  remove(toast: ToastMessage) {
+  remove(toast: ToastMessage): void {
     this.toasts = this.toasts.filter(t => t !== toast);
   }
 
   getCombinedClasses(type: string = 'info'): string[] {
     return type === 'error' || type === 'success' ? ['bg-' + this.mapToBootstrapColor(type), 'text-white'] : ['bg-' + this.mapToBootstrapColor(type), 'text-dark'];
   }
-
-  private mapToBootstrapColor(type: string): string {
-    return type === 'error' ? 'danger' : type;
-  }
-
 
   getIconClass(type: string = 'info'): string {
     switch (type) {
@@ -57,6 +53,10 @@ export class ToasterContainer {
         return 'fa fa-info-circle';
       }
     }
+  }
+
+  private mapToBootstrapColor(type: string): string {
+    return type === 'error' ? 'danger' : type;
   }
 
 

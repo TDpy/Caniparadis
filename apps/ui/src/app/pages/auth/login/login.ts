@@ -3,7 +3,7 @@ import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {LoginDto} from '@caniparadis/dtos/dist/authDto';
-import {catchError, EMPTY, tap } from 'rxjs';
+import {catchError, EMPTY, tap} from 'rxjs';
 
 import {LoginSignup} from '../../../components/login-signup/login-signup';
 import {AuthService} from '../../../services/auth.service';
@@ -29,7 +29,7 @@ export class Login {
   private toasterService = inject(ToasterService);
   private router = inject(Router);
 
-  onSubmit() {
+  onSubmit(): void {
     this.formSubmitted = true;
     this.errorMessage = '';
 
@@ -41,7 +41,7 @@ export class Login {
     };
 
     this.authService.login(dto).pipe(
-      tap(({ token }) => {
+      tap(({token}) => {
         if (token) {
           this.authService.setToken(token);
           this.router.navigateByUrl('dashboard').then();
@@ -80,11 +80,11 @@ export class Login {
   }
 
 
-  redirectToSignUp() {
+  redirectToSignUp(): void {
     this.router.navigateByUrl('auth/signup').then();
   }
 
-  async redirectToForgotPassword() {
-    await this.router.navigateByUrl('auth/forgot-password');
+  redirectToForgotPassword(): void {
+    this.router.navigateByUrl('auth/forgot-password');
   }
 }

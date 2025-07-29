@@ -9,6 +9,7 @@ export default tseslint.config(...baseConfigs, {
     strictNullChecks: 0,
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
     'sonarjs/prefer-nullish-coalescing': 'off',
+    "@typescript-eslint/explicit-function-return-type": "error"
 
   },
 });

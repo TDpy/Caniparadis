@@ -3,7 +3,7 @@ import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {SignUpDto} from '@caniparadis/dtos/dist/authDto';
-import {catchError, EMPTY, tap } from 'rxjs';
+import {catchError, EMPTY, tap} from 'rxjs';
 
 import {LoginSignup} from "../../../components/login-signup/login-signup";
 import {AuthService} from '../../../services/auth.service';
@@ -32,7 +32,7 @@ export class Signup {
   private toasterService = inject(ToasterService);
   private router = inject(Router);
 
-  onSubmit() {
+  onSubmit(): void {
     this.formSubmitted = true;
     this.errorMessage = '';
 
@@ -85,7 +85,7 @@ export class Signup {
     return true;
   }
 
-  redirectToLogin() {
+  redirectToLogin(): void {
     this.router.navigateByUrl('auth/login');
   }
 }

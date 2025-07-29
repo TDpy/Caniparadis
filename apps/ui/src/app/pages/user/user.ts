@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {UserDto} from '@caniparadis/dtos/dist/userDto';
-import {catchError, of, switchMap, tap } from 'rxjs';
+import {catchError, of, switchMap, tap} from 'rxjs';
 
 import {Table, TableColumnDirective} from '../../components/table/table';
 import {ToasterService} from '../../services/toaster.service';
@@ -20,16 +20,16 @@ export class UserPage implements OnInit {
   private toasterService = inject(ToasterService);
   private router = inject(Router);
 
-  get usersDtos() {
+  get usersDtos(): any {
     return this.users.map((data: UserDto) => ({
       ...data,
       fullName: data.firstName + ' ' + data.lastName
     }));
   }
 
-  getConfirmText = (row: UserDto) => `Supprimer l’utilisateur.trice ${row.firstName} ${row.lastName} ?`;
+  getConfirmText: any = (row: UserDto) => `Supprimer l’utilisateur.trice ${row.firstName} ${row.lastName} ?`;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userService.findAll().subscribe({
       next: (users: UserDto[]) => {
         this.users = users;
@@ -40,7 +40,7 @@ export class UserPage implements OnInit {
     });
   }
 
-  onDelete(user: { id: number }) {
+  onDelete(user: { id: number }): void {
     this.userService.remove(user.id).pipe(
       tap((removedUser) => {
         this.toasterService.success(
@@ -57,11 +57,11 @@ export class UserPage implements OnInit {
     });
   }
 
-  onCreate() {
+  onCreate(): void {
     this.router.navigate(['/user/create']);
   }
 
-  onEdit(event: any) {
+  onEdit(event: any): void {
     if (event?.id) {
       this.router.navigate(['/user', event.id]);
     }
