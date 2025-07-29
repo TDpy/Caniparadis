@@ -72,6 +72,9 @@ jobs:
       - name: Lint API
         run: pnpm api:lint
 
+      - name: Lint UI
+        run: pnpm ui:lint
+
       - name: Run API unit tests
         run: pnpm api:test:cov
 
