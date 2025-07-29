@@ -1,13 +1,12 @@
-import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {CreateUserDto, UpdateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   create(userDto: CreateUserDto) {
     return this.http.post<UserDto>("/users", userDto)

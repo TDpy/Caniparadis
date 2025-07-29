@@ -1,8 +1,10 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {SignUpDto} from '@caniparadis/dtos/dist/authDto';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {catchError, EMPTY, tap } from 'rxjs';
+
 import {LoginSignup} from "../../../components/login-signup/login-signup";
 import {AuthService} from '../../../services/auth.service';
 import {ToasterService} from '../../../services/toaster.service';
@@ -24,7 +26,7 @@ export class Signup {
   confirmTouched: boolean = false;
   formSubmitted: boolean = false;
   errorMessage: string = '';
-  passwordPattern: string = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$';
+  passwordPattern: string = String.raw`^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$`;
 
   private authService = inject(AuthService);
   private toasterService = inject(ToasterService);
@@ -43,17 +45,21 @@ export class Signup {
       lastName: this.signUp.lastName,
     };
 
-    this.authService.signUp(dto).subscribe(
-      _ => {
+    this.authService.signUp(dto).pipe(
+      tap(() => {
         this.redirectToLogin();
         this.toasterService.success("Compte créé avec succès");
-      },
-      _ => this.toasterService.error("Un soucis est apparu. Veuillez réessayer."));
+      }),
+      catchError(() => {
+        this.toasterService.error("Un souci est apparu. Veuillez réessayer.");
+        return EMPTY;
+      })
+    ).subscribe();
   }
 
   isValid(): boolean {
     const {email, password, firstName, lastName} = this.signUp;
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    const emailRegex = /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/;
     const pwdRegex = new RegExp(this.passwordPattern);
 
     if (!email || !password || !firstName || !lastName || !this.confirmPassword) {

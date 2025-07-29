@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
-import {Table, TableColumnDirective} from '../table/table';
 import {formatDate} from '@angular/common';
+import {Component} from '@angular/core';
+
+import {Table, TableColumnDirective} from '../table/table';
 
 @Component({
   selector: 'app-daily-schedule',
@@ -11,36 +12,33 @@ import {formatDate} from '@angular/common';
 export class DailySchedule {
   public tabMode: 'nursery' | 'other' = 'nursery';
 
-  // TODO@DEV: Mock data, this should be replaced by a service call
   public datas = [
     {
       id: '1',
       name: 'Woof',
       startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 3600000),
+      endDate: new Date(Date.now() + 3_600_000),
       price: 100
     },
   ];
 
-  // TODO@DEV: Mock data, this should be replaced by a service call
   public otherDatas = [
     {
       id: '1',
       name: 'Miaou',
       startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 3600000), // 1 hour later
+      endDate: new Date(Date.now() + 3_600_000), // 1 hour later
       price: 100,
     },
     {
       id: '1',
       name: 'Awouuuuuuuu',
       startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 3600000), // 1 hour later
+      endDate: new Date(Date.now() + 3_600_000), // 1 hour later
       price: 100,
     },
   ];
 
-  // TODO@DEV: Change this
   get dtaDtos() {
     return this.datas.map((data) => ({
       name: data.name,
@@ -50,7 +48,6 @@ export class DailySchedule {
     }));
   }
 
-  // TODO@DEV: Change this
   get otherDataDtos() {
     return this.otherDatas.map((data) => ({
       val1: data.name,
@@ -61,7 +58,6 @@ export class DailySchedule {
     }));
   }
 
-  // TODO@DEV: Redirect to the detail page of the data
   dataClicked($event: any) {
     console.log($event);
   }

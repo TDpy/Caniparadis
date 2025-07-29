@@ -1,11 +1,13 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {AnimalDto, AnimalSex, CreateAnimalDto, UpdateAnimalDto} from '@caniparadis/dtos/dist/animalDto';
-import {AnimalService} from '../../../services/animal.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ToasterService} from '../../../services/toaster.service';
-import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AnimalDto, AnimalSex, CreateAnimalDto, UpdateAnimalDto} from '@caniparadis/dtos/dist/animalDto';
 import {NgSelectModule} from '@ng-select/ng-select';
+import {catchError, EMPTY, tap } from 'rxjs';
+
+import {AnimalService} from '../../../services/animal.service';
+import {ToasterService} from '../../../services/toaster.service';
 import {UserService} from '../../../services/user.service';
 
 @Component({
@@ -23,7 +25,7 @@ export class AnimalDetails implements OnInit {
   isEditMode = false;
   animalId?: number;
   sexes = Object.values(AnimalSex);
-  owners: { id: number; firstName: string; lastName: string; email: string; fullName: string }[] = [];
+  owners: { id: number; email: string; firstName: string; fullName: string; lastName: string }[] = [];
 
   private animalService = inject(AnimalService);
   private router = inject(Router);
@@ -68,23 +70,29 @@ export class AnimalDetails implements OnInit {
     if (this.isEditMode && this.animalId) {
       const updateDto: UpdateAnimalDto = {...this.animal};
 
-      this.animalService.update(this.animalId, updateDto).subscribe(
-        (animal) => {
+      this.animalService.update(this.animalId, updateDto).pipe(
+        tap((animal) => {
           this.toasterService.success(`L'animal ${animal.name} a été modifié avec succès`);
           this.router.navigateByUrl('/animal');
-        },
-        _ => this.toasterService.error("Impossible de modifier l'animal. Veuillez réessayer")
-      );
+        }),
+        catchError(() => {
+          this.toasterService.error("Impossible de modifier l'animal. Veuillez réessayer");
+          return EMPTY;
+        })
+      ).subscribe();
     } else {
       const createDto: CreateAnimalDto = {...(this.animal as CreateAnimalDto)};
 
-      this.animalService.create(createDto).subscribe(
-        (animal) => {
+      this.animalService.create(createDto).pipe(
+        tap((animal) => {
           this.toasterService.success(`L'animal ${animal.name} a été créé avec succès`);
           this.router.navigateByUrl('/animal');
-        },
-        _ => this.toasterService.error("Impossible de créer l'animal. Veuillez réessayer")
-      );
+        }),
+        catchError(() => {
+          this.toasterService.error("Impossible de créer l'animal. Veuillez réessayer");
+          return EMPTY;
+        })
+      ).subscribe();
     }
   }
 

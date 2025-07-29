@@ -1,10 +1,12 @@
+import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
-import {UserService} from '../../services/user.service';
+import {Router, RouterModule} from '@angular/router';
 import {UserDto} from '@caniparadis/dtos/dist/userDto';
+import {catchError, of, switchMap, tap } from 'rxjs';
+
 import {Table, TableColumnDirective} from '../../components/table/table';
 import {ToasterService} from '../../services/toaster.service';
-import {Router, RouterModule} from '@angular/router';
-import {CommonModule} from '@angular/common';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -32,22 +34,27 @@ export class UserPage implements OnInit {
       next: (users: UserDto[]) => {
         this.users = users;
       },
-      error: (error: any) => {
+      error: (_) => {
         this.toasterService.error(`Erreur lors de la récupération des utilisateurs.`)
       },
     });
   }
 
-  onDelete($event: any) {
-    this.userService.remove($event.id).subscribe(
-      (user) => {
-        this.toasterService.success(`L'utilisateur.trice ${user.firstName}  ${user.lastName} a correctement été supprimé.e`)
-        this.userService.findAll().subscribe(users => {
-          this.users = users;
-        });
-      },
-      _ => this.toasterService.error("Impossible de supprimer l'utilisateur.trice. Veuillez réessayer")
-    )
+  onDelete(user: { id: number }) {
+    this.userService.remove(user.id).pipe(
+      tap((removedUser) => {
+        this.toasterService.success(
+          `L'utilisateur.trice ${removedUser.firstName} ${removedUser.lastName} a correctement été supprimé.e`
+        );
+      }),
+      switchMap(() => this.userService.findAll()),
+      catchError(() => {
+        this.toasterService.error("Impossible de supprimer l'utilisateur.trice. Veuillez réessayer");
+        return of([]);
+      })
+    ).subscribe((users) => {
+      this.users = users;
+    });
   }
 
   onCreate() {
@@ -55,7 +62,7 @@ export class UserPage implements OnInit {
   }
 
   onEdit(event: any) {
-    if (event && event.id) {
+    if (event?.id) {
       this.router.navigate(['/user', event.id]);
     }
   }

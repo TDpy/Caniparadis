@@ -6,8 +6,7 @@ import {AnimalDto, CreateAnimalDto, UpdateAnimalDto} from '@caniparadis/dtos/dis
   providedIn: 'root'
 })
 export class AnimalService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   create(serviceTypeDto: CreateAnimalDto) {
     return this.http.post<AnimalDto>("/animals", serviceTypeDto)

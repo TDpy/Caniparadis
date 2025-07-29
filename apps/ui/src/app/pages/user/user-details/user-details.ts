@@ -1,10 +1,12 @@
+import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CreateUserDto, Role, UpdateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
-import {UserService} from '../../../services/user.service';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import {catchError, EMPTY, tap } from 'rxjs';
+
 import {ToasterService} from '../../../services/toaster.service';
+import {UserService} from '../../../services/user.service';
 
 @Component({
   selector: 'app-user-details',
@@ -20,7 +22,7 @@ export class UserDetails implements OnInit {
   isEditMode = false;
   userId?: number;
   roles = Object.values(Role);
-  passwordPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$';
+  passwordPattern = String.raw`^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$`;
   private userService = inject(UserService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -54,37 +56,46 @@ export class UserDetails implements OnInit {
     if (!this.isValid()) return;
 
     if (this.isEditMode && this.userId) {
-      const updateDto: UpdateUserDto = {...this.user};
+      const updateDto: UpdateUserDto = { ...this.user };
 
-      this.userService.update(this.userId.toString(), updateDto).subscribe(
-        (user) => {
-          this.toasterService.success(`L'utilisateur.trice ${user.firstName} ${user.lastName} a été modifié.e avec succès`);
+      this.userService.update(this.userId.toString(), updateDto).pipe(
+        tap((user) => {
+          this.toasterService.success(
+            `L'utilisateur.trice ${user.firstName} ${user.lastName} a été modifié.e avec succès`
+          );
           this.router.navigateByUrl('/user');
-        },
-        _ => this.toasterService.error("Impossible de modifier l'utilisateur.trice. Veuillez réessayer"));
+        }),
+        catchError(() => {
+          this.toasterService.error("Impossible de modifier l'utilisateur.trice. Veuillez réessayer");
+          return EMPTY;
+        })
+      ).subscribe();
     } else {
-      const createDto: CreateUserDto = {...(this.user as CreateUserDto)};
-      this.userService.create(createDto).subscribe(
-        (user) => {
-          this.toasterService.success(`L'utilisateur.trice ${user.firstName} ${user.lastName} a été créé.e avec succès`);
+      const createDto: CreateUserDto = { ...(this.user as CreateUserDto) };
+
+      this.userService.create(createDto).pipe(
+        tap((user) => {
+          this.toasterService.success(
+            `L'utilisateur.trice ${user.firstName} ${user.lastName} a été créé.e avec succès`
+          );
           this.router.navigateByUrl('/user');
-        },
-        _ => this.toasterService.error("Impossible de créer l'utilisateur.trice. Veuillez réessayer")
-      );
+        }),
+        catchError(() => {
+          this.toasterService.error("Impossible de créer l'utilisateur.trice. Veuillez réessayer");
+          return EMPTY;
+        })
+      ).subscribe();
     }
   }
 
   isValid(): boolean {
-    const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^[\w%+.-]+@[\d.A-Za-z-]+\.[A-Za-z]{2,}$/;
     const pwdRegex = new RegExp(this.passwordPattern);
 
     if (!this.user.email || !emailRegex.test(this.user.email)) return false;
     if (!this.user.firstName) return false;
     if (!this.user.lastName) return false;
-    if (!this.isEditMode) {
-      if (!this.user.password || !pwdRegex.test(this.user.password)) return false;
-    }
-    return true;
+    return !(!this.isEditMode && (!this.user.password || !pwdRegex.test(this.user.password)));
   }
 
 }

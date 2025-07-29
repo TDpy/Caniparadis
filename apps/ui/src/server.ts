@@ -42,8 +42,10 @@ app.use((req, res, next) => {
   angularApp
     .handle(req)
     .then((response) =>
+      // eslint-disable-next-line promise/no-callback-in-promise
       response ? writeResponseToNodeResponse(response, res) : next(),
     )
+    // eslint-disable-next-line promise/no-callback-in-promise
     .catch(next);
 });
 

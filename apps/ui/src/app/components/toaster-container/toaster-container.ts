@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import {ToasterService, ToastMessage} from '../../services/toaster.service';
-import { Subscription, timer } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { Subscription, timer } from 'rxjs';
+
+import {ToasterService, ToastMessage} from '../../services/toaster.service';
 
 @Component({
   selector: 'app-toaster-container',
@@ -33,37 +34,28 @@ export class ToasterContainer {
   }
 
   getCombinedClasses(type: string = 'info'): string[] {
-    switch (type) {
-      case 'success':
-      case 'error':
-        return ['bg-' + this.mapToBootstrapColor(type), 'text-white'];
-      case 'warning':
-      case 'info':
-      case 'primary':
-      default:
-        return ['bg-' + this.mapToBootstrapColor(type), 'text-dark'];
-    }
+    return type === 'error' || type === 'success' ? ['bg-' + this.mapToBootstrapColor(type), 'text-white'] : ['bg-' + this.mapToBootstrapColor(type), 'text-dark'];
   }
 
   private mapToBootstrapColor(type: string): string {
-    switch (type) {
-      case 'error': return 'danger';
-      default: return type;
-    }
+    return type === 'error' ? 'danger' : type;
   }
 
 
   getIconClass(type: string = 'info'): string {
     switch (type) {
-      case 'success':
-        return 'fa fa-check';
-      case 'error':
+      case 'error': {
         return 'fa fa-exclamation-triangle';
-      case 'warning':
+      }
+      case 'success': {
+        return 'fa fa-check';
+      }
+      case 'warning': {
         return 'fa fa-exclamation-circle';
-      case 'info':
-      default:
+      }
+      default: {
         return 'fa fa-info-circle';
+      }
     }
   }
 

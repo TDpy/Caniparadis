@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
+
 import {Menu} from '../../components/menu/menu';
 
 @Component({
@@ -8,5 +9,4 @@ import {Menu} from '../../components/menu/menu';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
-}
+export class App {}

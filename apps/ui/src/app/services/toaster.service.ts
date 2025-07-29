@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 
 export interface ToastMessage {
   text: string;
-  type?: 'success' | 'info' | 'warning' | 'error';
+  type?: 'error' | 'info' | 'success' | 'warning';
 }
 
 @Injectable({

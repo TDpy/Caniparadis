@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {StatCard} from '../../components/stat-card/stat-card';
+
 import {DailySchedule} from '../../components/daily-schedule/daily-schedule';
+import {StatCard} from '../../components/stat-card/stat-card';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,6 +9,4 @@ import {DailySchedule} from '../../components/daily-schedule/daily-schedule';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
-export class Dashboard {
-
-}
+export class Dashboard {}

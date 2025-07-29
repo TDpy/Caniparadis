@@ -1,17 +1,18 @@
 import {Routes} from '@angular/router';
-import {App} from './pages/app/app';
-import {Dashboard} from './pages/dashboard/dashboard';
+
 import {AuthGuard} from './guards/auth-guard';
-import {Login} from './pages/auth/login/login';
-import {Signup} from './pages/auth/signup/signup';
-import {ForgotPassword} from './pages/auth/forgot-password/forgot-password';
-import {ResetPassword} from './pages/auth/reset-password/reset-password';
 import {NoAuthGuard} from './guards/no-auth-guard';
-import {AuthApp} from './pages/auth/auth-app';
 import {Animal} from './pages/animals-page/animal';
+import {AnimalDetails} from './pages/animals-page/animal-details/animal-details';
+import {App} from './pages/app/app';
+import {AuthApp} from './pages/auth/auth-app';
+import {ForgotPassword} from './pages/auth/forgot-password/forgot-password';
+import {Login} from './pages/auth/login/login';
+import {ResetPassword} from './pages/auth/reset-password/reset-password';
+import {Signup} from './pages/auth/signup/signup';
+import {Dashboard} from './pages/dashboard/dashboard';
 import {UserPage} from './pages/user/user';
 import {UserDetails} from './pages/user/user-details/user-details';
-import {AnimalDetails} from './pages/animals-page/animal-details/animal-details';
 
 export const routes: Routes = [
   {

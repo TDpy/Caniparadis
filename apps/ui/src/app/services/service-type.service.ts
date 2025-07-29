@@ -1,13 +1,12 @@
-import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {CreateServiceTypeDto, ServiceTypeDto} from '@caniparadis/dtos/dist/serviceTypeDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceTypeService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   create(serviceTypeDto: CreateServiceTypeDto) {
     return this.http.post<ServiceTypeDto>("/service-type", serviceTypeDto)

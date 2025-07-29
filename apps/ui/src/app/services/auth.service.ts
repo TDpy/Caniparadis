@@ -1,9 +1,10 @@
-import {Inject, inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {EmailDto, LoginDto, PasswordDto, SignUpDto,} from '@caniparadis/dtos/dist/authDto';
 import {HttpClient} from '@angular/common/http';
+import {Inject, inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {Router} from '@angular/router';
+import {EmailDto, LoginDto, PasswordDto, SignUpDto,} from '@caniparadis/dtos/dist/authDto';
+import {BehaviorSubject, Observable} from 'rxjs';
+
 import {ToasterService} from './toaster.service';
 
 @Injectable({
@@ -16,9 +17,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object,
-  ) {
-  }
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {}
 
   signUp(signup: SignUpDto): Observable<boolean> {
     return this.http.post<boolean>('/auth/signup', signup);

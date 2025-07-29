@@ -1,9 +1,11 @@
 import {Component, inject, OnInit} from '@angular/core';
+import {Router, RouterModule} from '@angular/router';
+import {AnimalDto} from '@caniparadis/dtos/dist/animalDto';
+import {catchError, EMPTY, switchMap, tap } from 'rxjs';
+
 import {Table, TableColumnDirective} from '../../components/table/table';
 import {AnimalService} from '../../services/animal.service';
-import {AnimalDto} from '@caniparadis/dtos/dist/animalDto';
 import {ToasterService} from "../../services/toaster.service";
-import {Router, RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-animal',
@@ -31,20 +33,23 @@ export class Animal implements OnInit {
   }
 
   onDelete($event: any) {
-    this.animalService.remove($event.id).subscribe(
-      (animal) => {
-        this.toasterService.success(`L'animal ${animal.name} a correctement été supprimé`)
-        this.animalService.findAll().subscribe(animals => {
-          this.animals = animals;
-        });
-
-      },
-      _ => this.toasterService.error("Impossible de supprimer l'animal. Veuillez réessayer")
-    )
+    this.animalService.remove($event.id).pipe(
+      tap((animal) => {
+        this.toasterService.success(`L'animal ${animal.name} a correctement été supprimé`);
+      }),
+      switchMap(() => this.animalService.findAll()),
+      tap((animals) => {
+        this.animals = animals;
+      }),
+      catchError(() => {
+        this.toasterService.error("Impossible de supprimer l'animal. Veuillez réessayer");
+        return EMPTY;
+      })
+    ).subscribe();
   }
 
   onEdit(event: any) {
-    if (event && event.id) {
+    if (event?.id) {
       this.router.navigate(['/animal', event.id]);
     }
   }
