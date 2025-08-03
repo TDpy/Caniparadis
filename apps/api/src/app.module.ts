@@ -2,6 +2,7 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SentryModule } from '@sentry/nestjs/setup';
 
 import { AnimalModule } from './animal/animal.module';
 import { AppController } from './app.controller';
@@ -18,6 +19,7 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     ConfigModule.forRoot({
       envFilePath: '../../.env',
     }),

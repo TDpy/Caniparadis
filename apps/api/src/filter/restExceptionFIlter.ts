@@ -5,6 +5,8 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/naming-convention
+import * as Sentry from '@sentry/node';
 import { Response } from 'express';
 
 @Catch()
@@ -12,6 +14,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
+    Sentry.captureException(exception);
 
     const status =
       exception instanceof HttpException
