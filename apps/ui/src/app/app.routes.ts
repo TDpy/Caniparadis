@@ -90,8 +90,16 @@ export const routes: Routes = [
       {
         path: 'booking',
         component: Dashboard,
-      }
+      },
+      {
+        path: 'profile',
+        children: [
+          {
+            path: '',
+            component: UserDetails,
+          }
+        ],
+      },
     ]
   },
-
 ];

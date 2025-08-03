@@ -1,8 +1,11 @@
 <div class="container mt-4">
-  <h2>{{ isEditMode ? 'Modifier un utilisateur' : 'Créer un utilisateur' }}</h2>
+  @if (isProfileMode) {
+    <h2>{{ 'Modifier mon profil' }}</h2>
+  } @else {
+    <h2>{{ isEditMode ? 'Modifier un utilisateur' : 'Créer un utilisateur' }}</h2>
+  }
 
   <form (ngSubmit)="onSubmit()" #userForm="ngForm" novalidate>
-    <!-- Email -->
     <div class="mb-3 position-relative">
       <label for="email" class="form-label">Email *</label>
       <input
@@ -26,7 +29,6 @@
       </div>
     </div>
 
-    <!-- Password (création uniquement) -->
     <div *ngIf="!isEditMode" class="mb-3 position-relative">
       <label for="password" class="form-label">Mot de passe *</label>
       <input
@@ -50,7 +52,6 @@
       </div>
     </div>
 
-    <!-- Prénom -->
     <div class="mb-3 position-relative">
       <label for="firstName" class="form-label">Prénom *</label>
       <input
@@ -69,7 +70,6 @@
       </div>
     </div>
 
-    <!-- Nom -->
     <div class="mb-3 position-relative">
       <label for="lastName" class="form-label">Nom *</label>
       <input
@@ -88,7 +88,6 @@
       </div>
     </div>
 
-    <!-- Téléphone -->
     <div class="mb-3 position-relative">
       <label for="phoneNumber" class="form-label">Téléphone</label>
       <input
@@ -100,7 +99,6 @@
       />
     </div>
 
-    <!-- Adresse -->
     <div class="mb-3 position-relative">
       <label for="address" class="form-label">Adresse</label>
       <input
@@ -112,19 +110,20 @@
       />
     </div>
 
-    <!-- Role -->
-    <div class="mb-3 position-relative">
-      <label for="role" class="form-label">Rôle</label>
-      <select
-        id="role"
-        name="role"
-        class="form-select"
-        [(ngModel)]="user.role"
-      >
-        <option [ngValue]="null">Sélectionner un rôle</option>
-        <option *ngFor="let r of roles" [ngValue]="r">{{ r }}</option>
-      </select>
-    </div>
+    @if (!isProfileMode) {
+      <div class="mb-3 position-relative">
+        <label for="role" class="form-label">Rôle</label>
+        <select
+          id="role"
+          name="role"
+          class="form-select"
+          [(ngModel)]="user.role"
+        >
+          <option [ngValue]="null">Sélectionner un rôle</option>
+          <option *ngFor="let r of roles" [ngValue]="r">{{ r }}</option>
+        </select>
+      </div>
+    }
 
     <button type="submit" class="btn btn-primary" [disabled]="!isValid()">
       {{ isEditMode ? 'Modifier' : 'Créer' }}

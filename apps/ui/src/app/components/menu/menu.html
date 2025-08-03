@@ -7,7 +7,7 @@
     <app-menu-item [icon]="'fa-solid fa-circle-check'" label="Réservation" [link]="'booking'"></app-menu-item>
   </div>
   <div class="d-flex flex-column">
-    <app-menu-item [icon]="'fa-solid fa-users-gear'" label="userName"></app-menu-item>
-    <app-menu-item [icon]="'fa-solid fa-power-off'" label="Déconnexion"  (click)="logout()"></app-menu-item>
+    <app-menu-item [icon]="'fa-solid fa-users-gear'" [label]="user | userName" link="profile"></app-menu-item>
+    <app-menu-item [icon]="'fa-solid fa-power-off'" label="Déconnexion" (click)="logout()"></app-menu-item>
   </div>
 </div>
