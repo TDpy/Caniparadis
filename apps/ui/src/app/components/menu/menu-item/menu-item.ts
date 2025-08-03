@@ -12,8 +12,7 @@ export class MenuItem {
   @Input() icon: string = '';
   @Input() link?: string;
 
-  constructor(public router: Router) {
-  }
+  constructor(public router: Router) {}
 
   public redirectTo(link?: string): void {
     if (link) {

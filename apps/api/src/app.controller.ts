@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 import { AppService } from './app.service';
+import {Public} from "./decorators/public.decorator";
 
 @Controller()
 export class AppController {
@@ -10,4 +11,11 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Public()
+  @Get("error")
+  getError(): void {
+    throw new Error('Error test');
+  }
+
 }

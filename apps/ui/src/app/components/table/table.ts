@@ -17,8 +17,7 @@ import {
 export class TableColumnDirective {
   @Input('column') name!: string;
 
-  constructor(public template: TemplateRef<any>) {
-  }
+  constructor(public template: TemplateRef<any>) {}
 }
 
 @Component({

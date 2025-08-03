@@ -36,6 +36,7 @@
     "@ng-bootstrap/ng-bootstrap": "^19.0.1",
     "@ng-select/ng-select": "^15.1.3",
     "@popperjs/core": "^2.11.8",
+    "@sentry/angular": "^10.0.0",
     "bootstrap": "^5.3.6",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
@@ -43,7 +44,6 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@caniparadis/eslint-config": "workspace:^",
     "@angular-eslint/eslint-plugin": "^20.1.1",
     "@angular-eslint/eslint-plugin-template": "^20.1.1",
     "@angular-eslint/template-parser": "^20.1.1",
@@ -52,6 +52,7 @@
     "@angular/cli": "^20.1.0",
     "@angular/compiler-cli": "^20.1.0",
     "@angular/localize": "^20.1.0",
+    "@caniparadis/eslint-config": "workspace:^",
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.17.19",

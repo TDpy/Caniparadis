@@ -7,8 +7,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class ServiceTypeService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   create(serviceTypeDto: CreateServiceTypeDto): Observable<ServiceTypeDto> {
     return this.http.post<ServiceTypeDto>("/service-type", serviceTypeDto)

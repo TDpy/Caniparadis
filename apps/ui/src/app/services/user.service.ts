@@ -7,8 +7,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   create(userDto: CreateUserDto): Observable<UserDto> {
     return this.http.post<UserDto>("/users", userDto)
