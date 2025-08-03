@@ -1,8 +1,9 @@
 import {isPlatformBrowser} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
-import {Inject, inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {Router} from '@angular/router';
 import {EmailDto, LoginDto, PasswordDto, SignUpDto,} from '@caniparadis/dtos/dist/authDto';
+import {UserDto} from '@caniparadis/dtos/dist/userDto';
 import {BehaviorSubject, Observable} from 'rxjs';
 
 import {ToasterService} from './toaster.service';
@@ -14,11 +15,12 @@ export class AuthService {
   public tokenSubject = new BehaviorSubject<string | null>(null);
   private router = inject(Router);
   private toasterService = inject(ToasterService);
+  private http = inject(HttpClient);
+  private platformId = inject(PLATFORM_ID);
 
-  constructor(
-    private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: object,
-  ) {}
+  getCurrentUser(): Observable<UserDto> {
+    return this.http.get<UserDto>('/auth/me');
+  }
 
   signUp(signup: SignUpDto): Observable<boolean> {
     return this.http.post<boolean>('/auth/signup', signup);

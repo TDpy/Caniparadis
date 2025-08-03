@@ -3,8 +3,9 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CreateUserDto, Role, UpdateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
-import {catchError, EMPTY, tap} from 'rxjs';
+import {catchError, EMPTY, tap } from 'rxjs';
 
+import {AuthService} from '../../../services/auth.service';
 import {ToasterService} from '../../../services/toaster.service';
 import {UserService} from '../../../services/user.service';
 
@@ -23,12 +24,24 @@ export class UserDetails implements OnInit {
   userId?: number;
   roles = Object.values(Role);
   passwordPattern = String.raw`^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$`;
+  isProfileMode = false;
   private userService = inject(UserService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private toasterService = inject(ToasterService);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
+    this.isProfileMode = this.router.url.split('/')[1] === 'profile';
+    if (this.isProfileMode) {
+      this.isEditMode = true;
+      this.authService.getCurrentUser().subscribe(user => {
+        this.user = user;
+        this.userId = user.id;
+        delete this.user.password;
+      })
+    }
+
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -96,6 +109,7 @@ export class UserDetails implements OnInit {
     if (!this.user.firstName) return false;
     if (!this.user.lastName) return false;
     return !(!this.isEditMode && (!this.user.password || !pwdRegex.test(this.user.password)));
+
   }
 
 }

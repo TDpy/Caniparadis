@@ -132,4 +132,18 @@ export class AuthenticationService {
     await this.userService.update(user.id, user);
     return this.invalidateToken(token);
   }
+
+  async getCurrentUser(token: string) {
+    const decoded = await this.jwtService.verifyAsync(token, {
+      secret: process.env.JWT_SECRET,
+    });
+
+    const user = await this.userService.findById(decoded.id);
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    user.password = undefined;
+    return user;
+  }
 }
