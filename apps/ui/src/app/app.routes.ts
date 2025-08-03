@@ -2,8 +2,8 @@ import {Routes} from '@angular/router';
 
 import {AuthGuard} from './guards/auth-guard';
 import {NoAuthGuard} from './guards/no-auth-guard';
-import {Animal} from './pages/animals-page/animal';
-import {AnimalDetails} from './pages/animals-page/animal-details/animal-details';
+import {Animal} from './pages/animal/animal';
+import {AnimalDetails} from './pages/animal/animal-details/animal-details';
 import {App} from './pages/app/app';
 import {AuthApp} from './pages/auth/auth-app';
 import {ForgotPassword} from './pages/auth/forgot-password/forgot-password';

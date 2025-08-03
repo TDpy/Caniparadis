@@ -1,4 +1,3 @@
-import {CreateServiceTypeDto, UpdateServiceTypeDto} from "@caniparadis/dtos/dist/serviceTypeDto";
 import {
   Body,
   Controller,
@@ -9,6 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 
+import {CreateServiceTypeDto, UpdateServiceTypeDto} from "./service-type.dto";
 import {ServiceTypeMapper} from "./service-type.mapper";
 import { ServiceTypeService } from './service-type.service';
 

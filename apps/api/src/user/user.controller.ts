@@ -1,8 +1,4 @@
 import {
-  CreateUserDto,
-  UpdateUserDto,
-} from '@caniparadis/dtos/dist/userDto';
-import {
   Body,
   Controller,
   Delete,
@@ -16,6 +12,7 @@ import {
 
 import { CheckUserParamId } from '../decorators/userId.decorator';
 import { CheckUserParamIdGuard } from '../guard/userId.guard';
+import {CreateUserDto, UpdateUserDto} from "./user.dto";
 import { UserMapper } from './user.mapper';
 import { UserService } from './user.service';
 import { CreateUserInput, UpdateUserInput } from './user.type';

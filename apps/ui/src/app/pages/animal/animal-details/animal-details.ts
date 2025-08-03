@@ -2,7 +2,12 @@ import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AnimalDto, AnimalSex, CreateAnimalDto, UpdateAnimalDto} from '@caniparadis/dtos/dist/animalDto';
+import {
+  AnimalSex,
+  SharedAnimalDto,
+  SharedCreateAnimalDto,
+  SharedUpdateAnimalDto
+} from '@caniparadis/dtos/dist/animalDto';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {catchError, EMPTY, tap} from 'rxjs';
 
@@ -17,7 +22,7 @@ import {UserService} from '../../../services/user.service';
   styleUrl: './animal-details.scss'
 })
 export class AnimalDetails implements OnInit {
-  animal: Partial<CreateAnimalDto & UpdateAnimalDto> = {
+  animal: Partial<SharedCreateAnimalDto & SharedUpdateAnimalDto> = {
     sex: AnimalSex.MALE,
     isSterilized: false
   };
@@ -47,7 +52,7 @@ export class AnimalDetails implements OnInit {
 
   loadAnimal(id: number): void {
     this.animalService.findOne(id).subscribe({
-      next: (animal: AnimalDto) => {
+      next: (animal: SharedAnimalDto) => {
         this.animal = {
           name: animal.name,
           type: animal.type,
@@ -68,7 +73,7 @@ export class AnimalDetails implements OnInit {
     if (!this.isValid()) return;
 
     if (this.isEditMode && this.animalId) {
-      const updateDto: UpdateAnimalDto = {...this.animal};
+      const updateDto: SharedUpdateAnimalDto = {...this.animal};
 
       this.animalService.update(this.animalId, updateDto).pipe(
         tap((animal) => {
@@ -81,7 +86,7 @@ export class AnimalDetails implements OnInit {
         })
       ).subscribe();
     } else {
-      const createDto: CreateAnimalDto = {...(this.animal as CreateAnimalDto)};
+      const createDto: SharedCreateAnimalDto = {...(this.animal as SharedCreateAnimalDto)};
 
       this.animalService.create(createDto).pipe(
         tap((animal) => {

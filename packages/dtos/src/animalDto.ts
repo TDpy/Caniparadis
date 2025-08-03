@@ -1,11 +1,11 @@
-import {UserDto} from "./userDto";
+import {SharedUserDto} from "./userDto";
 
 export enum AnimalSex {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
 }
 
-export interface CreateAnimalDto {
+export interface SharedCreateAnimalDto {
   name: string;
   type: string;
   breed: string;
@@ -14,14 +14,14 @@ export interface CreateAnimalDto {
   isSterilized: boolean;
 }
 
-export type UpdateAnimalDto = Partial<CreateAnimalDto>;
+export type SharedUpdateAnimalDto = Partial<SharedCreateAnimalDto>;
 
-export interface AnimalDto {
+export interface SharedAnimalDto {
   id: number;
   name: string;
   type: string;
   breed: string;
   sex: AnimalSex;
   isSterilized: boolean;
-  owner: UserDto;
+  owner: SharedUserDto;
 }

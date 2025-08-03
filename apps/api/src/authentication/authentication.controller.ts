@@ -1,14 +1,8 @@
-import {
-  EmailDto,
-  LoginDto,
-  PasswordDto,
-  SignUpDto,
-  TokenDto,
-} from '@caniparadis/dtos/dist/authDto';
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 
 import { Public } from '../decorators/public.decorator';
 import { UserMapper } from '../user/user.mapper';
+import {EmailDto, LoginDto, PasswordDto, SignUpDto, TokenDto} from "./authentication.dto";
 import { AuthMapper } from './authentication.mapper';
 import { AuthenticationService } from './authentication.service';
 

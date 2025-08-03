@@ -1,6 +1,5 @@
 import {
-  CreateUserDto as CreateUserDtoInterface,
-  Role,
+  Role, SharedCreateUserDto, SharedUserDto,
 } from '@caniparadis/dtos/dist/userDto';
 import { PartialType } from '@nestjs/mapped-types';
 import {
@@ -11,7 +10,9 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateUserDto implements CreateUserDtoInterface {
+import {AnimalDto} from "../animal/animal.dto";
+
+export class CreateUserDto implements SharedCreateUserDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -42,3 +43,15 @@ export class CreateUserDto implements CreateUserDtoInterface {
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
+
+export class UserDto implements SharedUserDto {
+  id:number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  address?: string;
+  role: Role;
+  animals: AnimalDto[];
+}

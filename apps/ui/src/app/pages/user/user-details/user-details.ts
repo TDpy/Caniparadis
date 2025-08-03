@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CreateUserDto, Role, UpdateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
+import {Role, SharedCreateUserDto, SharedUpdateUserDto, SharedUserDto} from '@caniparadis/dtos/dist/userDto';
 import {catchError, EMPTY, tap } from 'rxjs';
 
 import {AuthService} from '../../../services/auth.service';
@@ -18,7 +18,7 @@ import {UserService} from '../../../services/user.service';
   styleUrl: './user-details.scss'
 })
 export class UserDetails implements OnInit {
-  user: Partial<CreateUserDto & UpdateUserDto> = {};
+  user: Partial<SharedCreateUserDto & SharedUpdateUserDto> = {};
   formSubmitted = false;
   isEditMode = false;
   userId?: number;
@@ -54,7 +54,7 @@ export class UserDetails implements OnInit {
 
   loadUser(id: number): void {
     this.userService.findOne(id).subscribe({
-      next: (user: UserDto) => {
+      next: (user: SharedUserDto) => {
         this.user = user;
         delete this.user.password;
       },
@@ -69,7 +69,7 @@ export class UserDetails implements OnInit {
     if (!this.isValid()) return;
 
     if (this.isEditMode && this.userId) {
-      const updateDto: UpdateUserDto = {...this.user};
+      const updateDto: SharedUpdateUserDto = {...(this.user as SharedUpdateUserDto)};
 
       this.userService.update(this.userId.toString(), updateDto).pipe(
         tap((user) => {
@@ -84,7 +84,7 @@ export class UserDetails implements OnInit {
         })
       ).subscribe();
     } else {
-      const createDto: CreateUserDto = {...(this.user as CreateUserDto)};
+      const createDto: SharedCreateUserDto = {...(this.user as SharedCreateUserDto)};
 
       this.userService.create(createDto).pipe(
         tap((user) => {

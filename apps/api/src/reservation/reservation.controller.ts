@@ -1,10 +1,4 @@
 import {
-  CreateReservationDto,
-  ProposeNewSlotDto,
-  UpdatePaymentDto,
-  UpdateReservationDto,
-} from '@caniparadis/dtos/dist/reservationDto';
-import {
   Body,
   Controller,
   Delete,
@@ -14,6 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 
+import {CreateReservationDto, ProposeNewSlotDto, UpdatePaymentDto, UpdateReservationDto} from "./reservation.dto";
 import { ReservationMapper } from './reservation.mapper';
 import { ReservationService } from './reservation.service';
 

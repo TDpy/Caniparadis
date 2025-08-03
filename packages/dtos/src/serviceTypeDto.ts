@@ -1,20 +1,11 @@
-import {PartialType} from "@nestjs/mapped-types";
-import {IsNotEmpty, IsString} from "class-validator";
-
-export class CreateServiceTypeDto {
-  @IsNotEmpty()
-  @IsString()
+export interface SharedCreateServiceTypeDto {
   name: string;
-
-  @IsNotEmpty()
-  @IsString()
   description: string;
 }
 
-export class UpdateServiceTypeDto extends PartialType(CreateServiceTypeDto) {
-}
+export type SharedUpdateServiceTypeDto = Partial<SharedCreateServiceTypeDto>;
 
-export class ServiceTypeDto {
+export interface SharedServiceTypeDto {
   id: number;
   name: string;
   description: string;

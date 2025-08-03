@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {CreateServiceTypeDto, ServiceTypeDto} from '@caniparadis/dtos/dist/serviceTypeDto';
+import {SharedCreateServiceTypeDto, SharedServiceTypeDto} from '@caniparadis/dtos/dist/serviceTypeDto';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -9,23 +9,23 @@ import {Observable} from 'rxjs';
 export class ServiceTypeService {
   constructor(private http: HttpClient) {}
 
-  create(serviceTypeDto: CreateServiceTypeDto): Observable<ServiceTypeDto> {
-    return this.http.post<ServiceTypeDto>("/service-type", serviceTypeDto)
+  create(serviceTypeDto: SharedCreateServiceTypeDto): Observable<SharedServiceTypeDto> {
+    return this.http.post<SharedServiceTypeDto>("/service-type", serviceTypeDto)
   }
 
-  findAll(): Observable<ServiceTypeDto[]> {
-    return this.http.get<ServiceTypeDto[]>("/service-type")
+  findAll(): Observable<SharedServiceTypeDto[]> {
+    return this.http.get<SharedServiceTypeDto[]>("/service-type")
   }
 
-  findOne(id: number): Observable<ServiceTypeDto> {
-    return this.http.get<ServiceTypeDto>(`/service-type/${id}`)
+  findOne(id: number): Observable<SharedServiceTypeDto> {
+    return this.http.get<SharedServiceTypeDto>(`/service-type/${id}`)
   }
 
-  update(serviceTypeDto: ServiceTypeDto): Observable<ServiceTypeDto> {
-    return this.http.patch<ServiceTypeDto>(`/service-type/${serviceTypeDto.id}`, serviceTypeDto)
+  update(serviceTypeDto: SharedServiceTypeDto): Observable<SharedServiceTypeDto> {
+    return this.http.patch<SharedServiceTypeDto>(`/service-type/${serviceTypeDto.id}`, serviceTypeDto)
   }
 
-  remove(id: number): Observable<ServiceTypeDto> {
-    return this.http.delete<ServiceTypeDto>(`/service-type/${id}`)
+  remove(id: number): Observable<SharedServiceTypeDto> {
+    return this.http.delete<SharedServiceTypeDto>(`/service-type/${id}`)
   }
 }

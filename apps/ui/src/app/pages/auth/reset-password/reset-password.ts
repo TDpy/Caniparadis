@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {PasswordDto} from '@caniparadis/dtos/dist/authDto';
+import {SharedPasswordDto} from '@caniparadis/dtos/dist/authDto';
 import {catchError, EMPTY, tap} from 'rxjs';
 
 import {LoginSignup} from '../../../components/login-signup/login-signup';
@@ -20,7 +20,7 @@ import {ToasterService} from '../../../services/toaster.service';
   styleUrl: './reset-password.scss'
 })
 export class ResetPassword implements OnInit {
-  signUp: PasswordDto = new PasswordDto();
+  signUp: SharedPasswordDto = {password: ''};
   confirmPassword: string = '';
   confirmTouched: boolean = false;
   formSubmitted: boolean = false;
@@ -44,7 +44,7 @@ export class ResetPassword implements OnInit {
 
     if (!this.isValid()) return;
 
-    const dto: PasswordDto = {
+    const dto: SharedPasswordDto = {
       password: this.signUp.password,
     };
 

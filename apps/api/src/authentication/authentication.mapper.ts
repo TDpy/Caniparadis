@@ -1,11 +1,5 @@
-import {
-  type EmailDto,
-  type LoginDto,
-  type PasswordDto,
-  type SignUpDto,
-  type TokenDto,
-} from '@caniparadis/dtos/dist/authDto';
 
+import {EmailDto, LoginDto, PasswordDto, SignUpDto, TokenDto} from "./authentication.dto";
 import {
   type EmailInput,
   type LoginInput,

@@ -1,6 +1,6 @@
 import {
-  CreateAnimalDto,
-  UpdateAnimalDto,
+  SharedCreateAnimalDto,
+  SharedUpdateAnimalDto,
 } from '@caniparadis/dtos/dist/animalDto';
 import {
   Body,
@@ -14,24 +14,14 @@ import {
 
 import { AnimalMapper } from './animal.mapper';
 import { AnimalService } from './animal.service';
-import {CreateAnimalInput, UpdateAnimalInput} from "./animal.type";
 
 @Controller('animals')
 export class AnimalController {
   constructor(private readonly animalService: AnimalService) {}
 
   @Post()
-  async create(@Body() dto: CreateAnimalDto) {
-    const input: CreateAnimalInput = {
-      name: dto.name,
-      type: dto.type,
-      breed: dto.breed,
-      ownerId: dto.ownerId,
-      sex: dto.sex,
-      isSterilized: dto.isSterilized,
-    };
-
-    const data = await this.animalService.create(input);
+  async create(@Body() dto: SharedCreateAnimalDto) {
+    const data = await this.animalService.create({ ...dto });
     return AnimalMapper.toDto(data);
   }
 
@@ -44,21 +34,18 @@ export class AnimalController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const data = await this.animalService.findById(+id);
-    return  AnimalMapper.toDto(data);
+    return AnimalMapper.toDto(data);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateAnimalDto) {
-    const input: UpdateAnimalInput = {
-      ...dto,
-    };
-    const data = await this.animalService.update(+id, input);
+  async update(@Param('id') id: string, @Body() dto: SharedUpdateAnimalDto) {
+    const data = await this.animalService.update(+id, { ...dto });
     return AnimalMapper.toDto(data);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const data = await this.animalService.remove(+id);
-    return  AnimalMapper.toDto(data);
+    return AnimalMapper.toDto(data);
   }
 }

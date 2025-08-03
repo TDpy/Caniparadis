@@ -1,10 +1,11 @@
-import { type UserDto } from '@caniparadis/dtos/dist/userDto';
+
+import {SharedUserDto} from "@caniparadis/dtos/dist/userDto";
 
 import { AnimalMapper } from '../animal/animal.mapper';
 import { type UserEntity } from './userEntity';
 
 export const UserMapper = {
-  toDto(user: UserEntity): UserDto {
+  toDto(user: UserEntity): SharedUserDto {
     return {
       id: user.id,
       email: user.email,
@@ -17,7 +18,7 @@ export const UserMapper = {
     };
   },
 
-  toDtos(users: UserEntity[]): UserDto[] {
+  toDtos(users: UserEntity[]): SharedUserDto[] {
     return users.map(UserMapper.toDto);
   },
 };

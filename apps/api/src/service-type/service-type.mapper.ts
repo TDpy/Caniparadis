@@ -1,9 +1,10 @@
-import { type ServiceTypeDto } from '@caniparadis/dtos/dist/serviceTypeDto';
+
+import {SharedServiceTypeDto} from "@caniparadis/dtos/dist/serviceTypeDto";
 
 import { type ServiceTypeEntity } from './service-type.entity';
 
 export const ServiceTypeMapper = {
-  toDto(serviceType: ServiceTypeEntity): ServiceTypeDto {
+  toDto(serviceType: ServiceTypeEntity): SharedServiceTypeDto {
     return {
       id: serviceType.id,
       name: serviceType.name,
@@ -11,7 +12,7 @@ export const ServiceTypeMapper = {
     };
   },
 
-  toDtos(serviceTypes: ServiceTypeEntity[]): ServiceTypeDto[] {
+  toDtos(serviceTypes: ServiceTypeEntity[]): SharedServiceTypeDto[] {
     return serviceTypes.map((serviceType) => this.toDto(serviceType));
   },
 };

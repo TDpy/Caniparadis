@@ -1,6 +1,6 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
-import {UserDto} from '@caniparadis/dtos/dist/userDto';
+import {SharedUserDto} from '@caniparadis/dtos/dist/userDto';
 import {filter, Subscription} from 'rxjs';
 
 import {UserNamePipe} from '../../pipes/user-name.pipe';
@@ -14,7 +14,7 @@ import {MenuItem} from './menu-item/menu-item';
   styleUrl: './menu.scss',
 })
 export class Menu implements OnInit, OnDestroy {
-  protected user?: UserDto
+  protected user?: SharedUserDto
   private authService = inject(AuthService);
   private router = inject(Router);
   private subscription: Subscription[] = []
