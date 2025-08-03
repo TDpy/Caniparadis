@@ -1,7 +1,9 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
+import {environment} from '../../environments/environment';
+
 export const apiBaseUrlInterceptor: HttpInterceptorFn = (req, next) => {
-  const baseUrl = 'http://localhost:3000';
+  const baseUrl = environment.apiUrl;
 
   if (/^https?:\/\//i.test(req.url)) {
     return next(req);

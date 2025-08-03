@@ -186,6 +186,9 @@ importers:
       '@popperjs/core':
         specifier: ^2.11.8
         version: 2.11.8
+      '@sentry/angular':
+        specifier: ^10.0.0
+        version: 10.0.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/router@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))(rxjs@7.8.2)
       bootstrap:
         specifier: ^5.3.6
         version: 5.3.7(@popperjs/core@2.11.8)
@@ -2628,6 +2631,35 @@ packages:
 
   '@selderee/plugin-htmlparser2@0.11.0':
     resolution: {integrity: sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ==}
+
+  '@sentry-internal/browser-utils@10.0.0':
+    resolution: {integrity: sha512-qLZ2uguBhjGUsuq1mLF6Oe6vK3I1IDYVukNuJwbsWb/t7hQXNNyhzNIENWQw4v+Iotq6ocZPiGpLN4ZB9FuX5Q==}
+    engines: {node: '>=18'}
+
+  '@sentry-internal/feedback@10.0.0':
+    resolution: {integrity: sha512-vv5+cEXUjL68vgMA1YkY81RNGnQUurgsy4Cy/2/pL9p+n9q736jq+lFfKlOMPwGQDXEQmouSNLgyhlg4nSvGcg==}
+    engines: {node: '>=18'}
+
+  '@sentry-internal/replay-canvas@10.0.0':
+    resolution: {integrity: sha512-iPNgsSTdB55NtHq24WoHLRYtTeE0zF5shx+eJVCmvVti9OTwRLRAPcQ8vnCQzt5sAKPUo6kAAnY5EPiTNMP5+w==}
+    engines: {node: '>=18'}
+
+  '@sentry-internal/replay@10.0.0':
+    resolution: {integrity: sha512-3rjFH30hClxn65e2afjVom1tud8qYkyQq0o+IkskTCA0iUHrsgDKAh1mhyU7Ph26btynJGIfJtMu53zKJW/ncg==}
+    engines: {node: '>=18'}
+
+  '@sentry/angular@10.0.0':
+    resolution: {integrity: sha512-DtJoSl2oJifBBwVN00YJp3MVPKcomW4bMf/dFaNgBMhqrvc6fMxN7Tqhh0xi6MPMGYMJL03WUzRcwl8Bzhoa/A==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@angular/common': '>= 14.x <= 20.x'
+      '@angular/core': '>= 14.x <= 20.x'
+      '@angular/router': '>= 14.x <= 20.x'
+      rxjs: ^6.5.5 || ^7.x
+
+  '@sentry/browser@10.0.0':
+    resolution: {integrity: sha512-heta2gqiVBOPN59H4PRPS956ZNagXlqrTUeoaQdcLa8AVmPBFZqkkBbZIogieHDMGp/m1M6WqdOcV6rAb26NHw==}
+    engines: {node: '>=18'}
 
   '@sentry/core@10.0.0':
     resolution: {integrity: sha512-UvkPzWVcXVSB6GOmETlEXlBumquFWCve0VnR2SqQIAyJPcj7mO6BvYrpuyit4c4XXaChaJe+bPZ6+4XQbUHnAA==}
@@ -10332,6 +10364,42 @@ snapshots:
       domhandler: 5.0.3
       selderee: 0.11.0
     optional: true
+
+  '@sentry-internal/browser-utils@10.0.0':
+    dependencies:
+      '@sentry/core': 10.0.0
+
+  '@sentry-internal/feedback@10.0.0':
+    dependencies:
+      '@sentry/core': 10.0.0
+
+  '@sentry-internal/replay-canvas@10.0.0':
+    dependencies:
+      '@sentry-internal/replay': 10.0.0
+      '@sentry/core': 10.0.0
+
+  '@sentry-internal/replay@10.0.0':
+    dependencies:
+      '@sentry-internal/browser-utils': 10.0.0
+      '@sentry/core': 10.0.0
+
+  '@sentry/angular@10.0.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/router@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/common': 20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      '@angular/core': 20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)
+      '@angular/router': 20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.0(@angular/common@20.1.0(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.0(@angular/compiler@20.1.0)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
+      '@sentry/browser': 10.0.0
+      '@sentry/core': 10.0.0
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
+  '@sentry/browser@10.0.0':
+    dependencies:
+      '@sentry-internal/browser-utils': 10.0.0
+      '@sentry-internal/feedback': 10.0.0
+      '@sentry-internal/replay': 10.0.0
+      '@sentry-internal/replay-canvas': 10.0.0
+      '@sentry/core': 10.0.0
 
   '@sentry/core@10.0.0': {}
 

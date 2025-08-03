@@ -7,8 +7,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class AnimalService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   create(serviceTypeDto: CreateAnimalDto): Observable<AnimalDto> {
     return this.http.post<AnimalDto>("/animals", serviceTypeDto)

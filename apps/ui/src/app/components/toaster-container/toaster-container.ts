@@ -14,8 +14,7 @@ export class ToasterContainer {
   toasts: ToastMessage[] = [];
   private sub!: Subscription;
 
-  constructor(private toaster: ToasterService) {
-  }
+  constructor(private toaster: ToasterService) {}
 
   ngOnInit(): void {
     this.sub = this.toaster.toast$.subscribe(toast => {
