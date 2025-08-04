@@ -1,7 +1,5 @@
-import {PartialType} from "@nestjs/mapped-types";
-import {IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min} from "class-validator";
-import {AnimalDto} from "./animalDto";
-import {ServiceTypeDto} from "./serviceTypeDto";
+import { SharedAnimalDto } from './animalDto';
+import { SharedServiceTypeDto } from './serviceTypeDto';
 
 export enum ReservationStatus {
   PENDING = 'PENDING',
@@ -17,47 +15,24 @@ export enum PaymentStatus {
   REFUNDED = 'REFUNDED',
 }
 
-export class CreateReservationDto {
-  @IsNotEmpty()
-  @IsNumber()
+export interface SharedCreateReservationDto {
   animalId: number;
-
-  @IsNotEmpty()
-  @IsNumber()
   serviceTypeId: number;
-
-  @IsNotEmpty()
-  @IsDateString()
   startDate: string;
-
-  @IsNotEmpty()
-  @IsDateString()
   endDate: string;
-
-  @IsOptional()
-  @IsString()
   comment?: string;
 }
 
-export class UpdateReservationDto extends PartialType(CreateReservationDto) {
-  @IsOptional()
-  @IsEnum(ReservationStatus)
+export interface SharedUpdateReservationDto extends Partial<SharedCreateReservationDto> {
   status?: ReservationStatus;
-
-  @IsOptional()
-  @IsEnum(PaymentStatus)
   paymentStatus?: PaymentStatus;
-
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
   amountPaid?: number;
 }
 
-export class ReservationDto {
+export interface SharedReservationDto {
   id: number;
-  animal: AnimalDto;
-  serviceType: ServiceTypeDto;
+  animal: SharedAnimalDto;
+  serviceType: SharedServiceTypeDto;
   startDate: string;
   endDate: string;
   status: ReservationStatus;
@@ -66,26 +41,13 @@ export class ReservationDto {
   comment?: string;
 }
 
-export class ProposeNewSlotDto {
-  @IsNotEmpty()
-  @IsDateString()
+export interface SharedProposeNewSlotDto {
   startDate: string;
-
-  @IsNotEmpty()
-  @IsDateString()
   endDate: string;
-
-  @IsOptional()
-  @IsString()
   comment?: string;
 }
 
-export class UpdatePaymentDto {
-  @IsNotEmpty()
-  @IsEnum(PaymentStatus)
+export interface SharedUpdatePaymentDto {
   status: PaymentStatus;
-
-  @IsOptional()
-  @IsNumber()
   amountPaid?: number;
 }

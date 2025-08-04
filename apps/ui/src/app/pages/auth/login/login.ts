@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
-import {LoginDto} from '@caniparadis/dtos/dist/authDto';
+import {SharedLoginDto} from '@caniparadis/dtos/dist/authDto';
 import {catchError, EMPTY, tap} from 'rxjs';
 
 import {LoginSignup} from '../../../components/login-signup/login-signup';
@@ -20,7 +20,7 @@ import {ToasterService} from '../../../services/toaster.service';
   styleUrl: './login.scss',
 })
 export class Login {
-  login: LoginDto = new LoginDto;
+  login: SharedLoginDto = {email:'', password:''};
   formSubmitted: boolean = false;
   errorMessage: string = '';
   passwordPattern: string = String.raw`^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$`;
@@ -35,7 +35,7 @@ export class Login {
 
     if (!this.isValid()) return;
 
-    const dto: LoginDto = {
+    const dto: SharedLoginDto = {
       email: this.login.email,
       password: this.login.password,
     };

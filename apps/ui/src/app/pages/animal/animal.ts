@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
-import {AnimalDto} from '@caniparadis/dtos/dist/animalDto';
+import {SharedAnimalDto} from '@caniparadis/dtos/dist/animalDto';
 import {catchError, EMPTY, switchMap, tap} from 'rxjs';
 
 import {Table, TableColumnDirective} from '../../components/table/table';
@@ -19,12 +19,12 @@ import {ToasterService} from "../../services/toaster.service";
 })
 export class Animal implements OnInit {
   router = inject(Router);
-  animals?: AnimalDto[];
+  animals?: SharedAnimalDto[];
 
   private toasterService = inject(ToasterService);
   private animalService = inject(AnimalService);
 
-  getConfirmText: any = (row: AnimalDto) => `Supprimer l’animal ${row.name} ?`;
+  getConfirmText: any = (row: SharedAnimalDto) => `Supprimer l’animal ${row.name} ?`;
 
   ngOnInit(): void {
     this.animalService.findAll().subscribe(animals => {

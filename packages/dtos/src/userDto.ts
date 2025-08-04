@@ -1,4 +1,4 @@
-import {AnimalDto} from "./animalDto";
+import {SharedAnimalDto} from "./animalDto";
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -6,7 +6,7 @@ export enum Role {
   RESET_TOKEN = 'RESET_TOKEN',
 }
 
-export interface UserDto {
+export interface SharedUserDto {
   id: number;
   email: string;
   role: Role;
@@ -14,10 +14,10 @@ export interface UserDto {
   lastName: string;
   phoneNumber?: string;
   address?: string;
-  animals?: AnimalDto[];
+  animals?: SharedAnimalDto[];
 }
 
-export interface CreateUserDto {
+export interface SharedCreateUserDto {
   email: string;
   password: string;
   firstName: string;
@@ -25,7 +25,6 @@ export interface CreateUserDto {
   phoneNumber?: string;
   address?: string;
   role?: Role;
-  animals?: AnimalDto[];
 }
 
-export type UpdateUserDto = Partial<CreateUserDto>;
+export type SharedUpdateUserDto = Partial<SharedCreateUserDto>;

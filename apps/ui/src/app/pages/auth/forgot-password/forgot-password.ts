@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {EmailDto} from '@caniparadis/dtos/dist/authDto';
+import {SharedEmailDto} from '@caniparadis/dtos/dist/authDto';
 import {catchError, EMPTY, tap} from 'rxjs';
 
 import {LoginSignup} from '../../../components/login-signup/login-signup';
@@ -19,7 +19,7 @@ import {ToasterService} from '../../../services/toaster.service';
   styleUrl: './forgot-password.scss'
 })
 export class ForgotPassword {
-  email: EmailDto = new EmailDto();
+  email: SharedEmailDto = {email:''};
   formSubmitted: boolean = false;
   errorMessage: string = '';
 
@@ -32,7 +32,7 @@ export class ForgotPassword {
 
     if (!this.isValid()) return;
 
-    const dto: EmailDto = {
+    const dto: SharedEmailDto = {
       email: this.email.email,
     };
 

@@ -1,6 +1,6 @@
-import { type AnimalSex } from '@caniparadis/dtos/dist/animalDto';
+import {type AnimalSex, SharedCreateAnimalDto} from '@caniparadis/dtos/dist/animalDto';
 
-export interface CreateAnimalInput {
+export interface CreateAnimalInput extends SharedCreateAnimalDto{
   breed: string;
   isSterilized: boolean;
   name: string;

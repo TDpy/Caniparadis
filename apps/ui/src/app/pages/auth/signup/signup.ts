@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
-import {SignUpDto} from '@caniparadis/dtos/dist/authDto';
+import {SharedSignUpDto} from '@caniparadis/dtos/dist/authDto';
 import {catchError, EMPTY, tap} from 'rxjs';
 
 import {LoginSignup} from "../../../components/login-signup/login-signup";
@@ -21,7 +21,7 @@ import {ToasterService} from '../../../services/toaster.service';
   styleUrl: './signup.scss'
 })
 export class Signup {
-  signUp: SignUpDto = new SignUpDto();
+  signUp: SharedSignUpDto = {email: '', password: '', firstName: '', lastName: ''};
   confirmPassword: string = '';
   confirmTouched: boolean = false;
   formSubmitted: boolean = false;
@@ -38,7 +38,7 @@ export class Signup {
 
     if (!this.isValid()) return;
 
-    const dto: SignUpDto = {
+    const dto: SharedSignUpDto = {
       email: this.signUp.email,
       password: this.signUp.password,
       firstName: this.signUp.firstName,

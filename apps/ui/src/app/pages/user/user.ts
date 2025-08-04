@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
-import {UserDto} from '@caniparadis/dtos/dist/userDto';
+import {SharedUserDto} from '@caniparadis/dtos/dist/userDto';
 import {catchError, of, switchMap, tap} from 'rxjs';
 
 import {Table, TableColumnDirective} from '../../components/table/table';
@@ -15,23 +15,23 @@ import {UserService} from '../../services/user.service';
   styleUrl: './user.scss',
 })
 export class UserPage implements OnInit {
-  public users: UserDto[] = [];
+  public users: SharedUserDto[] = [];
   private userService = inject(UserService);
   private toasterService = inject(ToasterService);
   private router = inject(Router);
 
   get usersDtos(): any {
-    return this.users.map((data: UserDto) => ({
+    return this.users.map((data: SharedUserDto) => ({
       ...data,
       fullName: data.firstName + ' ' + data.lastName
     }));
   }
 
-  getConfirmText: any = (row: UserDto) => `Supprimer l’utilisateur.trice ${row.firstName} ${row.lastName} ?`;
+  getConfirmText: any = (row: SharedUserDto) => `Supprimer l’utilisateur.trice ${row.firstName} ${row.lastName} ?`;
 
   ngOnInit(): void {
     this.userService.findAll().subscribe({
-      next: (users: UserDto[]) => {
+      next: (users: SharedUserDto[]) => {
         this.users = users;
       },
       error: (_) => {

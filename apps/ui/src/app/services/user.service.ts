@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {CreateUserDto, UpdateUserDto, UserDto} from '@caniparadis/dtos/dist/userDto';
+import {SharedCreateUserDto, SharedUpdateUserDto, SharedUserDto} from '@caniparadis/dtos/dist/userDto';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -9,24 +9,24 @@ import {Observable} from 'rxjs';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  create(userDto: CreateUserDto): Observable<UserDto> {
-    return this.http.post<UserDto>("/users", userDto)
+  create(userDto: SharedCreateUserDto): Observable<SharedUserDto> {
+    return this.http.post<SharedUserDto>("/users", userDto)
   }
 
-  findAll(): Observable<UserDto[]> {
-    return this.http.get<UserDto[]>('/users');
+  findAll(): Observable<SharedUserDto[]> {
+    return this.http.get<SharedUserDto[]>('/users');
   }
 
-  findOne(id: number): Observable<UserDto> {
-    return this.http.get<UserDto>(`/users/${id}`)
+  findOne(id: number): Observable<SharedUserDto> {
+    return this.http.get<SharedUserDto>(`/users/${id}`)
   }
 
-  update(userId: string, userDto: UpdateUserDto): Observable<UserDto> {
-    return this.http.patch<UserDto>(`/users/${userId}`, userDto)
+  update(userId: string, userDto: SharedUpdateUserDto): Observable<SharedUserDto> {
+    return this.http.patch<SharedUserDto>(`/users/${userId}`, userDto)
   }
 
-  remove(id: number): Observable<UserDto> {
-    return this.http.delete<UserDto>(`/users/${id}`)
+  remove(id: number): Observable<SharedUserDto> {
+    return this.http.delete<SharedUserDto>(`/users/${id}`)
   }
 
 }

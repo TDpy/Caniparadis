@@ -1,47 +1,23 @@
-import {IsEmail, IsNotEmpty, IsString} from "class-validator";
-
-export class LoginDto {
-  @IsNotEmpty()
-  @IsEmail()
+export interface SharedLoginDto {
   email: string;
-
-  @IsNotEmpty()
-  @IsString()
   password: string;
 }
 
-export class SignUpDto {
-  @IsNotEmpty()
-  @IsEmail()
+export interface SharedSignUpDto {
   email: string;
-
-  @IsNotEmpty()
-  @IsString()
   password: string;
-
-  @IsNotEmpty()
-  @IsString()
   firstName: string;
-
-  @IsNotEmpty()
-  @IsString()
   lastName: string;
 }
 
-export class EmailDto {
-  @IsNotEmpty()
-  @IsEmail()
+export interface SharedEmailDto {
   email: string;
 }
 
-export class PasswordDto {
-  @IsNotEmpty()
-  @IsString()
+export interface SharedPasswordDto {
   password: string;
 }
 
-export class TokenDto {
-  @IsNotEmpty()
-  @IsString()
+export interface SharedTokenDto {
   token: string;
 }

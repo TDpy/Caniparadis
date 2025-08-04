@@ -1,9 +1,4 @@
-import {
-  CreateReservationDto,
-  ProposeNewSlotDto,
-  UpdatePaymentDto,
-  UpdateReservationDto,
-} from '@caniparadis/dtos/dist/reservationDto';
+import { SharedReservationDto } from '@caniparadis/dtos/dist/reservationDto'; // DTO internes
 import {
   Body,
   Controller,
@@ -13,16 +8,37 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+import {
+  CreateReservationDto,
+  ProposeNewSlotDto,
+  ReservationDto,
+  UpdatePaymentDto,
+  UpdateReservationDto,
+} from './reservation.dto';
 import { ReservationMapper } from './reservation.mapper';
 import { ReservationService } from './reservation.service';
 
+@ApiTags('Reservations')
 @Controller('reservations')
 export class ReservationController {
   constructor(private readonly reservationService: ReservationService) {}
 
   @Post()
-  async create(@Body() createReservationDto: CreateReservationDto) {
+  @ApiBearerAuth()
+  @ApiBody({ type: CreateReservationDto })
+  @ApiCreatedResponse({
+    type: ReservationDto,
+  })
+  async create(
+    @Body() createReservationDto: CreateReservationDto,
+  ): Promise<SharedReservationDto> {
     const data = await this.reservationService.create({
       ...createReservationDto,
     });
@@ -30,22 +46,35 @@ export class ReservationController {
   }
 
   @Get()
-  async findAll() {
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    type: [ReservationDto],
+  })
+  async findAll(): Promise<SharedReservationDto[]> {
     const data = await this.reservationService.findAll();
     return ReservationMapper.toDtos(data);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    type: ReservationDto,
+  })
+  async findOne(@Param('id') id: string): Promise<SharedReservationDto> {
     const data = await this.reservationService.findOne(+id);
     return ReservationMapper.toDto(data);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @ApiBody({ type: UpdateReservationDto })
+  @ApiCreatedResponse({
+    type: ReservationDto,
+  })
   async update(
     @Param('id') id: string,
     @Body() updateReservationDto: UpdateReservationDto,
-  ) {
+  ): Promise<SharedReservationDto> {
     const data = await this.reservationService.update(+id, {
       ...updateReservationDto,
     });
@@ -53,22 +82,35 @@ export class ReservationController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    type: ReservationDto,
+  })
+  async remove(@Param('id') id: string): Promise<SharedReservationDto> {
     const data = await this.reservationService.remove(+id);
     return ReservationMapper.toDto(data);
   }
 
   @Post(':id/accept')
-  async accept(@Param('id') id: string) {
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    type: ReservationDto,
+  })
+  async accept(@Param('id') id: string): Promise<SharedReservationDto> {
     const data = await this.reservationService.accept(+id);
     return ReservationMapper.toDto(data);
   }
 
   @Post(':id/propose')
+  @ApiBearerAuth()
+  @ApiBody({ type: ProposeNewSlotDto })
+  @ApiCreatedResponse({
+    type: ReservationDto,
+  })
   async proposeNewSlot(
     @Param('id') id: string,
     @Body() proposeNewSlotDto: ProposeNewSlotDto,
-  ) {
+  ): Promise<SharedReservationDto> {
     const data = await this.reservationService.proposeNewSlot(+id, {
       ...proposeNewSlotDto,
     });
@@ -76,16 +118,25 @@ export class ReservationController {
   }
 
   @Post(':id/cancel')
-  async cancel(@Param('id') id: string) {
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    type: ReservationDto,
+  })
+  async cancel(@Param('id') id: string): Promise<SharedReservationDto> {
     const data = await this.reservationService.cancel(+id);
     return ReservationMapper.toDto(data);
   }
 
   @Post(':id/payment')
+  @ApiBearerAuth()
+  @ApiBody({ type: UpdatePaymentDto })
+  @ApiCreatedResponse({
+    type: ReservationDto,
+  })
   async updatePaymentStatus(
     @Param('id') id: string,
     @Body() updatePaymentDto: UpdatePaymentDto,
-  ) {
+  ): Promise<SharedReservationDto> {
     const data = await this.reservationService.updatePayment(+id, {
       ...updatePaymentDto,
     });
