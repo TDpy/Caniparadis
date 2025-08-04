@@ -19,6 +19,7 @@ import {UserService} from '../../../services/user.service';
   selector: 'app-animal-details',
   imports: [FormsModule, CommonModule, NgSelectModule],
   templateUrl: './animal-details.html',
+  standalone: true,
   styleUrl: './animal-details.scss'
 })
 export class AnimalDetails implements OnInit {

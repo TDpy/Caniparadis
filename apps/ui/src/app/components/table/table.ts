@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 
 @Directive({
+  standalone: true,
   selector: '[column]'
 })
 export class TableColumnDirective {
@@ -27,6 +28,7 @@ export class TableColumnDirective {
   ],
   templateUrl: './table.html',
   styleUrl: './table.scss',
+  standalone: true
 })
 export class Table implements AfterContentInit {
   @Input() data: any[] = [];

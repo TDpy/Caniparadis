@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
   imports: [],
   templateUrl: './menu-item.html',
   styleUrl: './menu-item.scss',
+  standalone: true
 })
 export class MenuItem {
   @Input() label: string = '';

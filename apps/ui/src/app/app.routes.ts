@@ -11,6 +11,8 @@ import {Login} from './pages/auth/login/login';
 import {ResetPassword} from './pages/auth/reset-password/reset-password';
 import {Signup} from './pages/auth/signup/signup';
 import {Dashboard} from './pages/dashboard/dashboard';
+import {ServiceType} from './pages/service-type/service-type';
+import {ServiceTypeDetails} from './pages/service-type/service-type-details/service-type-details';
 import {UserPage} from './pages/user/user';
 import {UserDetails} from './pages/user/user-details/user-details';
 
@@ -84,6 +86,23 @@ export const routes: Routes = [
           {
             path: '',
             component: Animal,
+          },
+        ],
+      },
+      {
+        path: 'service-type',
+        children: [
+          {
+            path: 'create',
+            component: ServiceTypeDetails,
+          },
+          {
+            path: ':id',
+            component: ServiceTypeDetails,
+          },
+          {
+            path: '',
+            component: ServiceType,
           },
         ],
       },
