@@ -37,6 +37,25 @@
       </div>
     </div>
 
+    <div class="mb-3 position-relative">
+      <label for="price" class="form-label">Prix unitaire *</label>
+      <input
+        id="price"
+        name="price"
+        type="number"
+        class="form-control"
+        [(ngModel)]="serviceType.price"
+        required
+        step="0.01"
+        min="0"
+        #priceRef="ngModel"
+        [class.is-invalid]="priceRef.invalid && (priceRef.dirty || priceRef.touched || formSubmitted)"
+      />
+      <div class="invalid-feedback" *ngIf="priceRef.errors?.['required']">
+        Prix requis.
+      </div>
+    </div>
+
     <button type="submit" class="btn btn-primary" [disabled]="!isValid()">
       {{ isEditMode ? 'Modifier' : 'Créer' }}
     </button>
