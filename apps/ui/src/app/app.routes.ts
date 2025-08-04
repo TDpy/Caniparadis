@@ -17,6 +17,8 @@ import {ServiceType} from './pages/service-type/service-type';
 import {ServiceTypeDetails} from './pages/service-type/service-type-details/service-type-details';
 import {UserPage} from './pages/user/user';
 import {UserDetails} from './pages/user/user-details/user-details';
+import {ReservationCreation} from './pages/reservation/reservation-creation/reservation-creation';
+import {ReservationDetails} from './pages/reservation/reservation-details/reservation-details';
 
 export const routes: Routes = [
   {
@@ -112,7 +114,16 @@ export const routes: Routes = [
       },
       {
         path: 'reservation',
-        component: Reservation,
+        children: [
+          {
+            path: 'create',
+            component: ReservationCreation,
+          },
+          {
+            path: '',
+            component: Reservation,
+          },
+        ],
       },
       {
         path: 'profile',
