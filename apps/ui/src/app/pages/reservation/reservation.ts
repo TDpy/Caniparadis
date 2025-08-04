@@ -1,0 +1,48 @@
+import { CommonModule } from '@angular/common';
+import {Component, inject} from '@angular/core';
+import {Router, RouterModule} from '@angular/router';
+import {SharedReservationDto, SharedSearchReservationCriteriaDto} from '@caniparadis/dtos/dist/reservationDto';
+
+import {Table, TableColumnDirective} from '../../components/table/table';
+import {PaymentTranslatePipe} from '../../pipes/payment-translate.pipe';
+import {StatusTranslatePipe} from '../../pipes/status-translate.pipe';
+import {ReservationService} from '../../services/reservation.service';
+import {ToasterService} from '../../services/toaster.service';
+
+@Component({
+  selector: 'app-reservation',
+  imports: [
+    Table,
+    TableColumnDirective,
+    CommonModule,
+    RouterModule,
+    StatusTranslatePipe,
+    PaymentTranslatePipe,
+  ],
+  templateUrl: './reservation.html',
+  standalone: true,
+  styleUrl: './reservation.scss'
+})
+export class Reservation {
+  router = inject(Router);
+  reservations?: SharedReservationDto[] = [];
+  searchCriteria: SharedSearchReservationCriteriaDto={toDate: new Date()}
+  private reservationService = inject(ReservationService);
+  private toasterService = inject(ToasterService);
+
+  ngOnInit(): void {
+    this.reservationService.findAll(this.searchCriteria).subscribe({
+      next: (reservations: SharedReservationDto[]) => {
+        this.reservations = reservations;
+      },
+      error: (_) => {
+        this.toasterService.error(`Erreur lors de la récupération des réservations.`)
+      },
+    });
+  }
+
+  onCreate(): void {
+    this.router.navigate(['/reservation/create']);
+  }
+
+}

@@ -12,6 +12,7 @@ import {Login} from './pages/auth/login/login';
 import {ResetPassword} from './pages/auth/reset-password/reset-password';
 import {Signup} from './pages/auth/signup/signup';
 import {Dashboard} from './pages/dashboard/dashboard';
+import {Reservation} from './pages/reservation/reservation';
 import {ServiceType} from './pages/service-type/service-type';
 import {ServiceTypeDetails} from './pages/service-type/service-type-details/service-type-details';
 import {UserPage} from './pages/user/user';
@@ -110,8 +111,8 @@ export const routes: Routes = [
         ],
       },
       {
-        path: 'booking',
-        component: Dashboard,
+        path: 'reservation',
+        component: Reservation,
       },
       {
         path: 'profile',

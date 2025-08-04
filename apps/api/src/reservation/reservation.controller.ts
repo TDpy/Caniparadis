@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -20,7 +21,7 @@ import {CheckAdminGuard} from "../guard/admin.guard";
 import {
   CreateReservationDto,
   ProposeNewSlotDto,
-  ReservationDto,
+  ReservationDto, SearchReservationDto,
   UpdatePaymentDto,
   UpdateReservationDto,
 } from './reservation.dto';
@@ -53,8 +54,9 @@ export class ReservationController {
   @ApiCreatedResponse({
     type: [ReservationDto],
   })
-  async findAll(): Promise<SharedReservationDto[]> {
-    const data = await this.reservationService.findAll();
+  async findAll(  @Query() criteria: SearchReservationDto,
+  ): Promise<SharedReservationDto[]> {
+    const data = await this.reservationService.findAll(criteria);
     return ReservationMapper.toDtos(data);
   }
 

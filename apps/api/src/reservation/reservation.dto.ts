@@ -3,7 +3,7 @@ import {
   ReservationStatus,
   SharedCreateReservationDto,
   SharedProposeNewSlotDto,
-  SharedReservationDto,
+  SharedReservationDto, SharedSearchReservationCriteriaDto,
   SharedUpdatePaymentDto,
   SharedUpdateReservationDto,
 } from '@caniparadis/dtos/dist/reservationDto';
@@ -126,4 +126,22 @@ export class UpdatePaymentDto implements SharedUpdatePaymentDto {
   @IsOptional()
   @IsNumber()
   amountPaid?: number;
+}
+
+export class SearchReservationDto implements SharedSearchReservationCriteriaDto{
+  @IsOptional()
+  @IsDateString()
+  fromDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  toDate?: Date;
+
+  @IsOptional()
+  @IsNumber()
+  userId?: number;
+
+  @IsOptional()
+  @IsEnum(PaymentStatus)
+  paymentStatus?: PaymentStatus;
 }

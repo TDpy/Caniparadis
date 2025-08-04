@@ -1,5 +1,5 @@
-import { SharedAnimalDto } from './animalDto';
-import { SharedServiceTypeDto } from './serviceTypeDto';
+import {SharedAnimalDto} from './animalDto';
+import {SharedServiceTypeDto} from './serviceTypeDto';
 
 export enum ReservationStatus {
   PENDING = 'PENDING',
@@ -39,6 +39,13 @@ export interface SharedReservationDto {
   paymentStatus: PaymentStatus;
   amountPaid?: number;
   comment?: string;
+}
+
+export interface SharedSearchReservationCriteriaDto {
+  fromDate?: Date;
+  toDate?: Date;
+  userId?: number;
+  paymentStatus?: PaymentStatus;
 }
 
 export interface SharedProposeNewSlotDto {

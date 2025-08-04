@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 
 import { AnimalEntity } from '../animal/animal.entity';
 import { ServiceTypeEntity } from '../service-type/service-type.entity';
+import {SearchReservationDto} from "./reservation.dto";
 import { ReservationEntity } from './reservation.entity';
 import {
   CreateReservation,
@@ -59,11 +60,33 @@ export class ReservationService {
     return this.reservationRepository.save(reservation);
   }
 
-  async findAll(): Promise<ReservationEntity[]> {
-    return this.reservationRepository.find({
-      relations: ['animal', 'serviceType'],
-      order: { id: 'ASC' },
-    });
+  findAll(criteria: SearchReservationDto): Promise<ReservationEntity[]> {
+    const query = this.reservationRepository
+      .createQueryBuilder('reservation')
+      .leftJoinAndSelect('reservation.animal', 'animal')
+      .leftJoinAndSelect('reservation.serviceType', 'serviceType')
+      .leftJoinAndSelect('animal.owner', 'owner');
+
+    if (criteria.fromDate) {
+      query.andWhere('reservation.startDate >= :fromDate', { fromDate: criteria.fromDate });
+    }
+
+    if (criteria.toDate) {
+      query.andWhere('reservation.startDate <= :toDate', { toDate: criteria.toDate });
+    }
+
+    if (criteria.userId) {
+      query.andWhere('animal.ownerId = :userId', { userId: criteria.userId });
+    }
+
+    if (criteria.paymentStatus) {
+      query.andWhere('reservation.paymentStatus = :paymentStatus', { paymentStatus: criteria.paymentStatus });
+    }
+
+    query.orderBy('reservation.startDate', 'ASC')
+      .addOrderBy('reservation.id', 'ASC');
+
+    return query.getMany();
   }
 
   async findOne(id: number): Promise<ReservationEntity> {

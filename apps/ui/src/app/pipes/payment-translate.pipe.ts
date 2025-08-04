@@ -1,0 +1,19 @@
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  standalone: true,
+  name: 'paymentTranslate'
+})
+export class PaymentTranslatePipe implements PipeTransform {
+
+  private translations: Record<string, string> = {
+    PENDING: 'En attente',
+    PARTIALLY_PAID: 'Partiellement payé',
+    PAID: 'Payé',
+    REFUNDED: 'Remboursé',
+  };
+
+  transform(value: string): string {
+    return this.translations[value] ?? value;
+  }
+}
