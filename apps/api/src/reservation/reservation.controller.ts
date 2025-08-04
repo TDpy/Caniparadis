@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -15,6 +16,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import {CheckAdminGuard} from "../guard/admin.guard";
 import {
   CreateReservationDto,
   ProposeNewSlotDto,
@@ -46,6 +48,7 @@ export class ReservationController {
   }
 
   @Get()
+  @UseGuards(CheckAdminGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({
     type: [ReservationDto],

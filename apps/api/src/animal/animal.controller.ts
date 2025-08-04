@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -14,7 +15,10 @@ import {
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { CheckAdminGuard } from 'src/guard/admin.guard';
 
+import {CheckUserParamId} from "../decorators/userId.decorator";
+import {CheckUserParamIdGuard} from "../guard/userId.guard";
 import { AnimalDto, CreateAnimalDto, UpdateAnimalDto } from './animal.dto';
 import { AnimalMapper } from './animal.mapper';
 import { AnimalService } from './animal.service';
@@ -34,6 +38,7 @@ export class AnimalController {
   }
 
   @Get()
+  @UseGuards(CheckAdminGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: [AnimalDto] })
   async findAll(): Promise<SharedAnimalDto[]> {
@@ -50,6 +55,8 @@ export class AnimalController {
   }
 
   @Patch(':id')
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('ownerId')
   @ApiBearerAuth()
   @ApiBody({ type: UpdateAnimalDto })
   @ApiCreatedResponse({ type: AnimalDto })
@@ -62,6 +69,8 @@ export class AnimalController {
   }
 
   @Delete(':id')
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('ownerId')
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: AnimalDto })
   async remove(@Param('id') id: string): Promise<SharedAnimalDto> {

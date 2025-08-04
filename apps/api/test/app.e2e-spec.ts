@@ -19,7 +19,7 @@ describe('AppController (e2e)', () => {
       imports: [AppModule],
     })
       .overrideProvider(EmailService)
-      .useValue({ send: jest.fn() }) // mock simple
+      .useValue({ send: jest.fn() })
       .compile();
 
     app = moduleFixture.createNestApplication();

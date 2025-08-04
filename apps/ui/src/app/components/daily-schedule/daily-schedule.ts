@@ -27,14 +27,14 @@ export class DailySchedule {
       id: '1',
       name: 'Miaou',
       startDate: new Date(),
-      endDate: new Date(Date.now() + 3_600_000), // 1 hour later
+      endDate: new Date(Date.now() + 3_600_000),
       price: 100,
     },
     {
       id: '1',
       name: 'Awouuuuuuuu',
       startDate: new Date(),
-      endDate: new Date(Date.now() + 3_600_000), // 1 hour later
+      endDate: new Date(Date.now() + 3_600_000),
       price: 100,
     },
   ];

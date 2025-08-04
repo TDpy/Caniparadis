@@ -26,7 +26,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       const res = exception.getResponse();
 
-      // Définition d’un type partiel attendu de l’objet renvoyé
       type ErrorResponseBody = {
         error?: string;
         message?: string[] | string;

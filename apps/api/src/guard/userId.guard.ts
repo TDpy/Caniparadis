@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import {CHECK_USER_PARAM_ID} from "../decorators/userId.decorator";
+import { CHECK_USER_PARAM_ID } from '../decorators/userId.decorator';
 
 @Injectable()
 export class CheckUserParamIdGuard implements CanActivate {
@@ -33,10 +33,17 @@ export class CheckUserParamIdGuard implements CanActivate {
       return true;
     }
 
-    const paramValue = request.params[paramName];
+    let paramValue: string;
+    paramValue = request.params[paramName];
 
     if (!paramValue) {
-      throw new ForbiddenException(`Missing parameter "${paramName}" in request`);
+      paramValue = request.body[paramName];
+    }
+
+    if (!paramValue) {
+      throw new ForbiddenException(
+        `Missing parameter "${paramName}" in request`,
+      );
     }
 
     if (String(user.id) !== String(paramValue)) {
