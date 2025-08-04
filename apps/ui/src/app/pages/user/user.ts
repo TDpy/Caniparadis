@@ -13,6 +13,7 @@ import {UserService} from '../../services/user.service';
   imports: [Table, TableColumnDirective, RouterModule, CommonModule],
   templateUrl: './user.html',
   styleUrl: './user.scss',
+  standalone: true
 })
 export class UserPage implements OnInit {
   public users: SharedUserDto[] = [];

@@ -12,6 +12,7 @@ import {MenuItem} from './menu-item/menu-item';
   imports: [MenuItem, UserNamePipe, UserNamePipe],
   templateUrl: './menu.html',
   styleUrl: './menu.scss',
+  standalone: true
 })
 export class Menu implements OnInit, OnDestroy {
   protected user?: SharedUserDto

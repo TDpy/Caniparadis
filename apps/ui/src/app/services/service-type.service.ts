@@ -1,13 +1,17 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {SharedCreateServiceTypeDto, SharedServiceTypeDto} from '@caniparadis/dtos/dist/serviceTypeDto';
+import {inject, Injectable} from '@angular/core';
+import {
+  SharedCreateServiceTypeDto,
+  SharedServiceTypeDto,
+  SharedUpdateServiceTypeDto
+} from '@caniparadis/dtos/dist/serviceTypeDto';
 import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceTypeService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   create(serviceTypeDto: SharedCreateServiceTypeDto): Observable<SharedServiceTypeDto> {
     return this.http.post<SharedServiceTypeDto>("/service-type", serviceTypeDto)
@@ -21,8 +25,8 @@ export class ServiceTypeService {
     return this.http.get<SharedServiceTypeDto>(`/service-type/${id}`)
   }
 
-  update(serviceTypeDto: SharedServiceTypeDto): Observable<SharedServiceTypeDto> {
-    return this.http.patch<SharedServiceTypeDto>(`/service-type/${serviceTypeDto.id}`, serviceTypeDto)
+  update(id: number, serviceTypeDto: SharedUpdateServiceTypeDto): Observable<SharedServiceTypeDto> {
+    return this.http.patch<SharedServiceTypeDto>(`/service-type/${id}`, serviceTypeDto)
   }
 
   remove(id: number): Observable<SharedServiceTypeDto> {
