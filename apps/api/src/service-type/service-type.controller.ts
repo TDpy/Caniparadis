@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -16,6 +17,7 @@ import {
 } from '@nestjs/swagger';
 import { Public } from 'src/decorators/public.decorator';
 
+import {CheckAdminGuard} from "../guard/admin.guard";
 import {
   CreateServiceTypeDto,
   ServiceTypeDto,
@@ -30,6 +32,7 @@ export class ServiceTypeController {
   constructor(private readonly serviceTypeService: ServiceTypeService) {}
 
   @Post()
+  @UseGuards(CheckAdminGuard)
   @ApiBearerAuth()
   @ApiBody({ type: CreateServiceTypeDto })
   @ApiCreatedResponse({
@@ -65,6 +68,7 @@ export class ServiceTypeController {
   }
 
   @Patch(':id')
+  @UseGuards(CheckAdminGuard)
   @ApiBearerAuth()
   @ApiBody({ type: UpdateServiceTypeDto })
   @ApiCreatedResponse({
@@ -81,6 +85,7 @@ export class ServiceTypeController {
   }
 
   @Delete(':id')
+  @UseGuards(CheckAdminGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({
     type: ServiceTypeDto,

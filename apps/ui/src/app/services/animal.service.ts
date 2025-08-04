@@ -17,6 +17,10 @@ export class AnimalService {
     return this.http.get<SharedAnimalDto[]>("/animals")
   }
 
+  findByOwnerId(id: number): Observable<SharedAnimalDto[]> {
+    return this.http.get<SharedAnimalDto[]>(`/animals/owner/${id}`)
+  }
+
   findOne(id: number): Observable<SharedAnimalDto> {
     return this.http.get<SharedAnimalDto>(`/animals/${id}`)
   }

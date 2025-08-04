@@ -18,6 +18,7 @@ import {
 } from '@nestjs/swagger';
 
 import { CheckUserParamId } from '../decorators/userId.decorator';
+import {CheckAdminGuard} from "../guard/admin.guard";
 import { CheckUserParamIdGuard } from '../guard/userId.guard';
 import { CreateUserDto, UpdateUserDto, UserDto } from './user.dto';
 import { UserMapper } from './user.mapper';
@@ -40,6 +41,7 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(CheckAdminGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: [UserDto] })
   async findAll(): Promise<SharedUserDto[]> {

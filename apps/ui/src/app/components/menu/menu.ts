@@ -1,6 +1,6 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
-import {SharedUserDto} from '@caniparadis/dtos/dist/userDto';
+import {Role, SharedUserDto} from '@caniparadis/dtos/dist/userDto';
 import {filter, Subscription} from 'rxjs';
 
 import {UserNamePipe} from '../../pipes/user-name.pipe';
@@ -47,4 +47,6 @@ export class Menu implements OnInit, OnDestroy {
       })
     );
   }
+
+  protected readonly Role = Role;
 }
