@@ -7,56 +7,55 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class LoginDto implements SharedLoginDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'user@example.com' })
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'strongPassword123' })
   @IsNotEmpty()
   @IsString()
   password: string;
 }
 
 export class SignUpDto implements SharedSignUpDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'user@example.com' })
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'strongPassword123' })
   @IsNotEmpty()
   @IsString()
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'John' })
   @IsNotEmpty()
   @IsString()
   firstName: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Doe' })
   @IsNotEmpty()
   @IsString()
   lastName: string;
 }
 
 export class EmailDto implements SharedEmailDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'user@example.com' })
   @IsNotEmpty()
   @IsEmail()
   email: string;
 }
 
-
 export class PasswordDto implements SharedPasswordDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'newStrongPassword123' })
   @IsNotEmpty()
   @IsString()
   password: string;
 }
 
 export class TokenDto implements SharedTokenDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' })
   @IsNotEmpty()
   @IsString()
   token: string;

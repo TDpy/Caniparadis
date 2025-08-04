@@ -1,54 +1,54 @@
 import {
+  PaymentStatus,
   ReservationStatus,
+  SharedCreateReservationDto,
+  SharedProposeNewSlotDto,
   SharedReservationDto,
-  SharedUpdateReservationDto
+  SharedUpdatePaymentDto,
+  SharedUpdateReservationDto,
 } from '@caniparadis/dtos/dist/reservationDto';
-import { SharedProposeNewSlotDto } from '@caniparadis/dtos/dist/reservationDto';
-import { PaymentStatus, SharedUpdatePaymentDto } from '@caniparadis/dtos/dist/reservationDto';
-import { SharedCreateReservationDto } from '@caniparadis/dtos/dist/reservationDto';
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  Min,
-} from 'class-validator';
-import { IsEnum } from 'class-validator';
-import {
   IsDateString,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
+  Min,
 } from 'class-validator';
 
-import {AnimalDto} from "../animal/animal.dto";
-import {ServiceTypeDto} from "../service-type/service-type.dto";
+import { AnimalDto } from '../animal/animal.dto';
+import { ServiceTypeDto } from '../service-type/service-type.dto';
 
 export class CreateReservationDto implements SharedCreateReservationDto {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @IsNotEmpty()
   @IsNumber()
   animalId: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 2 })
   @IsNotEmpty()
   @IsNumber()
   serviceTypeId: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: '2025-08-01T10:00:00Z' })
   @IsNotEmpty()
   @IsDateString()
   startDate: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '2025-08-01T12:00:00Z' })
   @IsNotEmpty()
   @IsDateString()
   endDate: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, example: 'Retard possible suite examen de l\'animal' })
   @IsOptional()
   @IsString()
   comment?: string;
 }
+
 export class UpdateReservationDto
   extends PartialType(CreateReservationDto)
   implements SharedUpdateReservationDto
@@ -63,7 +63,7 @@ export class UpdateReservationDto
   @IsEnum(PaymentStatus)
   paymentStatus?: PaymentStatus;
 
-  @ApiProperty({ required: false, minimum: 0 })
+  @ApiProperty({ required: false, minimum: 0, example: 50.08 })
   @IsOptional()
   @IsNumber()
   @Min(0)
@@ -71,7 +71,7 @@ export class UpdateReservationDto
 }
 
 export class ReservationDto implements SharedReservationDto {
-  @ApiProperty()
+  @ApiProperty({ example: 123 })
   id: number;
 
   @ApiProperty({ type: AnimalDto })
@@ -80,10 +80,10 @@ export class ReservationDto implements SharedReservationDto {
   @ApiProperty({ type: ServiceTypeDto })
   serviceType: ServiceTypeDto;
 
-  @ApiProperty()
+  @ApiProperty({ example: '2025-08-01T10:00:00Z' })
   startDate: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '2025-08-01T12:00:00Z' })
   endDate: string;
 
   @ApiProperty({ enum: ReservationStatus })
@@ -92,25 +92,25 @@ export class ReservationDto implements SharedReservationDto {
   @ApiProperty({ enum: PaymentStatus })
   paymentStatus: PaymentStatus;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, example: 50.08 })
   amountPaid?: number;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, example: 'Retard possible suite examen de l\'animal' })
   comment?: string;
 }
 
 export class ProposeNewSlotDto implements SharedProposeNewSlotDto {
-  @ApiProperty()
+  @ApiProperty({ example: '2025-08-02T09:00:00Z' })
   @IsNotEmpty()
   @IsDateString()
   startDate: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '2025-08-02T11:00:00Z' })
   @IsNotEmpty()
   @IsDateString()
   endDate: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, example: 'Revenez vers nous si besoin' })
   @IsOptional()
   @IsString()
   comment?: string;
@@ -122,7 +122,7 @@ export class UpdatePaymentDto implements SharedUpdatePaymentDto {
   @IsEnum(PaymentStatus)
   status: PaymentStatus;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, example: 50.08 })
   @IsOptional()
   @IsNumber()
   amountPaid?: number;

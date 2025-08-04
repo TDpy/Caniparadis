@@ -1,6 +1,7 @@
 import {
   AnimalSex,
-  SharedAnimalDto, SharedCreateAnimalDto,
+  SharedAnimalDto,
+  SharedCreateAnimalDto,
 } from '@caniparadis/dtos/dist/animalDto';
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
@@ -12,49 +13,61 @@ import {
   IsString,
 } from 'class-validator';
 
-import {UserDto} from "../user/user.dto";
+import { UserDto } from '../user/user.dto';
 
 export class CreateAnimalDto implements SharedCreateAnimalDto {
   @IsNotEmpty()
   @IsString()
+  @ApiProperty({ example: 'Rex' })
   name: string;
 
   @IsNotEmpty()
   @IsString()
+  @ApiProperty({ example: 'Dog' })
   type: string;
 
   @IsNotEmpty()
   @IsString()
+  @ApiProperty({ example: 'Golden Retriever' })
   breed: string;
 
   @IsNotEmpty()
   @IsNumber()
+  @ApiProperty({ example: 12 })
   ownerId: number;
 
   @IsNotEmpty()
   @IsEnum(AnimalSex)
+  @ApiProperty({ enum: AnimalSex, example: AnimalSex.MALE })
   sex: AnimalSex;
 
   @IsNotEmpty()
   @IsBoolean()
+  @ApiProperty({ example: true })
   isSterilized: boolean;
 }
 
 export class UpdateAnimalDto extends PartialType(CreateAnimalDto) {}
 
 export class AnimalDto implements SharedAnimalDto {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   id: number;
-  @ApiProperty()
+
+  @ApiProperty({ example: 'Rex' })
   name: string;
-  @ApiProperty()
+
+  @ApiProperty({ example: 'Dog' })
   type: string;
-  @ApiProperty()
+
+  @ApiProperty({ example: 'Golden Retriever' })
   breed: string;
-  @ApiProperty()
+
+  @ApiProperty({ enum: AnimalSex, example: AnimalSex.MALE })
   sex: AnimalSex;
-  @ApiProperty()
+
+  @ApiProperty({ example: true })
   isSterilized: boolean;
-  @ApiProperty()
+
+  @ApiProperty({ type: UserDto })
   owner: UserDto;
 }

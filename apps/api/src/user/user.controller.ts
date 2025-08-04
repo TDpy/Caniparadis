@@ -1,3 +1,4 @@
+import { SharedUserDto } from '@caniparadis/dtos/dist/userDto';
 import {
   Body,
   Controller,
@@ -9,34 +10,47 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { CheckUserParamId } from '../decorators/userId.decorator';
 import { CheckUserParamIdGuard } from '../guard/userId.guard';
-import {CreateUserDto, UpdateUserDto} from "./user.dto";
+import { CreateUserDto, UpdateUserDto, UserDto } from './user.dto';
 import { UserMapper } from './user.mapper';
 import { UserService } from './user.service';
 import { CreateUserInput, UpdateUserInput } from './user.type';
 
+@ApiTags('Users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() dto: CreateUserDto) {
-    const input: CreateUserInput = {...dto};
-
+  @ApiBearerAuth()
+  @ApiBody({ type: CreateUserDto })
+  @ApiCreatedResponse({ type: UserDto })
+  async create(@Body() dto: CreateUserDto): Promise<SharedUserDto> {
+    const input: CreateUserInput = { ...dto };
     const data = await this.userService.create(input);
     return UserMapper.toDto(data);
   }
 
   @Get()
-  async findAll() {
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: [UserDto] })
+  async findAll(): Promise<SharedUserDto[]> {
     const data = await this.userService.findAll();
     return UserMapper.toDtos(data);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: UserDto })
+  async findOne(@Param('id') id: string): Promise<SharedUserDto> {
     const data = await this.userService.findById(+id);
     return UserMapper.toDto(data);
   }
@@ -44,19 +58,18 @@ export class UserController {
   @Patch(':id')
   @UseGuards(CheckUserParamIdGuard)
   @CheckUserParamId('id')
+  @ApiBearerAuth()
+  @ApiBody({ type: CreateUserDto })
+  @ApiCreatedResponse({ type: UserDto })
   async update(
     @Req() req: Request,
     @Param('id') id: string,
     @Body() dto: UpdateUserDto,
-  ) {
-    const input: UpdateUserInput = {
-      ...dto,
-    };
-
+  ): Promise<SharedUserDto> {
+    const input: UpdateUserInput = { ...dto };
     if (req['user']?.role !== 'ADMIN') {
       delete input.role;
     }
-
     const data = await this.userService.update(+id, input);
     return UserMapper.toDto(data);
   }
@@ -64,7 +77,9 @@ export class UserController {
   @Delete(':id')
   @UseGuards(CheckUserParamIdGuard)
   @CheckUserParamId('id')
-  async remove(@Param('id') id: string) {
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: UserDto })
+  async remove(@Param('id') id: string): Promise<SharedUserDto> {
     const data = await this.userService.remove(+id);
     return UserMapper.toDto(data);
   }
