@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
 
+import {AdminGuard} from './guards/admin-guard';
 import {AuthGuard} from './guards/auth-guard';
 import {NoAuthGuard} from './guards/no-auth-guard';
 import {Animal} from './pages/animal/animal';
@@ -57,6 +58,7 @@ export const routes: Routes = [
       },
       {
         path: 'user',
+        canActivate: [AdminGuard],
         children: [
           {
             path: 'create',
@@ -91,6 +93,7 @@ export const routes: Routes = [
       },
       {
         path: 'service-type',
+        canActivate:[AdminGuard],
         children: [
           {
             path: 'create',

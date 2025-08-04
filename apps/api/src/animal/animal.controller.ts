@@ -46,6 +46,16 @@ export class AnimalController {
     return AnimalMapper.toDtos(data);
   }
 
+  @Get('owner/:id')
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('id')
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: AnimalDto })
+  async findByOwnerId(@Param('id') id: string): Promise<SharedAnimalDto[]> {
+    const data = await this.animalService.findByOwnerId(+id);
+    return AnimalMapper.toDtos(data);
+  }
+
   @Get(':id')
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: AnimalDto })

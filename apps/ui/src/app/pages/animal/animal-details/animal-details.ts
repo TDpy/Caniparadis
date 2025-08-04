@@ -8,10 +8,12 @@ import {
   SharedCreateAnimalDto,
   SharedUpdateAnimalDto
 } from '@caniparadis/dtos/dist/animalDto';
+import {Role} from '@caniparadis/dtos/dist/userDto';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {catchError, EMPTY, tap} from 'rxjs';
+import {catchError, EMPTY, map, mergeMap, of, tap} from 'rxjs';
 
 import {AnimalService} from '../../../services/animal.service';
+import {AuthService} from '../../../services/auth.service';
 import {ToasterService} from '../../../services/toaster.service';
 import {UserService} from '../../../services/user.service';
 
@@ -38,6 +40,7 @@ export class AnimalDetails implements OnInit {
   private route = inject(ActivatedRoute);
   private toasterService = inject(ToasterService);
   private userService = inject(UserService);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -114,7 +117,15 @@ export class AnimalDetails implements OnInit {
   }
 
   private loadOwners(): void {
-    this.userService.findAll().subscribe({
+    this.authService.getCurrentUser().pipe(
+      mergeMap(authUser => {
+        return authUser.role === Role.ADMIN
+          ? this.userService.findAll()
+          : this.userService.findOne(authUser.id).pipe(
+            map(user => [user])
+          );
+      })
+    ).subscribe({
       next: users => {
         this.owners = users.map(user => ({
           ...user,

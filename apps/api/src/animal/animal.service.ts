@@ -41,6 +41,14 @@ export class AnimalService {
     return animal;
   }
 
+  async findByOwnerId(id: number): Promise<AnimalEntity[]> {
+    return this.animalRepository
+      .createQueryBuilder('animal')
+      .leftJoinAndSelect('animal.owner', 'owner')
+      .where('owner.id = :id', { id })
+      .getMany();
+  }
+
   async update(id: number, input: UpdateAnimalInput): Promise<AnimalEntity> {
     const animal = await this.findById(id);
 
