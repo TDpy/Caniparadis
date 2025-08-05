@@ -96,7 +96,7 @@ export const routes: Routes = [
       },
       {
         path: 'service-type',
-        canActivate:[AdminGuard],
+        canActivate: [AdminGuard],
         children: [
           {
             path: 'create',
@@ -118,6 +118,10 @@ export const routes: Routes = [
           {
             path: 'create',
             component: ReservationCreation,
+          },
+          {
+            path: ':id',
+            component: ReservationDetails,
           },
           {
             path: '',

@@ -1,12 +1,11 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {SharedUpdateServiceTypeDto} from '@caniparadis/dtos/dist/serviceTypeDto';
-import {Observable} from 'rxjs';
 import {
-  SharedCreateReservationDto,
+  SharedCreateReservationDto, SharedProposeNewSlotDto,
   SharedReservationDto,
-  SharedSearchReservationCriteriaDto
+  SharedSearchReservationCriteriaDto, SharedUpdatePaymentDto, SharedUpdateReservationDto
 } from '@caniparadis/dtos/dist/reservationDto';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -39,18 +38,34 @@ export class ReservationService {
       });
     }
 
-    return this.http.get<SharedReservationDto[]>('/reservations', { params });
+    return this.http.get<SharedReservationDto[]>('/reservations', {params});
   }
 
   findOne(id: number): Observable<SharedReservationDto> {
     return this.http.get<SharedReservationDto>(`/reservations/${id}`)
   }
 
-  update(id: number, serviceTypeDto: SharedUpdateServiceTypeDto): Observable<SharedReservationDto> {
+  update(id: number, serviceTypeDto: SharedUpdateReservationDto): Observable<SharedReservationDto> {
     return this.http.patch<SharedReservationDto>(`/reservations/${id}`, serviceTypeDto)
   }
 
   remove(id: number): Observable<SharedReservationDto> {
     return this.http.delete<SharedReservationDto>(`/reservations/${id}`)
+  }
+
+  accept(id: number): Observable<SharedReservationDto> {
+    return this.http.post<SharedReservationDto>(`/reservations/${id}/accept`, {})
+  }
+
+  propose(id: number, newSlot: SharedProposeNewSlotDto): Observable<SharedReservationDto> {
+    return this.http.post<SharedReservationDto>(`/reservations/${id}/propose`, newSlot)
+  }
+
+  cancel(id: number): Observable<SharedReservationDto> {
+    return this.http.post<SharedReservationDto>(`/reservations/${id}/cancel`, {})
+  }
+
+  payment(id: number, payment: SharedUpdatePaymentDto): Observable<SharedReservationDto> {
+    return this.http.post<SharedReservationDto>(`/reservations/${id}/payment`, payment)
   }
 }

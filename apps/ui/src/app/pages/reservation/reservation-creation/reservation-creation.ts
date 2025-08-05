@@ -3,9 +3,12 @@ import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {SharedCreateReservationDto} from '@caniparadis/dtos/dist/reservationDto';
+import {Role} from '@caniparadis/dtos/dist/userDto';
 import {NgSelectModule} from '@ng-select/ng-select';
+import {switchMap} from 'rxjs';
 
 import {AnimalService} from '../../../services/animal.service';
+import {AuthService} from '../../../services/auth.service';
 import {ReservationService} from '../../../services/reservation.service';
 import {ServiceTypeService} from '../../../services/service-type.service';
 import {ToasterService} from '../../../services/toaster.service';
@@ -33,6 +36,7 @@ export class ReservationCreation {
   private serviceTypeService = inject(ServiceTypeService);
   private reservationService = inject(ReservationService);
   private toasterService = inject(ToasterService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   get isDateRangeInvalid(): boolean {
@@ -52,7 +56,13 @@ export class ReservationCreation {
     this.reservation.startDate = this.formatLocalDateTime(start);
     this.reservation.endDate = this.formatLocalDateTime(end);
 
-    this.animalService.findAll().subscribe({
+    this.authService.getCurrentUser().pipe(
+      switchMap((authUser) => {
+        return authUser.role === Role.ADMIN ?
+          this.animalService.findAll() :
+          this.animalService.findByOwnerId(authUser.id);
+      })
+    ).subscribe({
       next: (data) => (this.animals = data),
     });
 

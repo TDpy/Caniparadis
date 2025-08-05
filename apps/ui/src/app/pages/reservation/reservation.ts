@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {SharedReservationDto, SharedSearchReservationCriteriaDto} from '@caniparadis/dtos/dist/reservationDto';
@@ -26,7 +26,7 @@ import {ToasterService} from '../../services/toaster.service';
 export class Reservation {
   router = inject(Router);
   reservations?: SharedReservationDto[] = [];
-  searchCriteria: SharedSearchReservationCriteriaDto={toDate: new Date()}
+  searchCriteria: SharedSearchReservationCriteriaDto = {fromDate: new Date()}
   private reservationService = inject(ReservationService);
   private toasterService = inject(ToasterService);
 
