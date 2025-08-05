@@ -18,7 +18,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import {CheckUserParamId} from "../decorators/userId.decorator";
 import { CheckAdminGuard } from '../guard/admin.guard';
+import {CheckUserParamIdGuard} from "../guard/userId.guard";
 import {
   CreateReservationDto,
   ProposeNewSlotDto,
@@ -55,7 +57,8 @@ export class ReservationController {
   }
 
   @Get()
-  @UseGuards(CheckAdminGuard)
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('userId')
   @ApiBearerAuth()
   @ApiCreatedResponse({
     type: [ReservationDto],

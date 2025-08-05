@@ -10,6 +10,7 @@ import {
 } from '@caniparadis/dtos/dist/reservationDto';
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsDateString,
   IsEnum,
@@ -148,6 +149,7 @@ export class SearchReservationDto
 
   @IsOptional()
   @IsNumber()
+  @Type(() => Number) // 👉 transforme string en number automatiquement
   userId?: number;
 
   @IsOptional()
