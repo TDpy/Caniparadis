@@ -3,7 +3,8 @@ import {
   ReservationStatus,
   SharedCreateReservationDto,
   SharedProposeNewSlotDto,
-  SharedReservationDto, SharedSearchReservationCriteriaDto,
+  SharedReservationDto,
+  SharedSearchReservationCriteriaDto,
   SharedUpdatePaymentDto,
   SharedUpdateReservationDto,
 } from '@caniparadis/dtos/dist/reservationDto';
@@ -43,7 +44,10 @@ export class CreateReservationDto implements SharedCreateReservationDto {
   @IsDateString()
   endDate: string;
 
-  @ApiProperty({ required: false, example: 'Retard possible suite examen de l\'animal' })
+  @ApiProperty({
+    required: false,
+    example: "Retard possible suite examen de l'animal",
+  })
   @IsOptional()
   @IsString()
   comment?: string;
@@ -95,7 +99,10 @@ export class ReservationDto implements SharedReservationDto {
   @ApiProperty({ required: false, example: 50.08 })
   amountPaid?: number;
 
-  @ApiProperty({ required: false, example: 'Retard possible suite examen de l\'animal' })
+  @ApiProperty({
+    required: false,
+    example: "Retard possible suite examen de l'animal",
+  })
   comment?: string;
 }
 
@@ -118,7 +125,7 @@ export class ProposeNewSlotDto implements SharedProposeNewSlotDto {
 
 export class UpdatePaymentDto implements SharedUpdatePaymentDto {
   @ApiProperty({ enum: PaymentStatus })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(PaymentStatus)
   status: PaymentStatus;
 
@@ -128,7 +135,9 @@ export class UpdatePaymentDto implements SharedUpdatePaymentDto {
   amountPaid?: number;
 }
 
-export class SearchReservationDto implements SharedSearchReservationCriteriaDto{
+export class SearchReservationDto
+  implements SharedSearchReservationCriteriaDto
+{
   @IsOptional()
   @IsDateString()
   fromDate?: Date;

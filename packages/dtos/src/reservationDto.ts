@@ -10,7 +10,6 @@ export enum ReservationStatus {
 
 export enum PaymentStatus {
   PENDING = 'PENDING',
-  PARTIALLY_PAID = 'PARTIALLY_PAID',
   PAID = 'PAID',
   REFUNDED = 'REFUNDED',
 }
@@ -55,6 +54,6 @@ export interface SharedProposeNewSlotDto {
 }
 
 export interface SharedUpdatePaymentDto {
-  status: PaymentStatus;
+  status?: PaymentStatus;
   amountPaid?: number;
 }

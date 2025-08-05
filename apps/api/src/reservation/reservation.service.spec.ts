@@ -1,4 +1,7 @@
-import {PaymentStatus, ReservationStatus} from '@caniparadis/dtos/dist/reservationDto';
+import {
+  PaymentStatus,
+  ReservationStatus,
+} from '@caniparadis/dtos/dist/reservationDto';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, type TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -29,9 +32,18 @@ describe('ReservationService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ReservationService,
-        { provide: getRepositoryToken(ReservationEntity), useValue: mockReservationRepository },
-        { provide: getRepositoryToken(AnimalEntity), useValue: mockAnimalRepository },
-        { provide: getRepositoryToken(ServiceTypeEntity), useValue: mockServiceTypeRepository },
+        {
+          provide: getRepositoryToken(ReservationEntity),
+          useValue: mockReservationRepository,
+        },
+        {
+          provide: getRepositoryToken(AnimalEntity),
+          useValue: mockAnimalRepository,
+        },
+        {
+          provide: getRepositoryToken(ServiceTypeEntity),
+          useValue: mockServiceTypeRepository,
+        },
       ],
     }).compile();
 
@@ -44,28 +56,56 @@ describe('ReservationService', () => {
     it('should throw NotFoundException if animal not found', async () => {
       mockAnimalRepository.findOne.mockResolvedValue(null);
       await expect(
-        service.create({ animalId: 1, serviceTypeId: 2, startDate: '2025-01-01', endDate: '2025-01-02' }),
+        service.create({
+          animalId: 1,
+          serviceTypeId: 2,
+          startDate: '2025-01-01',
+          endDate: '2025-01-02',
+        }),
       ).rejects.toThrow(NotFoundException);
-      expect(mockAnimalRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+      expect(mockAnimalRepository.findOne).toHaveBeenCalledWith({
+        where: { id: 1 },
+      });
     });
 
     it('should throw NotFoundException if serviceType not found', async () => {
       mockAnimalRepository.findOne.mockResolvedValue({ id: 1 });
       mockServiceTypeRepository.findOne.mockResolvedValue(null);
       await expect(
-        service.create({ animalId: 1, serviceTypeId: 2, startDate: '2025-01-01', endDate: '2025-01-02' }),
+        service.create({
+          animalId: 1,
+          serviceTypeId: 2,
+          startDate: '2025-01-01',
+          endDate: '2025-01-02',
+        }),
       ).rejects.toThrow(NotFoundException);
-      expect(mockServiceTypeRepository.findOne).toHaveBeenCalledWith({ where: { id: 2 } });
+      expect(mockServiceTypeRepository.findOne).toHaveBeenCalledWith({
+        where: { id: 2 },
+      });
     });
 
     it('should create and save reservation', async () => {
       const animal = { id: 1 };
       const serviceType = { id: 2 };
-      const createReservation = { animalId: 1, serviceTypeId: 2, startDate: '2025-01-01', endDate: '2025-01-02' };
+      const createReservation = {
+        animalId: 1,
+        serviceTypeId: 2,
+        startDate: '2025-01-01',
+        endDate: '2025-01-02',
+      };
       mockAnimalRepository.findOne.mockResolvedValue(animal);
       mockServiceTypeRepository.findOne.mockResolvedValue(serviceType);
-      mockReservationRepository.create.mockReturnValue({ ...createReservation, animal, serviceType });
-      mockReservationRepository.save.mockResolvedValue({ id: 10, ...createReservation, animal, serviceType });
+      mockReservationRepository.create.mockReturnValue({
+        ...createReservation,
+        animal,
+        serviceType,
+      });
+      mockReservationRepository.save.mockResolvedValue({
+        id: 10,
+        ...createReservation,
+        animal,
+        serviceType,
+      });
 
       const result = await service.create(createReservation);
       expect(mockReservationRepository.create).toHaveBeenCalledWith({
@@ -94,7 +134,11 @@ describe('ReservationService', () => {
 
   describe('accept', () => {
     it('should accept pending reservation', async () => {
-      const reservation = { id: 1, status: ReservationStatus.PENDING, save: jest.fn() };
+      const reservation = {
+        id: 1,
+        status: ReservationStatus.PENDING,
+        save: jest.fn(),
+      };
       mockReservationRepository.findOne.mockResolvedValue(reservation);
       mockReservationRepository.save.mockImplementation(async (r) => r);
 
@@ -133,7 +177,15 @@ describe('ReservationService', () => {
       const reservation = { id: 1, status: ReservationStatus.CANCELLED };
       mockReservationRepository.findOne.mockResolvedValue(reservation);
       await expect(
-        service.proposeNewSlot(1, { startDate: '2025-02-01', endDate: '2025-02-02', comment: 'New slot' }),
+        service.proposeNewSlot(
+          1,
+          {
+            startDate: '2025-02-01',
+            endDate: '2025-02-02',
+            comment: 'New slot',
+          },
+          {},
+        ),
       ).rejects.toThrow(BadRequestException);
     });
 
@@ -146,7 +198,11 @@ describe('ReservationService', () => {
       mockReservationRepository.findOne.mockResolvedValue(reservation);
       mockReservationRepository.save.mockImplementation(async (r) => r);
 
-      const dto = { startDate: '2025-02-01', endDate: '2025-02-02', comment: 'New slot' };
+      const dto = {
+        startDate: '2025-02-01',
+        endDate: '2025-02-02',
+        comment: 'New slot',
+      };
       const result = await service.proposeNewSlot(1, dto);
 
       expect(result.status).toBe(ReservationStatus.PROPOSED);
@@ -159,11 +215,16 @@ describe('ReservationService', () => {
 
   describe('updatePayment', () => {
     it('should update payment status and amountPaid', async () => {
-      const reservation = { id: 1, amountPaid: 10, save: jest.fn(), paymentStatus: null };
+      const reservation = {
+        id: 1,
+        amountPaid: 10,
+        save: jest.fn(),
+        paymentStatus: null,
+      };
       mockReservationRepository.findOne.mockResolvedValue(reservation);
       mockReservationRepository.save.mockImplementation(async (r) => r);
 
-      const dto = { status: PaymentStatus.PARTIALLY_PAID, amountPaid: 5 };
+      const dto = { status: PaymentStatus.PAID, amountPaid: 5 };
       const result = await service.updatePayment(1, dto);
 
       expect(result.paymentStatus).toBe(dto.status);
@@ -172,7 +233,12 @@ describe('ReservationService', () => {
     });
 
     it('should update payment status only if amountPaid undefined', async () => {
-      const reservation = { id: 1, amountPaid: 10, save: jest.fn(), paymentStatus: null };
+      const reservation = {
+        id: 1,
+        amountPaid: 10,
+        save: jest.fn(),
+        paymentStatus: null,
+      };
       mockReservationRepository.findOne.mockResolvedValue(reservation);
       mockReservationRepository.save.mockImplementation(async (r) => r);
 

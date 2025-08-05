@@ -1,5 +1,14 @@
-import {PaymentStatus, ReservationStatus} from "@caniparadis/dtos/dist/reservationDto";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  PaymentStatus,
+  ReservationStatus,
+} from '@caniparadis/dtos/dist/reservationDto';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { AnimalEntity } from '../animal/animal.entity';
 import { ServiceTypeEntity } from '../service-type/service-type.entity';
@@ -26,7 +35,6 @@ export class ReservationEntity {
   @Column({
     type: 'enum',
     enum: ReservationStatus,
-    default: ReservationStatus.PENDING,
   })
   status: ReservationStatus;
 
@@ -37,7 +45,13 @@ export class ReservationEntity {
   })
   paymentStatus: PaymentStatus;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true, default: null })
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+    default: null,
+  })
   amountPaid?: number | null;
 
   @Column({ type: 'text', nullable: true })
