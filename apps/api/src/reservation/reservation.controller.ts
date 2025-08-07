@@ -1,4 +1,7 @@
-import { SharedReservationDto } from '@caniparadis/dtos/dist/reservationDto'; // DTO internes
+import {
+  PaymentStatus,
+  SharedReservationDto,
+} from '@caniparadis/dtos/dist/reservationDto'; // DTO internes
 import {
   Body,
   Controller,
@@ -15,12 +18,13 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
-import {CheckUserParamId} from "../decorators/userId.decorator";
+import { CheckUserParamId } from '../decorators/userId.decorator';
 import { CheckAdminGuard } from '../guard/admin.guard';
-import {CheckUserParamIdGuard} from "../guard/userId.guard";
+import { CheckUserParamIdGuard } from '../guard/userId.guard';
 import {
   CreateReservationDto,
   ProposeNewSlotDto,
@@ -60,6 +64,10 @@ export class ReservationController {
   @UseGuards(CheckUserParamIdGuard)
   @CheckUserParamId('userId')
   @ApiBearerAuth()
+  @ApiQuery({ name: 'fromDate', required: false, type: String })
+  @ApiQuery({ name: 'toDate', required: false, type: String })
+  @ApiQuery({ name: 'userId', required: false, type: Number })
+  @ApiQuery({ name: 'paymentStatus', required: false, enum: PaymentStatus })
   @ApiCreatedResponse({
     type: [ReservationDto],
   })

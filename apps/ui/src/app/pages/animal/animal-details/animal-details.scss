@@ -13,3 +13,15 @@
   background-color: #FABB00 !important;
   color: #000000;
 }
+
+::ng-deep ng-select .ng-clear-wrapper {
+  z-index: 2;
+  position: relative;
+}
+
+::ng-deep ng-select .ng-input {
+  z-index: 1;
+  position: relative;
+  background: transparent;
+  pointer-events: auto;
+}

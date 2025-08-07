@@ -7,6 +7,83 @@
       </button>
     </div>
 
+    <form class="card p-3 mb-4" (ngSubmit)="onFilter()">
+      <div class="row align-items-end g-3">
+
+        <div class="col-md-3">
+          <label for="fromDate" class="form-label">Date de début</label>
+          <input
+            id="fromDate"
+            class="form-control"
+            type="datetime-local"
+            [(ngModel)]="searchForm.fromDate"
+            name="fromDate"
+          />
+        </div>
+
+        <div class="col-md-3">
+          <label for="toDate" class="form-label">Date de fin</label>
+          <input
+            id="toDate"
+            class="form-control"
+            type="datetime-local"
+            [(ngModel)]="searchForm.toDate"
+            name="toDate"
+          />
+        </div>
+
+        <div class="col-md-3" *ngIf="isAdmin">
+          <label for="userId" class="form-label">Utilisateur</label>
+          <ng-select
+            [items]="owners"
+            bindLabel="fullName"
+            bindValue="id"
+            [(ngModel)]="searchForm.userId"
+            name="userId"
+            [searchable]="true"
+            [clearable]="true"
+            [placeholder]="searchForm.userId ? '' : '-- Aucun --'"
+            class="form-control"
+            (clear)="onUserIdClear()"
+            (ngModelChange)="onUserIdChange($event)"
+          >
+            <ng-template ngLabelTemplate let-owner="item">
+              {{ owner.firstName }} {{ owner.lastName }}
+            </ng-template>
+            <ng-template ngOptionTemplate let-owner="item">
+              {{ owner.firstName }} {{ owner.lastName }}
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="paymentStatus" class="form-label">Paiement</label>
+          <ng-select
+            [items]="paymentStatusOptions"
+            bindLabel="label"
+            bindValue="value"
+            (clear)="onPaymentStatusClear()"
+            [(ngModel)]="searchForm.paymentStatus"
+            name="paymentStatus"
+            [searchable]="false"
+            [clearable]="true"
+            [placeholder]="searchForm.paymentStatus ? '' : '-- Tous --'"
+            class="form-control"
+          >
+            <ng-template ngOptionTemplate let-status="item">
+              <i>{{ status.label }}</i>
+            </ng-template>
+            <ng-template ngLabelTemplate let-status="item">
+              <i>{{ status.label }}</i>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-3">Rechercher</button>
+    </form>
+
+
     <div class="card me-2">
       <div class="card-body d-flex flex-column align-items-center">
         <app-table [data]="reservations">

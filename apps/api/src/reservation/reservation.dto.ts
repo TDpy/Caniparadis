@@ -141,15 +141,15 @@ export class SearchReservationDto
 {
   @IsOptional()
   @IsDateString()
-  fromDate?: Date;
+  fromDate?: string;
 
   @IsOptional()
   @IsDateString()
-  toDate?: Date;
+  toDate?: string;
 
   @IsOptional()
   @IsNumber()
-  @Type(() => Number) // 👉 transforme string en number automatiquement
+  @Type(() => Number)
   userId?: number;
 
   @IsOptional()
