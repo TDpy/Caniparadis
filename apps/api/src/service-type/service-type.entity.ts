@@ -10,4 +10,7 @@ export class ServiceTypeEntity {
 
   @Column()
   description: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price: number;
 }

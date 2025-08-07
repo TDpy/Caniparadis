@@ -9,6 +9,7 @@ export const ServiceTypeMapper = {
       id: serviceType.id,
       name: serviceType.name,
       description: serviceType.description,
+      price: serviceType.price,
     };
   },
 

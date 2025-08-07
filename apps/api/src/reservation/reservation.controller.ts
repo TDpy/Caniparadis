@@ -7,6 +7,8 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -16,11 +18,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import {CheckAdminGuard} from "../guard/admin.guard";
+import {CheckUserParamId} from "../decorators/userId.decorator";
+import { CheckAdminGuard } from '../guard/admin.guard';
+import {CheckUserParamIdGuard} from "../guard/userId.guard";
 import {
   CreateReservationDto,
   ProposeNewSlotDto,
   ReservationDto,
+  SearchReservationDto,
   UpdatePaymentDto,
   UpdateReservationDto,
 } from './reservation.dto';
@@ -40,21 +45,28 @@ export class ReservationController {
   })
   async create(
     @Body() createReservationDto: CreateReservationDto,
+    @Req() req: Request,
   ): Promise<SharedReservationDto> {
-    const data = await this.reservationService.create({
-      ...createReservationDto,
-    });
+    const data = await this.reservationService.create(
+      {
+        ...createReservationDto,
+      },
+      req['user'],
+    );
     return ReservationMapper.toDto(data);
   }
 
   @Get()
-  @UseGuards(CheckAdminGuard)
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('userId')
   @ApiBearerAuth()
   @ApiCreatedResponse({
     type: [ReservationDto],
   })
-  async findAll(): Promise<SharedReservationDto[]> {
-    const data = await this.reservationService.findAll();
+  async findAll(
+    @Query() criteria: SearchReservationDto,
+  ): Promise<SharedReservationDto[]> {
+    const data = await this.reservationService.findAll(criteria);
     return ReservationMapper.toDtos(data);
   }
 
@@ -99,8 +111,11 @@ export class ReservationController {
   @ApiCreatedResponse({
     type: ReservationDto,
   })
-  async accept(@Param('id') id: string): Promise<SharedReservationDto> {
-    const data = await this.reservationService.accept(+id);
+  async accept(
+    @Param('id') id: string,
+    @Req() req: Request,
+  ): Promise<SharedReservationDto> {
+    const data = await this.reservationService.accept(+id, req['user']);
     return ReservationMapper.toDto(data);
   }
 
@@ -113,10 +128,15 @@ export class ReservationController {
   async proposeNewSlot(
     @Param('id') id: string,
     @Body() proposeNewSlotDto: ProposeNewSlotDto,
+    @Req() req: Request,
   ): Promise<SharedReservationDto> {
-    const data = await this.reservationService.proposeNewSlot(+id, {
-      ...proposeNewSlotDto,
-    });
+    const data = await this.reservationService.proposeNewSlot(
+      +id,
+      {
+        ...proposeNewSlotDto,
+      },
+      req['user'],
+    );
     return ReservationMapper.toDto(data);
   }
 
@@ -131,6 +151,7 @@ export class ReservationController {
   }
 
   @Post(':id/payment')
+  @UseGuards(CheckAdminGuard)
   @ApiBearerAuth()
   @ApiBody({ type: UpdatePaymentDto })
   @ApiCreatedResponse({

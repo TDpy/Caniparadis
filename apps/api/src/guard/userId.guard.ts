@@ -39,6 +39,9 @@ export class CheckUserParamIdGuard implements CanActivate {
     if (!paramValue) {
       paramValue = request.body[paramName];
     }
+    if (!paramValue) {
+      paramValue = request.query[paramName];
+    }
 
     if (!paramValue) {
       throw new ForbiddenException(

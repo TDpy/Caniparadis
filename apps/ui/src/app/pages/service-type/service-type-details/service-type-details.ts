@@ -47,7 +47,8 @@ export class ServiceTypeDetails {
       next: (serviceType: SharedServiceTypeDto) => {
         this.serviceType = {
           name: serviceType.name,
-          description: serviceType.description
+          description: serviceType.description,
+          price: +serviceType.price
         };
       },
       error: () => {
@@ -92,7 +93,9 @@ export class ServiceTypeDetails {
   isValid(): boolean {
     return !!(
       this.serviceType.name &&
-      this.serviceType.description
+      this.serviceType.description &&
+        this.serviceType.price &&
+        this.serviceType.price > 0
     );
   }
 

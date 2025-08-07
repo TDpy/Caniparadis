@@ -40,8 +40,8 @@ describe('ServiceTypeService', () => {
 
   describe('create', () => {
     it('should save and return a new service type', async () => {
-      const input: CreateServiceType = { name: 'Toilettage', description: 'Description' };
-      const result = { id: 1, name: 'Toilettage', description: 'Description' };
+      const input: CreateServiceType = { name: 'Toilettage', description: 'Description', price: 12.34 };
+      const result = { id: 1, name: 'Toilettage', description: 'Description', price: 12.34 };
 
       repo.save.mockResolvedValue(result);
 
@@ -55,8 +55,8 @@ describe('ServiceTypeService', () => {
   describe('findAll', () => {
     it('should return all service types ordered by id ASC', async () => {
       const list = [
-        { id: 1, name: 'Toilettage', description: 'Description' },
-        { id: 2, name: 'Vétérinaire', description: 'Description' },
+        { id: 1, name: 'Toilettage', description: 'Description', price: 12.34 },
+        { id: 2, name: 'Vétérinaire', description: 'Description', price: 12.34 },
       ];
 
       repo.find.mockResolvedValue(list);
@@ -70,7 +70,7 @@ describe('ServiceTypeService', () => {
 
   describe('findById', () => {
     it('should return service type if found', async () => {
-      const entity = { id: 1, name: 'Toilettage', description: 'Description' };
+      const entity = { id: 1, name: 'Toilettage', description: 'Description', price: 12.34 };
 
       repo.findOne.mockResolvedValue(entity);
 
@@ -89,9 +89,9 @@ describe('ServiceTypeService', () => {
 
   describe('update', () => {
     it('should update and return updated service type', async () => {
-      const existing = { id: 1, name: 'Toilettage', description: 'description' };
-      const update: UpdateServiceType = { name: 'Toilettage Deluxe' };
-      const merged = { id: 1, name: 'Toilettage Deluxe', description: 'description' };
+      const existing = { id: 1, name: 'Toilettage', description: 'description', price: 12.34 };
+      const update: UpdateServiceType = { name: 'Toilettage Deluxe', price: 12.34  };
+      const merged = { id: 1, name: 'Toilettage Deluxe', description: 'description', price: 12.34 };
 
       jest.spyOn(service, 'findById').mockResolvedValue(existing);
       repo.merge.mockReturnValue(merged);
@@ -108,7 +108,7 @@ describe('ServiceTypeService', () => {
 
   describe('remove', () => {
     it('should remove and return removed service type', async () => {
-      const entity = { id: 1, name: 'Toilettage', description: 'Description' };
+      const entity = { id: 1, name: 'Toilettage', description: 'Description', price: 20.02};
 
       jest.spyOn(service, 'findById').mockResolvedValue(entity);
       repo.remove.mockResolvedValue(entity);

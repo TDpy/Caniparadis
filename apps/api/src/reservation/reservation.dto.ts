@@ -4,11 +4,13 @@ import {
   SharedCreateReservationDto,
   SharedProposeNewSlotDto,
   SharedReservationDto,
+  SharedSearchReservationCriteriaDto,
   SharedUpdatePaymentDto,
   SharedUpdateReservationDto,
 } from '@caniparadis/dtos/dist/reservationDto';
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsDateString,
   IsEnum,
@@ -43,7 +45,10 @@ export class CreateReservationDto implements SharedCreateReservationDto {
   @IsDateString()
   endDate: string;
 
-  @ApiProperty({ required: false, example: 'Retard possible suite examen de l\'animal' })
+  @ApiProperty({
+    required: false,
+    example: "Retard possible suite examen de l'animal",
+  })
   @IsOptional()
   @IsString()
   comment?: string;
@@ -95,7 +100,10 @@ export class ReservationDto implements SharedReservationDto {
   @ApiProperty({ required: false, example: 50.08 })
   amountPaid?: number;
 
-  @ApiProperty({ required: false, example: 'Retard possible suite examen de l\'animal' })
+  @ApiProperty({
+    required: false,
+    example: "Retard possible suite examen de l'animal",
+  })
   comment?: string;
 }
 
@@ -118,7 +126,7 @@ export class ProposeNewSlotDto implements SharedProposeNewSlotDto {
 
 export class UpdatePaymentDto implements SharedUpdatePaymentDto {
   @ApiProperty({ enum: PaymentStatus })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(PaymentStatus)
   status: PaymentStatus;
 
@@ -126,4 +134,25 @@ export class UpdatePaymentDto implements SharedUpdatePaymentDto {
   @IsOptional()
   @IsNumber()
   amountPaid?: number;
+}
+
+export class SearchReservationDto
+  implements SharedSearchReservationCriteriaDto
+{
+  @IsOptional()
+  @IsDateString()
+  fromDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  toDate?: Date;
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number) // 👉 transforme string en number automatiquement
+  userId?: number;
+
+  @IsOptional()
+  @IsEnum(PaymentStatus)
+  paymentStatus?: PaymentStatus;
 }

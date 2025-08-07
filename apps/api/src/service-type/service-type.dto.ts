@@ -5,7 +5,7 @@ import {
 } from '@caniparadis/dtos/dist/serviceTypeDto';
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateServiceTypeDto implements SharedCreateServiceTypeDto {
   @ApiProperty({ example: 'Balade en groupe' })
@@ -17,6 +17,11 @@ export class CreateServiceTypeDto implements SharedCreateServiceTypeDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+  @ApiProperty({ example: 60.08 })
+  @IsNotEmpty()
+  @IsNumber()
+  price: number;
 }
 
 export class UpdateServiceTypeDto
@@ -32,4 +37,8 @@ export class ServiceTypeDto implements SharedServiceTypeDto {
 
   @ApiProperty({ example: 'Organisé par X. 8 chiens au maximum' })
   description: string;
+
+  @ApiProperty({ example: 60.08 })
+  price: number;
+
 }

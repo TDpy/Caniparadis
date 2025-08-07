@@ -12,10 +12,13 @@ import {Login} from './pages/auth/login/login';
 import {ResetPassword} from './pages/auth/reset-password/reset-password';
 import {Signup} from './pages/auth/signup/signup';
 import {Dashboard} from './pages/dashboard/dashboard';
+import {Reservation} from './pages/reservation/reservation';
 import {ServiceType} from './pages/service-type/service-type';
 import {ServiceTypeDetails} from './pages/service-type/service-type-details/service-type-details';
 import {UserPage} from './pages/user/user';
 import {UserDetails} from './pages/user/user-details/user-details';
+import {ReservationCreation} from './pages/reservation/reservation-creation/reservation-creation';
+import {ReservationDetails} from './pages/reservation/reservation-details/reservation-details';
 
 export const routes: Routes = [
   {
@@ -93,7 +96,7 @@ export const routes: Routes = [
       },
       {
         path: 'service-type',
-        canActivate:[AdminGuard],
+        canActivate: [AdminGuard],
         children: [
           {
             path: 'create',
@@ -110,8 +113,21 @@ export const routes: Routes = [
         ],
       },
       {
-        path: 'booking',
-        component: Dashboard,
+        path: 'reservation',
+        children: [
+          {
+            path: 'create',
+            component: ReservationCreation,
+          },
+          {
+            path: ':id',
+            component: ReservationDetails,
+          },
+          {
+            path: '',
+            component: Reservation,
+          },
+        ],
       },
       {
         path: 'profile',
