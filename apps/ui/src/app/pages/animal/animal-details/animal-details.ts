@@ -10,7 +10,7 @@ import {
 } from '@caniparadis/dtos/dist/animalDto';
 import {Role} from '@caniparadis/dtos/dist/userDto';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {catchError, EMPTY, map, mergeMap, of, tap} from 'rxjs';
+import {catchError, EMPTY, map, mergeMap, tap} from 'rxjs';
 
 import {AnimalService} from '../../../services/animal.service';
 import {AuthService} from '../../../services/auth.service';

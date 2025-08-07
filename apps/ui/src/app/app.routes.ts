@@ -13,12 +13,12 @@ import {ResetPassword} from './pages/auth/reset-password/reset-password';
 import {Signup} from './pages/auth/signup/signup';
 import {Dashboard} from './pages/dashboard/dashboard';
 import {Reservation} from './pages/reservation/reservation';
+import {ReservationCreation} from './pages/reservation/reservation-creation/reservation-creation';
+import {ReservationDetails} from './pages/reservation/reservation-details/reservation-details';
 import {ServiceType} from './pages/service-type/service-type';
 import {ServiceTypeDetails} from './pages/service-type/service-type-details/service-type-details';
 import {UserPage} from './pages/user/user';
 import {UserDetails} from './pages/user/user-details/user-details';
-import {ReservationCreation} from './pages/reservation/reservation-creation/reservation-creation';
-import {ReservationDetails} from './pages/reservation/reservation-details/reservation-details';
 
 export const routes: Routes = [
   {

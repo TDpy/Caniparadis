@@ -153,7 +153,7 @@ export class Reservation {
   }
 
   private formatDateForInputLocal(date: Date): string {
-    const pad = (n: number) => n.toString().padStart(2, '0');
+    const pad = (n: number) :string => n.toString().padStart(2, '0');
 
     const year = date.getFullYear();
     const month = pad(date.getMonth() + 1);
