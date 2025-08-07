@@ -84,7 +84,7 @@ export class ReservationService {
     }
 
     if (criteria.toDate) {
-      query.andWhere('reservation.startDate <= :toDate', {
+      query.andWhere('reservation.endDate <= :toDate', {
         toDate: criteria.toDate,
       });
     }

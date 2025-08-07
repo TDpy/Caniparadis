@@ -41,8 +41,8 @@ export interface SharedReservationDto {
 }
 
 export interface SharedSearchReservationCriteriaDto {
-  fromDate?: Date;
-  toDate?: Date;
+  fromDate?: string;
+  toDate?: string;
   userId?: number;
   paymentStatus?: PaymentStatus;
 }
