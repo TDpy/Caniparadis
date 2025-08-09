@@ -76,7 +76,7 @@ jobs:
         run: pnpm ui:lint
 
       - name: Packages security audit
-        run: pnpm audit > audit.txt
+        run: pnpm audit > audit.txt || true
 
       - name: Post PR comment about audit result
         uses: marocchino/sticky-pull-request-comment@v2
