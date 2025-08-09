@@ -7,6 +7,10 @@ on:
       - dev
   pull_request:
 
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   ci:
     runs-on: ubuntu-latest
