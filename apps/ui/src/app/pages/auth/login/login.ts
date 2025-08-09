@@ -49,8 +49,12 @@ export class Login {
           this.toasterService.error('Erreur lors de la connexion, veuillez réessayer.');
         }
       }),
-      catchError(() => {
-        this.toasterService.error('Connexion impossible, vérifiez vos identifiants.');
+      catchError((error) => {
+        if (error.status === 429) {
+        this.toasterService.error('Trop d\'essais. Veuillez réessayer dans quelques minutes.');
+        } else {
+          this.toasterService.error('Connexion impossible, vérifiez vos identifiants.');
+        }
         return EMPTY;
       })
     ).subscribe();
