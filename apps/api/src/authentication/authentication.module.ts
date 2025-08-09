@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { RedisModule } from '@nestjs-modules/ioredis';
 
 import { EmailService } from '../email/email.service';
@@ -10,7 +11,14 @@ import { AuthenticationService } from './authentication.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 180_000,
+          limit: 10,
+        },
+      ],
+    }),    ConfigModule.forRoot({
       envFilePath: '../../.env',
     }),
     JwtModule.register({

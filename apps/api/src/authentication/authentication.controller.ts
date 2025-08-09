@@ -1,12 +1,13 @@
 import {SharedTokenDto} from "@caniparadis/dtos/dist/authDto";
 import { SharedUserDto } from '@caniparadis/dtos/dist/userDto';
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 import { Public } from '../decorators/public.decorator';
 import { UserDto } from '../user/user.dto';
@@ -43,6 +44,7 @@ export class AuthenticationController {
       .then((result) => ({ value: result }));
   }
 
+  @UseGuards(ThrottlerGuard)
   @Public()
   @Post('login')
   @ApiBody({ type: LoginDto })
