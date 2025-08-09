@@ -24,6 +24,7 @@ import {
 
 import { CheckUserParamId } from '../decorators/userId.decorator';
 import { CheckAdminGuard } from '../guard/admin.guard';
+import {ReservationOwnerOrAdminGuard} from "../guard/reservationOwner.guard";
 import { CheckUserParamIdGuard } from '../guard/userId.guard';
 import {
   CreateReservationDto,
@@ -79,6 +80,7 @@ export class ReservationController {
   }
 
   @Get(':id')
+  @UseGuards(ReservationOwnerOrAdminGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({
     type: ReservationDto,
