@@ -75,6 +75,14 @@ jobs:
       - name: Lint UI
         run: pnpm ui:lint
 
+      - name: Packages security audit
+        run: pnpm audit > audit.txt
+
+      - name: Post PR comment about audit result
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: audit.txt
+
       - name: Run API unit tests
         run: pnpm api:test:cov
 
