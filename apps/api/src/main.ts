@@ -18,7 +18,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   app.enableCors({
-    origin: ['http://localhost:4200'],
+    origin: ['http://localhost:4200', 'https://caniparadis-ui.vercel.app'],
     credentials: true,
   });
 
