@@ -28,7 +28,9 @@ import { AuthenticationService } from './authentication.service';
     }),
     RedisModule.forRoot({
       type: 'single',
-      url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+      url: process.env.REDIS_PASSWORD
+        ? `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
+        : `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     }),
     UserModule,
   ],
