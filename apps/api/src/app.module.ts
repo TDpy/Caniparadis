@@ -31,6 +31,7 @@ import { UserModule } from './user/user.module';
       username: process.env.POSTGRES_USER,
       autoLoadEntities: true,
       database: process.env.POSTGRES_DB,
+      ssl: process.env.POSTGRES_SSL === 'true' ? { rejectUnauthorized: false } : false,
       synchronize: true,
       logging: false,
     }),
