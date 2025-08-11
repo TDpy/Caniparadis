@@ -1,0 +1,50 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Planning de la journée</h5>
+    <div class="d-flex">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="tabMode === 'nursery'" (click)="tabMode = 'nursery'">Garderie</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="tabMode === 'other'" (click)="tabMode = 'other'">Autre</a>
+        </li>
+      </ul>
+    </div>
+
+    @if (tabMode === 'nursery') {
+      <app-table [data]="dtaDtos">
+        <ng-template column="Chien" let-data>
+          {{ data.name }}
+        </ng-template>
+        <ng-template column="Heure entrée" let-data>
+          {{ data.startDate }}
+        </ng-template>
+        <ng-template column="Heure sortie" let-data>
+          {{ data.endDate }}
+        </ng-template>
+        <ng-template column="Prix TTC" let-data>
+          {{ data.price }}
+        </ng-template>
+      </app-table>
+    } @else if (tabMode === 'other') {
+      <app-table [data]="otherDataDtos">
+        <ng-template column="Type de reservation" let-data>
+          {{ data.val1 }}
+        </ng-template>
+        <ng-template column="Prestation" let-data>
+          {{ data.val2 }}
+        </ng-template>
+        <ng-template column="Humain" let-data>
+          {{ data.val3 }}
+        </ng-template>
+        <ng-template column="Animal" let-data>
+          {{ data.val4 }}
+        </ng-template>
+        <ng-template column="Mode de paiement" let-data>
+          {{ data.val5 }}
+        </ng-template>
+      </app-table>
+    }
+  </div>
+</div>

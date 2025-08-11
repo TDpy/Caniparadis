@@ -1,0 +1,21 @@
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+.tooltip-error {
+  position: absolute;
+  top: 20px;
+  right: -5px;
+  transform: translate(100%, -50%);
+  background-color: #dc3545;
+  color: white;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}

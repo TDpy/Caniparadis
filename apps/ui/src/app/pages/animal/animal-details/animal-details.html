@@ -1,0 +1,117 @@
+<div class="container mt-4">
+  <h2>{{ isEditMode ? 'Modifier un animal' : 'Créer un animal' }}</h2>
+
+  <form (ngSubmit)="onSubmit()" #animalForm="ngForm" novalidate>
+
+    <div class="mb-3 position-relative">
+      <label for="name" class="form-label">Nom *</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        class="form-control"
+        [(ngModel)]="animal.name"
+        required
+        #nameRef="ngModel"
+        [class.is-invalid]="nameRef.invalid && (nameRef.dirty || nameRef.touched || formSubmitted)"
+      />
+      <div class="invalid-feedback" *ngIf="nameRef.errors?.['required']">
+        Nom requis.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label for="type" class="form-label">Type *</label>
+      <input
+        id="type"
+        name="type"
+        type="text"
+        class="form-control"
+        [(ngModel)]="animal.type"
+        required
+        #typeRef="ngModel"
+        [class.is-invalid]="typeRef.invalid && (typeRef.dirty || typeRef.touched || formSubmitted)"
+      />
+      <div class="invalid-feedback" *ngIf="typeRef.errors?.['required']">
+        Type requis.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label for="breed" class="form-label">Race *</label>
+      <input
+        id="breed"
+        name="breed"
+        type="text"
+        class="form-control"
+        [(ngModel)]="animal.breed"
+        required
+        #breedRef="ngModel"
+        [class.is-invalid]="breedRef.invalid && (breedRef.dirty || breedRef.touched || formSubmitted)"
+      />
+      <div class="invalid-feedback" *ngIf="breedRef.errors?.['required']">
+        Race requise.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label class="form-label">Propriétaire *</label>
+      <ng-select
+        [items]="owners"
+        bindLabel="fullName"
+        bindValue="id"
+        [(ngModel)]="animal.ownerId"
+        name="ownerId"
+        [searchable]="true"
+        [clearable]="true"
+        class="form-control"
+        [class.is-invalid]="ownerRef.invalid && (ownerRef.dirty || ownerRef.touched || formSubmitted)"
+        #ownerRef="ngModel"
+        required
+      >
+        <ng-template ngLabelTemplate let-owner="item">
+          {{ owner.firstName }} {{ owner.lastName }} ({{ owner.email }})
+        </ng-template>
+      </ng-select>
+      <div class="invalid-feedback" *ngIf="ownerRef.errors?.['required'] && (formSubmitted || ownerRef.touched)">
+        Propriétaire requis.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label for="sex" class="form-label">Sexe *</label>
+      <select
+        id="sex"
+        name="sex"
+        class="form-select"
+        [(ngModel)]="animal.sex"
+        required
+        #sexRef="ngModel"
+        [class.is-invalid]="sexRef.invalid && (sexRef.dirty || sexRef.touched || formSubmitted)"
+      >
+        <option [ngValue]="null">Sélectionner un sexe</option>
+        @for (sex of sexes; track sex.valueOf()) {
+        <option [ngValue]="sex">{{ sex }}</option>
+        }
+      </select>
+      <div class="invalid-feedback" *ngIf="sexRef.errors?.['required']">
+        Sexe requis.
+      </div>
+    </div>
+
+    <div class="form-check mb-3">
+      <input
+        id="isSterilized"
+        name="isSterilized"
+        type="checkbox"
+        class="form-check-input"
+        [(ngModel)]="animal.isSterilized"
+      />
+      <label for="isSterilized" class="form-check-label">Stérilisé(e)</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!isValid()">
+      {{ isEditMode ? 'Modifier' : 'Créer' }}
+    </button>
+  </form>
+</div>

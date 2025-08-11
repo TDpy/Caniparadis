@@ -20,7 +20,7 @@ export default tseslint.config(pluginUnicorn.configs['flat/recommended'], {
     'unicorn/no-useless-undefined': 'off',
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/prefer-top-level-await': 'off',
-
+    'unicorn/import-style': 'off',
     'unicorn/no-anonymous-default-export': 'off',
 
     /** Those rules does not work correctly atm */

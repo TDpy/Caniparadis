@@ -1,5 +1,5 @@
 {
-  "name": "@spottobe/eslint-config",
+  "name": "@caniparadis/eslint-config",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -21,8 +21,6 @@
     "eslint-plugin-json": "^4.0.1",
     "eslint-plugin-perfectionist": "^3.8.0",
     "eslint-plugin-promise": "^7.1.0",
-    "eslint-plugin-react": "^7.36.1",
-    "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-sonarjs": "^2.0.2",
     "eslint-plugin-unicorn": "^55.0.0",
     "eslint-plugin-unused-imports": "^4.1.4",

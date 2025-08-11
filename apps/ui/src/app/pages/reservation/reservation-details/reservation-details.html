@@ -1,0 +1,116 @@
+<div class="container mt-4" *ngIf="reservation">
+  <h2>Détail de la réservation</h2>
+
+  <div class="mb-3">
+    <strong>Animal :</strong> {{ reservation.animal.name }}
+  </div>
+
+  <div class="mb-3">
+    <strong>Type de prestation :</strong> {{ reservation.serviceType.name }}
+  </div>
+
+  <div class="mb-3">
+    <strong>Date de début :</strong> {{ formatDate(reservation.startDate) }}
+  </div>
+
+  <div class="mb-3">
+    <strong>Date de fin :</strong> {{ formatDate(reservation.endDate) }}
+  </div>
+
+  <div class="mb-3" *ngIf="reservation.comment">
+    <strong>Commentaire :</strong> {{ reservation.comment }}
+  </div>
+
+  <div class="mb-3">
+    <strong>Statut :</strong> {{ reservation.status }}
+  </div>
+
+  <div class="mb-3">
+    <strong>Paiement :</strong> {{ reservation.paymentStatus }}
+    <span>{{ amoutPaid | number: '1.2-2' }} / {{ reservation.serviceType.price }} €</span>
+  </div>
+
+  <hr/>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      Statut de la réservation
+    </div>
+    <div class="card-body">
+      <button
+        class="btn btn-success me-2"
+        (click)="accept()"
+        [disabled]="isAcceptDisabled()">
+        Accepter
+      </button>
+      <button
+        class="btn btn-danger"
+        (click)="cancel()"
+        [disabled]="reservation.status === 'CANCELLED'">
+        Annuler
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-header">
+          Reproposer un créneau
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="proposeStart" class="form-label">Date de début</label>
+            <input type="datetime-local" id="proposeStart" class="form-control" [(ngModel)]="proposeStartDate"/>
+          </div>
+          <div class="mb-3">
+            <label for="proposeEnd" class="form-label">Date de fin</label>
+            <input type="datetime-local" id="proposeEnd" class="form-control" [(ngModel)]="proposeEndDate"/>
+          </div>
+          <div class="mb-3">
+            <label for="proposeComment" class="form-label">Commentaire</label>
+            <textarea id="proposeComment" class="form-control" [(ngModel)]="proposeComment"></textarea>
+          </div>
+          <button class="btn btn-warning"
+                  [disabled]="reservation.status === 'CANCELLED'"
+                  (click)="proposeNewSlot()">Reproposer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    @if (currentUser.role === Role.ADMIN) {
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-header">
+            Enregistrer un paiement
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="paymentAmount" class="form-label">Montant payé (€)</label>
+              <input
+                id="paymentAmount"
+                type="number"
+                min="0"
+                step="0.01"
+                class="form-control"
+                [(ngModel)]="paymentAmount"
+                [disabled]="reservation.status === 'CANCELLED'"
+              />
+            </div>
+            <button class="btn btn-primary  me-2" [disabled]="isPaymentDisabled()" (click)="updatePayment()">Valider le
+              paiement
+            </button>
+            <button
+              class="btn btn-danger"
+              (click)="refund()"
+              [disabled]="reservation.status !== 'CANCELLED'">
+              Rembourser
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>

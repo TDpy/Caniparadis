@@ -1,3 +1,4 @@
+import { SharedUserDto } from '@caniparadis/dtos/dist/userDto';
 import {
   Body,
   Controller,
@@ -9,75 +10,79 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from '@spottobe/dtos/dist/userDTO';
-import { plainToInstance } from 'class-transformer';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { CheckUserParamId } from '../decorators/userId.decorator';
+import {CheckAdminGuard} from "../guard/admin.guard";
 import { CheckUserParamIdGuard } from '../guard/userId.guard';
-import { User } from './entities/user';
+import { CreateUserDto, UpdateUserDto, UserDto } from './user.dto';
+import { UserMapper } from './user.mapper';
 import { UserService } from './user.service';
+import { CreateUserInput, UpdateUserInput } from './user.type';
 
+@ApiTags('Users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    const data = await this.userService.create(createUserDto);
-
-    return {
-      success: true,
-      data: plainToInstance(User, data),
-      message: 'User Created Successfully',
-    };
+  @ApiBearerAuth()
+  @ApiBody({ type: CreateUserDto })
+  @ApiCreatedResponse({ type: UserDto })
+  async create(@Body() dto: CreateUserDto): Promise<SharedUserDto> {
+    const input: CreateUserInput = { ...dto };
+    const data = await this.userService.create(input);
+    return UserMapper.toDto(data);
   }
 
   @Get()
-  async findAll() {
-    const data: User[] = await this.userService.findAll();
-    return {
-      success: true,
-      data: data.map((user: User) => plainToInstance(User, user)),
-      message: 'User Fetched Successfully',
-    };
+  @UseGuards(CheckAdminGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: [UserDto] })
+  async findAll(): Promise<SharedUserDto[]> {
+    const data = await this.userService.findAll();
+    return UserMapper.toDtos(data);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: UserDto })
+  async findOne(@Param('id') id: string): Promise<SharedUserDto> {
     const data = await this.userService.findById(+id);
-    return {
-      success: true,
-      data: plainToInstance(User, data),
-      message: 'User Fetched Successfully',
-    };
+    return UserMapper.toDto(data);
   }
 
   @Patch(':id')
   @UseGuards(CheckUserParamIdGuard)
-  @CheckUserParamId('id') // ici on dit que c'est le paramètre 'id' (route param ou body.id) à vérifier
+  @CheckUserParamId('id')
+  @ApiBearerAuth()
+  @ApiBody({ type: CreateUserDto })
+  @ApiCreatedResponse({ type: UserDto })
   async update(
     @Req() req: Request,
     @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+    @Body() dto: UpdateUserDto,
+  ): Promise<SharedUserDto> {
+    const input: UpdateUserInput = { ...dto };
     if (req['user']?.role !== 'ADMIN') {
-      delete updateUserDto.role;
+      delete input.role;
     }
-    const data = await this.userService.update(+id, updateUserDto);
-    return {
-      success: true,
-      data: plainToInstance(User, data),
-      message: 'User Updated Successfully',
-    };
+    const data = await this.userService.update(+id, input);
+    return UserMapper.toDto(data);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('id')
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: UserDto })
+  async remove(@Param('id') id: string): Promise<SharedUserDto> {
     const data = await this.userService.remove(+id);
-    return {
-      success: true,
-      data: plainToInstance(User, data),
-      message: 'User Deleted Successfully',
-    };
+    return UserMapper.toDto(data);
   }
 }

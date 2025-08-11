@@ -1,0 +1,32 @@
+<table>
+  <thead>
+  <tr>
+    @for (column of columns; track column.name) {
+      <th>
+        {{ column.name }}
+      </th>
+    }
+    @if (isActionColumnDisplayed) {
+      <th>Actions</th>
+    }
+  </tr>
+  </thead>
+  <tbody>
+    @for (row of data; track row) {
+      <tr>
+        @for (col of columns; track col.name) {
+          <td>
+            <ng-container *ngTemplateOutlet="col.template; context: { $implicit: row }"></ng-container>
+          </td>
+        }
+
+        @if (isActionColumnDisplayed) {
+          <td class="actions-cell">
+            <i class="fa fa-pen pen-icon" (click)="edit.emit(row)"></i>
+            <i class="fa fa-trash trash-icon" (click)="confirmDelete(row)"></i>
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>

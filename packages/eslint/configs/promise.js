@@ -1,7 +1,14 @@
 // @ts-check-disabled
 
 import promisePlugin from 'eslint-plugin-promise';
-
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(promisePlugin.configs['flat/recommended']);
+export default [
+  ...tseslint.config(promisePlugin.configs['flat/recommended']),
+  {
+    rules: {
+      'promise/catch-or-return': 'off',
+      'promise/valid-params': 'off',
+    },
+  },
+];

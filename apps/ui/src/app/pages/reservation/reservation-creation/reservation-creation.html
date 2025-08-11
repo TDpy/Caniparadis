@@ -1,0 +1,92 @@
+<div class="container mt-4">
+  <h2>Créer une réservation</h2>
+
+  <form (ngSubmit)="onSubmit()" #reservationForm="ngForm" novalidate>
+
+    <div class="mb-3 position-relative">
+      <label for="animalId" class="form-label">Animal *</label>
+      <ng-select
+        [items]="animals"
+        bindLabel="name"
+        bindValue="id"
+        [(ngModel)]="reservation.animalId"
+        name="animalId"
+        id="animalId"
+        required
+        class="form-control"
+        [class.is-invalid]="formSubmitted && !reservation.animalId"
+      ></ng-select>
+      <div class="invalid-feedback" *ngIf="formSubmitted && !reservation.animalId">
+        Sélectionner un animal est requis.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label for="serviceTypeId" class="form-label">Type de prestation *</label>
+      <ng-select
+        [items]="serviceTypes"
+        bindLabel="name"
+        bindValue="id"
+        [(ngModel)]="reservation.serviceTypeId"
+        name="serviceTypeId"
+        id="serviceTypeId"
+        required
+        class="form-control"
+        [class.is-invalid]="formSubmitted && !reservation.serviceTypeId"
+      ></ng-select>
+      <div class="invalid-feedback" *ngIf="formSubmitted && !reservation.serviceTypeId">
+        Sélectionner un type de prestation est requis.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label for="startDate" class="form-label">Date de début *</label>
+      <input
+        type="datetime-local"
+        id="startDate"
+        name="startDate"
+        class="form-control"
+        [(ngModel)]="reservation.startDate"
+        required
+        [class.is-invalid]="formSubmitted && (!reservation.startDate || isDateRangeInvalid)"
+      />
+      <div class="invalid-feedback" *ngIf="formSubmitted && !reservation.startDate">
+        Date de début requise.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label for="endDate" class="form-label">Date de fin *</label>
+      <input
+        type="datetime-local"
+        id="endDate"
+        name="endDate"
+        class="form-control"
+        [(ngModel)]="reservation.endDate"
+        required
+        [class.is-invalid]="formSubmitted && (!reservation.endDate || isDateRangeInvalid)"
+      />
+      <div class="invalid-feedback" *ngIf="formSubmitted && !reservation.endDate">
+        Date de fin requise.
+      </div>
+      <div class="invalid-feedback" *ngIf="formSubmitted && isDateRangeInvalid">
+        La date de fin doit être postérieure à la date de début.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label for="comment" class="form-label">Commentaire</label>
+      <textarea
+        id="comment"
+        name="comment"
+        class="form-control"
+        rows="3"
+        [(ngModel)]="reservation.comment"
+      ></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!isValid()">
+      Créer la réservation
+    </button>
+  </form>
+</div>

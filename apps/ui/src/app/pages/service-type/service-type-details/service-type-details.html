@@ -1,0 +1,63 @@
+<div class="container mt-4">
+  <h2>{{ isEditMode ? 'Modifier une prestation' : 'Créer une prestation' }}</h2>
+
+  <form (ngSubmit)="onSubmit()" #serviceTypeForm="ngForm" novalidate>
+
+    <div class="mb-3 position-relative">
+      <label for="name" class="form-label">Titre *</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        class="form-control"
+        [(ngModel)]="serviceType.name"
+        required
+        #nameRef="ngModel"
+        [class.is-invalid]="nameRef.invalid && (nameRef.dirty || nameRef.touched || formSubmitted)"
+      />
+      <div class="invalid-feedback" *ngIf="nameRef.errors?.['required']">
+        Titre requis.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label for="description" class="form-label">Description *</label>
+      <textarea
+        id="description"
+        name="description"
+        class="form-control"
+        [(ngModel)]="serviceType.description"
+        required
+        #descriptionRef="ngModel"
+        [class.is-invalid]="descriptionRef.invalid && (descriptionRef.dirty || descriptionRef.touched || formSubmitted)"
+        rows="4"
+      ></textarea>
+      <div class="invalid-feedback" *ngIf="descriptionRef.errors?.['required']">
+        Description requise.
+      </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+      <label for="price" class="form-label">Prix unitaire *</label>
+      <input
+        id="price"
+        name="price"
+        type="number"
+        class="form-control"
+        [(ngModel)]="serviceType.price"
+        required
+        step="0.01"
+        min="0"
+        #priceRef="ngModel"
+        [class.is-invalid]="priceRef.invalid && (priceRef.dirty || priceRef.touched || formSubmitted)"
+      />
+      <div class="invalid-feedback" *ngIf="priceRef.errors?.['required']">
+        Prix requis.
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!isValid()">
+      {{ isEditMode ? 'Modifier' : 'Créer' }}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,90 @@
+import { SharedAnimalDto } from '@caniparadis/dtos/dist/animalDto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CheckAdminGuard } from 'src/guard/admin.guard';
+
+import {CheckUserParamId} from "../decorators/userId.decorator";
+import {CheckUserParamIdGuard} from "../guard/userId.guard";
+import { AnimalDto, CreateAnimalDto, UpdateAnimalDto } from './animal.dto';
+import { AnimalMapper } from './animal.mapper';
+import { AnimalService } from './animal.service';
+
+@ApiTags('Animals')
+@Controller('animals')
+export class AnimalController {
+  constructor(private readonly animalService: AnimalService) {}
+
+  @Post()
+  @ApiBearerAuth()
+  @ApiBody({ type: CreateAnimalDto })
+  @ApiCreatedResponse({ type: AnimalDto })
+  async create(@Body() dto: CreateAnimalDto): Promise<SharedAnimalDto> {
+    const data = await this.animalService.create({ ...dto });
+    return AnimalMapper.toDto(data);
+  }
+
+  @Get()
+  @UseGuards(CheckAdminGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: [AnimalDto] })
+  async findAll(): Promise<SharedAnimalDto[]> {
+    const data = await this.animalService.findAll();
+    return AnimalMapper.toDtos(data);
+  }
+
+  @Get('owner/:id')
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('id')
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: AnimalDto })
+  async findByOwnerId(@Param('id') id: string): Promise<SharedAnimalDto[]> {
+    const data = await this.animalService.findByOwnerId(+id);
+    return AnimalMapper.toDtos(data);
+  }
+
+  @Get(':id')
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: AnimalDto })
+  async findOne(@Param('id') id: string): Promise<SharedAnimalDto> {
+    const data = await this.animalService.findById(+id);
+    return AnimalMapper.toDto(data);
+  }
+
+  @Patch(':id')
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('ownerId')
+  @ApiBearerAuth()
+  @ApiBody({ type: UpdateAnimalDto })
+  @ApiCreatedResponse({ type: AnimalDto })
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateAnimalDto,
+  ): Promise<SharedAnimalDto> {
+    const data = await this.animalService.update(+id, { ...dto });
+    return AnimalMapper.toDto(data);
+  }
+
+  @Delete(':id')
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('ownerId')
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: AnimalDto })
+  async remove(@Param('id') id: string): Promise<SharedAnimalDto> {
+    const data = await this.animalService.remove(+id);
+    return AnimalMapper.toDto(data);
+  }
+}

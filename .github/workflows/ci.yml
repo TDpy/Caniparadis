@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+
+      JWT_SECRET: secret
+      BCRYPT_PASSWORD_SALT: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build shared packages
+        run: pnpm build:packages
+
+      - name: Lint API
+        run: pnpm api:lint
+
+      - name: Lint UI
+        run: pnpm ui:lint
+
+      - name: Packages security audit
+        run: pnpm audit > audit.txt || true
+
+      - name: Post PR comment about audit result
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: audit.txt
+
+      - name: Run API unit tests
+        run: pnpm api:test:cov
+
+      - name: Run API e2e tests
+        run: pnpm api:test:e2e

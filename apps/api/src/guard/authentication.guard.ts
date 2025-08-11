@@ -57,7 +57,7 @@ export class AuthenticationGuard implements CanActivate {
     try {
       isTokenUpToDate = await this.authService.isJwtTokenUpToDate(token);
     } catch {
-      throw new UnauthorizedException('Authentication server unreachable');
+      throw new UnauthorizedException('Invalid token (004)');
     }
     if (!isTokenUpToDate) {
       throw new UnauthorizedException(

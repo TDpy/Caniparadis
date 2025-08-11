@@ -1,19 +1,25 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SentryModule } from '@sentry/nestjs/setup';
 
+import { AnimalModule } from './animal/animal.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthenticationService } from './authentication/authentication.service';
 import { EmailModule } from './email/email.module';
 import { AuthenticationGuard } from './guard/authentication.guard';
+import { ReservationModule } from './reservation/reservation.module';
+import { SeederModule } from './seeder/seeder.module';
+import { SeederService } from './seeder/seeder.service';
+import { ServiceTypeModule } from './service-type/service-type.module';
 import { UserModule } from './user/user.module';
-import { PasswordUtilsService } from './utils/password-utils.service';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     ConfigModule.forRoot({
       envFilePath: '../../.env',
     }),
@@ -25,17 +31,21 @@ import { PasswordUtilsService } from './utils/password-utils.service';
       username: process.env.POSTGRES_USER,
       autoLoadEntities: true,
       database: process.env.POSTGRES_DB,
+      ssl: process.env.POSTGRES_SSL === 'true' ? { rejectUnauthorized: false } : false,
       synchronize: true,
       logging: false,
     }),
     UserModule,
     AuthenticationModule,
-    EmailModule,
+    EmailModule.register(),
+    SeederModule,
+    AnimalModule,
+    ServiceTypeModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    PasswordUtilsService,
     AuthenticationService,
     {
       provide: APP_GUARD,
@@ -43,4 +53,12 @@ import { PasswordUtilsService } from './utils/password-utils.service';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly seederService: SeederService) {}
+
+  async onModuleInit() {
+    if (process.env.NODE_ENV === 'test') {
+      await this.seederService.run();
+    }
+  }
+}
