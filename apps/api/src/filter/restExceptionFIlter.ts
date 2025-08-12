@@ -17,7 +17,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    Sentry.captureException(exception);
 
     this.logger.error(
       exception instanceof Error
@@ -30,6 +29,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    if (status !== 401) {
+      Sentry.captureException(exception);
+    }
 
     let message: string[] | string = 'An unexpected error occurred';
 
