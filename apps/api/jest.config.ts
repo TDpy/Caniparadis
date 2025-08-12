@@ -14,6 +14,9 @@ const config: Config = {
     '^bcrypt$': "bcryptjs"
   },
   testEnvironment: 'node',
+  collectCoverageFrom: [
+    '**/*.service.ts',
+  ],
 };
 
 export default config;
