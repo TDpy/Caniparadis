@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "ui:dev": "pnpm --filter ui start",
+    "ui:dev": "pnpm --filter ui dev",
     "ui:lint": "pnpm --filter ui lint",
     "api:dev": "pnpm --filter api start:dev",
     "api:test": "pnpm --filter api test",

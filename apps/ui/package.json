@@ -6,6 +6,7 @@
     "start": "ng serve",
     "lint": "eslint \"src/**/*.{ts,html}\" --fix",
     "build": "ng build",
+    "dev": "ng serve --configuration development",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:ui": "node dist/ui/server/server.mjs"
