@@ -9,13 +9,15 @@ import {
 import {Role, SharedUserDto} from '@caniparadis/dtos/dist/userDto';
 import {NgSelectModule} from '@ng-select/ng-select';
 
+import {PaymentTranslatePipe} from '../../../pipes/payment-translate.pipe';
+import {StatusTranslatePipe} from '../../../pipes/status-translate.pipe';
 import {AuthService} from '../../../services/auth.service';
 import {ReservationService} from '../../../services/reservation.service';
 import {ToasterService} from '../../../services/toaster.service';
 
 @Component({
   selector: 'app-reservation-details',
-  imports: [CommonModule, FormsModule, NgSelectModule],
+  imports: [CommonModule, FormsModule, NgSelectModule, PaymentTranslatePipe, StatusTranslatePipe],
   templateUrl: './reservation-details.html',
   standalone: true,
   styleUrl: './reservation-details.scss'
@@ -160,8 +162,9 @@ export class ReservationDetails {
   }
 
   isPaymentDisabled(): boolean {
-    return this.reservation.status === 'CANCELLED' ||
-      (+this.amoutPaid + +this.paymentAmount > this.reservation?.serviceType?.price)
+    return this.reservation.status !== 'CONFIRMED' ||
+      (+this.amoutPaid + +this.paymentAmount > this.reservation?.serviceType?.price)||
+      this.reservation.paymentStatus === 'PAID'
   }
 
   isAcceptDisabled(): boolean {
@@ -170,5 +173,11 @@ export class ReservationDetails {
     return this.currentUser.role === Role.ADMIN ?
       this.reservation.status === 'CANCELLED' || this.reservation.status === 'CONFIRMED' :
       this.reservation.status !== 'PROPOSED';
+  }
+
+  public isUnderpaymentDisplayed(): boolean {
+    return this.currentUser.role === Role.ADMIN &&
+      !(this.reservation.status === 'CANCELLED' && Number(this.reservation.amountPaid) === 0) &&
+      this.reservation.status !== 'PENDING';
   }
 }

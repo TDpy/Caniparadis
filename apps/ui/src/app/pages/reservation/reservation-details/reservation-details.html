@@ -22,12 +22,12 @@
   </div>
 
   <div class="mb-3">
-    <strong>Statut :</strong> {{ reservation.status }}
+    <strong>Statut :</strong> {{ reservation.status | statusTranslate}}
   </div>
 
   <div class="mb-3">
-    <strong>Paiement :</strong> {{ reservation.paymentStatus }}
-    <span>{{ amoutPaid | number: '1.2-2' }} / {{ reservation.serviceType.price }} €</span>
+    <strong>Paiement :</strong> {{ reservation.paymentStatus | paymentTranslate }}
+    <span>({{ amoutPaid | number: '1.2-2' }} / {{ reservation.serviceType.price }} €)</span>
   </div>
 
   <hr/>
@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    @if (currentUser.role === Role.ADMIN) {
+    @if (isUnderpaymentDisplayed()) {
       <div class="col-md-6">
         <div class="card mb-4">
           <div class="card-header">
@@ -104,7 +104,7 @@
             <button
               class="btn btn-danger"
               (click)="refund()"
-              [disabled]="reservation.status !== 'CANCELLED'">
+              [disabled]="reservation.status !== 'CANCELLED' || reservation.paymentStatus === 'REFUNDED'">
               Rembourser
             </button>
           </div>
