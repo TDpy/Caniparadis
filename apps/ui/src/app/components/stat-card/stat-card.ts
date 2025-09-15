@@ -11,11 +11,14 @@ export class StatCard {
   @Input({required: true}) title: string = '';
   @Input({required: true}) totalBooking: number = 0;
   @Input() cardStyle: DashboardCardStyle | undefined = undefined;
+  @Input() displayRedirection: boolean = true;
 
   @Output() onClick: EventEmitter<void> = new EventEmitter<void>();
 
   generateCardClass(): string {
-    if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.WARNING) {
+    if (this.cardStyle === DashboardCardStyle.INFO) {
+      return "info";
+    } else if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.WARNING) {
       return "warning";
     } else if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.DANGER) {
       return "danger";
@@ -24,7 +27,9 @@ export class StatCard {
   }
 
   generateIconClass(): string {
-    if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.WARNING) {
+    if (this.cardStyle === DashboardCardStyle.INFO) {
+      return 'fas fa-calendar text-info';
+    } else if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.WARNING) {
       return 'fas fa-exclamation-triangle text-warning';
     } else if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.DANGER) {
       return 'fas fa-exclamation-triangle text-danger';
@@ -39,6 +44,7 @@ export class StatCard {
 
 export enum DashboardCardStyle {
   DANGER = 'DANGER',
+  INFO = 'INFO',
   SUCCESS = 'SUCCESS',
   WARNING = 'WARNING',
 }

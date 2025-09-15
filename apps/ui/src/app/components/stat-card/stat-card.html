@@ -3,11 +3,13 @@
     <div class="icon mb-2" [ngClass]="generateIconClass()"></div>
     <h6 class="card-subtitle mb-2 text-muted fs-5">{{ title }}</h6>
     <h5 class="card-title fs-4">{{ totalBooking }}</h5>
-    <button
-      type="button"
-      class="btn mt-1"
-      (click)="onRedirectionClick()">
-      Voir la liste
-    </button>
+    @if (displayRedirection) {
+      <button
+        type="button"
+        class="btn mt-1"
+        (click)="onRedirectionClick()">
+        Voir la liste
+      </button>
+    }
   </div>
 </div>
