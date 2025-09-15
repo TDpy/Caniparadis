@@ -5,7 +5,7 @@
       <h5 class="card-title">Demande de reservation</h5>
       <app-stat-card
         [title]="'Reservations clients'"
-        [totalBooking]="6"
+        [totalBooking]="stats.pendingReservations"
         [cardStyle]="DashboardCardStyle.DANGER"
         (onClick)="redirectToReservationWaitingForCompany()"/>
     </div>
@@ -18,12 +18,12 @@
       <div class="d-flex justify-content-center gap-3 mt-2">
         <app-stat-card
           [title]="'Prestations passées'"
-          [totalBooking]="0"
-          [cardStyle]="DashboardCardStyle.SUCCESS"
+          [totalBooking]="stats.passedReservationsNotPaid"
+          [cardStyle]="DashboardCardStyle.DANGER"
           (onClick)="redirectToPassedReservationNotPaid()"/>
         <app-stat-card
           [title]="'Prestations à venir'"
-          [totalBooking]="2"
+          [totalBooking]="stats.futureReservationsNotPaid"
           [cardStyle]="DashboardCardStyle.WARNING"
           (onClick)="redirectToFutureReservationNotPaid()"/>
       </div>

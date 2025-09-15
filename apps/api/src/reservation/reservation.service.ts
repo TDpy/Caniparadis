@@ -9,7 +9,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, MoreThanOrEqual, Repository } from 'typeorm';
 
 import { AnimalEntity } from '../animal/animal.entity';
 import { ServiceTypeEntity } from '../service-type/service-type.entity';
@@ -265,5 +265,40 @@ export class ReservationService {
         : PaymentStatus.PENDING;
 
     return this.reservationRepository.save(reservation);
+  }
+
+  async getDashboardStats() {
+    const now = new Date();
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date(now);
+    todayEnd.setHours(23, 59, 0, 0);
+
+    const pendingReservations = await this.reservationRepository.count({
+      where: {
+        startDate: MoreThanOrEqual(todayStart),
+        status: ReservationStatus.PENDING,
+      },
+    });
+
+    const passedReservationsNotPaid = await this.reservationRepository.count({
+      where: {
+        endDate: LessThan(todayEnd),
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    });
+
+    const futureReservationsNotPaid = await this.reservationRepository.count({
+      where: {
+        startDate: MoreThanOrEqual(todayStart),
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    });
+
+    return {
+      pendingReservations,
+      passedReservationsNotPaid,
+      futureReservationsNotPaid,
+    };
   }
 }
