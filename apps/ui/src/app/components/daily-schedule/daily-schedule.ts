@@ -17,6 +17,9 @@ export class DailySchedule {
 
   nurseryReservations!: SharedReservationDto[];
   otherReservations!: SharedReservationDto[];
+  getRowClass = (reservation: SharedReservationDto): string => {
+    return reservation.finalized ? 'reservation-finalized' : '';
+  };
 
   public tabMode: 'nursery' | 'other' = 'nursery';
   private reservationService = inject(ReservationService);
@@ -35,10 +38,12 @@ export class DailySchedule {
     }).subscribe({
       next: (dailyReservations) => {
         this.nurseryReservations = dailyReservations
-          .filter(r => r.serviceType.name.toUpperCase() === 'GARDERIE');
+          .filter(r => r.serviceType.name.toUpperCase() === 'GARDERIE')
+          .sort((a, b) => Number(a.finalized) - Number(b.finalized));;
 
         this.otherReservations = dailyReservations
-          .filter(r => r.serviceType.name.toUpperCase() !== 'GARDERIE');
+          .filter(r => r.serviceType.name.toUpperCase() !== 'GARDERIE')
+          .sort((a, b) => Number(a.finalized) - Number(b.finalized));;
       }
     });
   }

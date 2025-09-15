@@ -16,7 +16,7 @@
     </ul>
 
     @if (tabMode === 'nursery') {
-      <app-table [data]="nurseryReservations">
+      <app-table [data]="nurseryReservations" [rowClass]="getRowClass">
         <ng-template column="Chien" let-data>
           {{ data.animal.name }}
         </ng-template>
@@ -38,7 +38,7 @@
         </ng-template>
       </app-table>
     } @else if (tabMode === 'other') {
-      <app-table [data]="otherReservations">
+      <app-table [data]="otherReservations"  [rowClass]="getRowClass">
         <ng-template column="Type de prestation" let-data>
           {{ data.serviceType.name }}
         </ng-template>
