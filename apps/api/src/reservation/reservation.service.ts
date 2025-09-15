@@ -254,7 +254,7 @@ export class ReservationService {
     }
 
     reservation.paymentStatus =
-      reservation.amountPaid === reservation.serviceType.price
+      Number(reservation.amountPaid) === Number(reservation.serviceType.price)
         ? PaymentStatus.PAID
         : PaymentStatus.PENDING;
 
