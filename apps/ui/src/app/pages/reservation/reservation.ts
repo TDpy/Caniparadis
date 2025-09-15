@@ -1,9 +1,9 @@
 import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Router, RouterModule} from '@angular/router';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {
-  PaymentStatus,
+  PaymentStatus, ReservationStatus,
   SharedReservationDto,
   SharedSearchReservationCriteriaDto
 } from '@caniparadis/dtos/dist/reservationDto';
@@ -22,6 +22,7 @@ import {UserService} from '../../services/user.service';
 interface SearchFormModel {
   fromDate?: string;
   paymentStatus?: PaymentStatus;
+  status?: ReservationStatus;
   toDate?: string;
   userId?: number;
 }
@@ -55,36 +56,35 @@ export class Reservation {
   private toasterService = inject(ToasterService);
   private authService = inject(AuthService);
   private paymentTranslatePipe = inject(PaymentTranslatePipe);
+  private statusTranslatePipe = inject(StatusTranslatePipe);
   private userService = inject(UserService);
+  private route = inject(ActivatedRoute);
+  reservationStatusOptions: { label: string; value: ReservationStatus }[] = [];
 
   ngOnInit(): void {
     this.paymentStatusOptions = Object.values(PaymentStatus).map(status => ({
       label: this.paymentTranslatePipe.transform(status),
       value: status,
     }));
-    this.searchForm.fromDate = this.formatDateForInputLocal(this.getTodayStart());
-    this.searchForm.toDate = this.formatDateForInputLocal(this.getTodayEnd());
-    this.loadOwners();
+    this.reservationStatusOptions = Object.values(ReservationStatus).map(status => ({
+      label: this.statusTranslatePipe.transform(status),
+      value: status
+    }));
 
-    this.authService.getCurrentUser().pipe(
-      tap((authUser) => {
-        this.isAdmin = authUser.role === Role.ADMIN;
 
-        if (!this.isAdmin) {
-          this.searchForm.userId = authUser.id;
-        }
-      }),
-      mergeMap(() => {
-        const criteria = this.convertFormToCriteria(this.searchForm);
-        return this.reservationService.findAll(criteria);
-      })
-    ).subscribe({
-      next: (reservations: SharedReservationDto[]) => {
-        this.reservations = reservations;
-      },
-      error: (_) => {
-        this.toasterService.error(`Erreur lors de la récupération des réservations.`);
-      },
+    this.route.queryParams.subscribe(params => {
+      if (params['fromDate']) this.searchForm.fromDate = params['fromDate'];
+      if (params['toDate']) this.searchForm.toDate = params['toDate'];
+      if (params['userId']) this.searchForm.userId = Number(params['userId']);
+      if (params['paymentStatus']) this.searchForm.paymentStatus = params['paymentStatus'];
+      if (params['status']) this.searchForm.status = params['status'];
+
+      if (!params['toDate'] && !params['fromDate']){
+        this.searchForm.fromDate = this.formatDateForInputLocal(this.getTodayStart());
+        this.searchForm.toDate = this.formatDateForInputLocal(this.getTodayEnd());
+      }
+
+      this.loadOwnersAndReservations();
     });
   }
 
@@ -111,6 +111,11 @@ export class Reservation {
     this.searchForm.paymentStatus = undefined;
   }
 
+  onStatusClear(): void {
+    this.searchForm.status = undefined;
+  }
+
+
   private getTodayStart(): Date {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
@@ -129,6 +134,7 @@ export class Reservation {
       toDate: form.toDate ? this.formatDateForInputLocal(new Date(form.toDate)) : undefined,
       userId: form.userId,
       paymentStatus: form.paymentStatus,
+      status: form.status,
     };
   }
 
@@ -153,7 +159,7 @@ export class Reservation {
   }
 
   private formatDateForInputLocal(date: Date): string {
-    const pad = (n: number) :string => n.toString().padStart(2, '0');
+    const pad = (n: number): string => n.toString().padStart(2, '0');
 
     const year = date.getFullYear();
     const month = pad(date.getMonth() + 1);
@@ -165,4 +171,24 @@ export class Reservation {
   }
 
 
+  private loadOwnersAndReservations(): void {
+    this.loadOwners();
+
+    this.authService.getCurrentUser().pipe(
+      tap((authUser) => {
+        this.isAdmin = authUser.role === Role.ADMIN;
+        if (!this.isAdmin) {
+          this.searchForm.userId = authUser.id;
+        }
+      }),
+      mergeMap(() => {
+        const criteria = this.convertFormToCriteria(this.searchForm);
+        return this.reservationService.findAll(criteria);
+      })
+    ).subscribe({
+      next: (reservations: SharedReservationDto[]) => this.reservations = reservations,
+      error: (_) => this.toasterService.error('Erreur lors de la récupération des réservations.')
+    });
+
+  }
 }

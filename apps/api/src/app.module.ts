@@ -9,6 +9,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthenticationService } from './authentication/authentication.service';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { EmailModule } from './email/email.module';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { ReservationModule } from './reservation/reservation.module';
@@ -31,7 +32,10 @@ import { UserModule } from './user/user.module';
       username: process.env.POSTGRES_USER,
       autoLoadEntities: true,
       database: process.env.POSTGRES_DB,
-      ssl: process.env.POSTGRES_SSL === 'true' ? { rejectUnauthorized: false } : false,
+      ssl:
+        process.env.POSTGRES_SSL === 'true'
+          ? { rejectUnauthorized: false }
+          : false,
       synchronize: true,
       logging: false,
     }),
@@ -42,6 +46,7 @@ import { UserModule } from './user/user.module';
     AnimalModule,
     ServiceTypeModule,
     ReservationModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [

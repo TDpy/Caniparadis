@@ -9,9 +9,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, MoreThanOrEqual, Repository } from 'typeorm';
 
 import { AnimalEntity } from '../animal/animal.entity';
+import { ClientStatsDto } from '../dashboard/dashboardStats.dto';
 import { ServiceTypeEntity } from '../service-type/service-type.entity';
 import { UserEntity } from '../user/userEntity';
 import { SearchReservationDto } from './reservation.dto';
@@ -77,15 +78,15 @@ export class ReservationService {
       .leftJoinAndSelect('reservation.serviceType', 'serviceType')
       .leftJoinAndSelect('animal.owner', 'owner');
 
-    if (criteria.fromDate) {
-      query.andWhere('reservation.startDate >= :fromDate', {
-        fromDate: criteria.fromDate,
+    if (criteria.toDate) {
+      query.andWhere('reservation.startDate < :toDate', {
+        toDate: criteria.toDate,
       });
     }
 
-    if (criteria.toDate) {
-      query.andWhere('reservation.endDate <= :toDate', {
-        toDate: criteria.toDate,
+    if (criteria.fromDate) {
+      query.andWhere('reservation.endDate >= :fromDate', {
+        fromDate: criteria.fromDate,
       });
     }
 
@@ -96,6 +97,12 @@ export class ReservationService {
     if (criteria.paymentStatus) {
       query.andWhere('reservation.paymentStatus = :paymentStatus', {
         paymentStatus: criteria.paymentStatus,
+      });
+    }
+
+    if (criteria.status) {
+      query.andWhere('reservation.status = :status', {
+        status: criteria.status,
       });
     }
 
@@ -259,5 +266,82 @@ export class ReservationService {
         : PaymentStatus.PENDING;
 
     return this.reservationRepository.save(reservation);
+  }
+
+  async getAdminDashboardStats() {
+    const now = new Date();
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date(now);
+    todayEnd.setHours(23, 59, 0, 0);
+
+    const pendingReservations = await this.reservationRepository.count({
+      where: {
+        startDate: MoreThanOrEqual(todayStart),
+        status: ReservationStatus.PENDING,
+      },
+    });
+
+    const passedReservationsNotPaid = await this.reservationRepository.count({
+      where: {
+        endDate: LessThan(todayEnd),
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    });
+
+    const futureReservationsNotPaid = await this.reservationRepository.count({
+      where: {
+        startDate: MoreThanOrEqual(todayStart),
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    });
+
+    return {
+      pendingReservations,
+      passedReservationsNotPaid,
+      futureReservationsNotPaid,
+    };
+  }
+
+  async updateFinalization(id: number, finalized: boolean) {
+    const reservation = await this.findOne(id);
+    reservation.finalized = finalized;
+    return this.reservationRepository.save(reservation);
+  }
+
+  async getClientDashboardStats(userId: number): Promise<ClientStatsDto> {
+    const now = new Date();
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date(now);
+    todayEnd.setHours(23, 59, 0, 0);
+
+    const passedReservationsNotPaid = await this.reservationRepository.count({
+      where: {
+        animal: { owner: { id: userId } },
+        endDate: LessThan(todayStart),
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    });
+
+    const futureReservations = await this.reservationRepository.count({
+      where: {
+        animal: { owner: { id: userId } },
+        startDate: MoreThanOrEqual(todayStart),
+      },
+    });
+
+    const passedReservations = await this.reservationRepository.count({
+      where: {
+        animal: { owner: { id: userId } },
+        endDate: LessThan(todayStart),
+      },
+    });
+
+    return {
+      passedReservationsNotPaid,
+      futureReservations,
+      passedReservations,
+    };
   }
 }

@@ -1,0 +1,40 @@
+<div class="container mt-4">
+  <div class="mb-4">
+    <div class="card p-3">
+      <div class="card-body d-flex justify-content-center">
+        <button class="btn btn-primary" (click)="redirectToReservationCreation()">
+          Faire une nouvelle réservation
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="card p-3">
+      <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-center gap-3 align-items-stretch">
+          <app-stat-card
+            class="h-100"
+            [title]="'Paiements manquants'"
+            [totalBooking]="stats.passedReservationsNotPaid"
+            [cardStyle]="DashboardCardStyle.DANGER"
+            (onClick)="redirectToPassedReservationNotPaid()"/>
+
+          <app-stat-card
+            class="h-100"
+            [title]="'Prestations à venir'"
+            [totalBooking]="stats.futureReservations"
+            [cardStyle]="DashboardCardStyle.WARNING"
+            (onClick)="redirectToFutureReservation()"/>
+
+          <app-stat-card
+            class="h-100"
+            [title]="'Prestations passées'"
+            [totalBooking]="stats.passedReservations"
+            [cardStyle]="DashboardCardStyle.INFO"
+            [displayRedirection]="false"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

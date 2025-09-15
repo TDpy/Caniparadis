@@ -1,5 +1,20 @@
 <div class="container mt-4" *ngIf="reservation">
-  <h2>Détail de la réservation</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Détail de la réservation</h2>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="finalized"
+        [checked]="reservation.finalized"
+        (change)="toggleFinalize()"
+        [disabled]="reservation.status === 'CANCELLED'">
+      <label class="form-check-label" for="finalized">
+        Finalisée
+      </label>
+    </div>
+  </div>
 
   <div class="mb-3">
     <strong>Animal :</strong> {{ reservation.animal.name }}
@@ -22,7 +37,7 @@
   </div>
 
   <div class="mb-3">
-    <strong>Statut :</strong> {{ reservation.status | statusTranslate}}
+    <strong>Statut :</strong> {{ reservation.status | statusTranslate }}
   </div>
 
   <div class="mb-3">

@@ -1,15 +1,18 @@
-import {PaymentStatus, ReservationStatus,} from '@caniparadis/dtos/dist/reservationDto';
-import {Role} from "@caniparadis/dtos/dist/userDto";
+import {
+  PaymentStatus,
+  ReservationStatus,
+} from '@caniparadis/dtos/dist/reservationDto';
+import { Role } from '@caniparadis/dtos/dist/userDto';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import {Test, type TestingModule} from '@nestjs/testing';
-import {getRepositoryToken} from '@nestjs/typeorm';
+import { Test, type TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
-import {AnimalEntity} from '../animal/animal.entity';
-import {ServiceTypeEntity} from '../service-type/service-type.entity';
-import {UserEntity} from "../user/userEntity";
-import {ReservationEntity} from './reservation.entity';
-import {ReservationService} from './reservation.service';
-import {CreateReservation} from "./reservation.type";
+import { AnimalEntity } from '../animal/animal.entity';
+import { ServiceTypeEntity } from '../service-type/service-type.entity';
+import { UserEntity } from '../user/userEntity';
+import { ReservationEntity } from './reservation.entity';
+import { ReservationService } from './reservation.service';
+import { CreateReservation } from './reservation.type';
 
 const mockRepository = () => ({
   findOne: jest.fn(),
@@ -23,6 +26,7 @@ const mockRepository = () => ({
     addOrderBy: jest.fn().mockReturnThis(),
     getMany: jest.fn().mockResolvedValue([]),
   })),
+  count: jest.fn(),
 });
 
 describe('ReservationService', () => {
@@ -52,9 +56,15 @@ describe('ReservationService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ReservationService,
-        { provide: getRepositoryToken(ReservationEntity), useValue: reservationRepo },
+        {
+          provide: getRepositoryToken(ReservationEntity),
+          useValue: reservationRepo,
+        },
         { provide: getRepositoryToken(AnimalEntity), useValue: animalRepo },
-        { provide: getRepositoryToken(ServiceTypeEntity), useValue: serviceTypeRepo },
+        {
+          provide: getRepositoryToken(ServiceTypeEntity),
+          useValue: serviceTypeRepo,
+        },
       ],
     }).compile();
 
@@ -108,7 +118,10 @@ describe('ReservationService', () => {
       animalRepo.findOne!.mockResolvedValue(animal);
       serviceTypeRepo.findOne!.mockResolvedValue(serviceType);
       reservationRepo.create!.mockImplementation((input) => input);
-      reservationRepo.save!.mockImplementation(async (input) => ({ id: 42, ...input }));
+      reservationRepo.save!.mockImplementation(async (input) => ({
+        id: 42,
+        ...input,
+      }));
 
       const result = await service.create(dto, mockUser({ role: Role.ADMIN }));
 
@@ -123,9 +136,7 @@ describe('ReservationService', () => {
     it('should throw if reservation not found', async () => {
       reservationRepo.findOne!.mockResolvedValue(null);
 
-      await expect(
-        service.update(1, {})
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.update(1, {})).rejects.toThrow(NotFoundException);
     });
 
     it('should update reservation and save', async () => {
@@ -151,19 +162,32 @@ describe('ReservationService', () => {
       expect(result.startDate).toBe(updated.startDate);
       expect(result.endDate).toBe(updated.endDate);
       expect(reservationRepo.save).toHaveBeenCalled();
-    });  });
+    });
+  });
 
   describe('proposeNewSlot', () => {
     it('should update startDate, endDate and comment', async () => {
-      const reservation = { id: 1, startDate: new Date(), endDate: new Date(), comment: '' };
+      const reservation = {
+        id: 1,
+        startDate: new Date(),
+        endDate: new Date(),
+        comment: '',
+      };
       reservationRepo.findOne!.mockResolvedValue(reservation);
-      reservationRepo.save!.mockResolvedValue({ ...reservation, comment: 'Updated' });
-
-      const result = await service.proposeNewSlot(1, {
-        startDate: '2025-08-02T10:00:00Z',
-        endDate: '2025-08-02T12:00:00Z',
+      reservationRepo.save!.mockResolvedValue({
+        ...reservation,
         comment: 'Updated',
-      }, mockUser());
+      });
+
+      const result = await service.proposeNewSlot(
+        1,
+        {
+          startDate: '2025-08-02T10:00:00Z',
+          endDate: '2025-08-02T12:00:00Z',
+          comment: 'Updated',
+        },
+        mockUser(),
+      );
 
       expect(result.comment).toBe('Updated');
     });
@@ -264,7 +288,9 @@ describe('ReservationService', () => {
         id: 1,
         status: ReservationStatus.PENDING,
       } as any);
-      await expect(service.accept(1, mockUser())).rejects.toThrow(BadRequestException);
+      await expect(service.accept(1, mockUser())).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('should throw if status not acceptable', async () => {
@@ -272,7 +298,9 @@ describe('ReservationService', () => {
         id: 1,
         status: ReservationStatus.CANCELLED,
       } as any);
-      await expect(service.accept(1, mockUser({ role: Role.ADMIN }))).rejects.toThrow(BadRequestException);
+      await expect(
+        service.accept(1, mockUser({ role: Role.ADMIN })),
+      ).rejects.toThrow(BadRequestException);
     });
 
     it('should accept reservation', async () => {
@@ -293,21 +321,99 @@ describe('ReservationService', () => {
         id: 1,
         status: ReservationStatus.CANCELLED,
       } as any);
-      await expect(service.proposeNewSlot(1, {
-        startDate: new Date().toISOString(),
-        endDate: new Date().toISOString(),
-      }, mockUser())).rejects.toThrow(BadRequestException);
+      await expect(
+        service.proposeNewSlot(
+          1,
+          {
+            startDate: new Date().toISOString(),
+            endDate: new Date().toISOString(),
+          },
+          mockUser(),
+        ),
+      ).rejects.toThrow(BadRequestException);
     });
 
     it('should propose as ADMIN', async () => {
       const reservation = { id: 1, status: ReservationStatus.PENDING };
       jest.spyOn(service, 'findOne').mockResolvedValue(reservation as any);
       reservationRepo.save!.mockImplementation(async (r) => r);
-      const result = await service.proposeNewSlot(1, {
-        startDate: new Date().toISOString(),
-        endDate: new Date().toISOString(),
-      }, mockUser({ role: Role.ADMIN }));
+      const result = await service.proposeNewSlot(
+        1,
+        {
+          startDate: new Date().toISOString(),
+          endDate: new Date().toISOString(),
+        },
+        mockUser({ role: Role.ADMIN }),
+      );
       expect(result.status).toBe(ReservationStatus.PROPOSED);
+    });
+  });
+
+  describe('getDashboardStats', () => {
+    it('should return counts for today', async () => {
+      const today = new Date();
+      const todayStart = new Date(today);
+      todayStart.setHours(0, 0, 0, 0);
+      const todayEnd = new Date(today);
+      todayEnd.setHours(23, 59, 0, 0);
+
+      reservationRepo.count = jest.fn().mockImplementation(({ where }) => {
+        if (where.status === ReservationStatus.PENDING)
+          return Promise.resolve(3);
+        if (where.paymentStatus === PaymentStatus.PENDING && where.endDate)
+          return Promise.resolve(2);
+        if (where.paymentStatus === PaymentStatus.PENDING && where.startDate)
+          return Promise.resolve(4);
+        return Promise.resolve(0);
+      });
+
+      const stats = await service.getAdminDashboardStats();
+
+      expect(stats).toEqual({
+        pendingReservations: 3,
+        passedReservationsNotPaid: 2,
+        futureReservationsNotPaid: 4,
+      });
+
+      expect(reservationRepo.count).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  describe('updateFinalization', () => {
+    it('should throw if reservation not found', async () => {
+      reservationRepo.findOne!.mockResolvedValue(null);
+
+      await expect(service.updateFinalization(1, true)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
+    it('should update the finalized flag and save', async () => {
+      const reservation = { id: 1, finalized: false };
+      reservationRepo.findOne!.mockResolvedValue(reservation);
+      reservationRepo.save!.mockImplementation(async (r) => r);
+
+      const result = await service.updateFinalization(1, true);
+
+      expect(result.finalized).toBe(true);
+      expect(reservationRepo.save).toHaveBeenCalledWith({
+        ...reservation,
+        finalized: true,
+      });
+    });
+
+    it('should toggle finalized from true to false', async () => {
+      const reservation = { id: 2, finalized: true };
+      reservationRepo.findOne!.mockResolvedValue(reservation);
+      reservationRepo.save!.mockImplementation(async (r) => r);
+
+      const result = await service.updateFinalization(2, false);
+
+      expect(result.finalized).toBe(false);
+      expect(reservationRepo.save).toHaveBeenCalledWith({
+        ...reservation,
+        finalized: false,
+      });
     });
   });
 });
