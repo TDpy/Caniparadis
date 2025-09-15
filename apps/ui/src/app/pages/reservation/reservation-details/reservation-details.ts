@@ -180,4 +180,17 @@ export class ReservationDetails {
       !(this.reservation.status === 'CANCELLED' && Number(this.reservation.amountPaid) === 0) &&
       this.reservation.status !== 'PENDING';
   }
+
+  public toggleFinalize(): void {
+    this.reservationService.finalize(this.reservation.id, !this.reservation.finalized).subscribe({
+      next: (res) => {
+        this.toasterService.success(
+          res.finalized ? 'Réservation finalisée.' : 'Finalisation annulée.'
+        );
+        this.reservation = res;
+      },
+      error: () => this.toasterService.error('Erreur lors de la finalisation.')
+    });
+  }
+
 }
