@@ -301,4 +301,10 @@ export class ReservationService {
       futureReservationsNotPaid,
     };
   }
+
+  async updateFinalization(id: number, finalized: boolean) {
+    const reservation = await this.findOne(id)
+    reservation.finalized = finalized;
+    return this.reservationRepository.save(reservation);
+  }
 }

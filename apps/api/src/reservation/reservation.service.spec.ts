@@ -23,6 +23,7 @@ const mockRepository = () => ({
     addOrderBy: jest.fn().mockReturnThis(),
     getMany: jest.fn().mockResolvedValue([]),
   })),
+  count: jest.fn(),
 });
 
 describe('ReservationService', () => {
@@ -310,4 +311,63 @@ describe('ReservationService', () => {
       expect(result.status).toBe(ReservationStatus.PROPOSED);
     });
   });
+
+  describe('getDashboardStats', () => {
+    it('should return counts for today', async () => {
+      const today = new Date();
+      const todayStart = new Date(today);
+      todayStart.setHours(0, 0, 0, 0);
+      const todayEnd = new Date(today);
+      todayEnd.setHours(23, 59, 0, 0);
+
+      reservationRepo.count = jest.fn()
+        .mockImplementation(({ where }) => {
+          if (where.status === ReservationStatus.PENDING) return Promise.resolve(3);
+          if (where.paymentStatus === PaymentStatus.PENDING && where.endDate) return Promise.resolve(2);
+          if (where.paymentStatus === PaymentStatus.PENDING && where.startDate) return Promise.resolve(4);
+          return Promise.resolve(0);
+        });
+
+      const stats = await service.getDashboardStats();
+
+      expect(stats).toEqual({
+        pendingReservations: 3,
+        passedReservationsNotPaid: 2,
+        futureReservationsNotPaid: 4,
+      });
+
+      expect(reservationRepo.count).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  describe('updateFinalization', () => {
+    it('should throw if reservation not found', async () => {
+      reservationRepo.findOne!.mockResolvedValue(null);
+
+      await expect(service.updateFinalization(1, true)).rejects.toThrow(NotFoundException);
+    });
+
+    it('should update the finalized flag and save', async () => {
+      const reservation = { id: 1, finalized: false };
+      reservationRepo.findOne!.mockResolvedValue(reservation);
+      reservationRepo.save!.mockImplementation(async r => r);
+
+      const result = await service.updateFinalization(1, true);
+
+      expect(result.finalized).toBe(true);
+      expect(reservationRepo.save).toHaveBeenCalledWith({ ...reservation, finalized: true });
+    });
+
+    it('should toggle finalized from true to false', async () => {
+      const reservation = { id: 2, finalized: true };
+      reservationRepo.findOne!.mockResolvedValue(reservation);
+      reservationRepo.save!.mockImplementation(async r => r);
+
+      const result = await service.updateFinalization(2, false);
+
+      expect(result.finalized).toBe(false);
+      expect(reservationRepo.save).toHaveBeenCalledWith({ ...reservation, finalized: false });
+    });
+  });
+
 });

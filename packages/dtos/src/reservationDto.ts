@@ -38,6 +38,7 @@ export interface SharedReservationDto {
   paymentStatus: PaymentStatus;
   amountPaid?: number;
   comment?: string;
+  finalized: boolean;
 }
 
 export interface SharedSearchReservationCriteriaDto {
@@ -57,4 +58,8 @@ export interface SharedProposeNewSlotDto {
 export interface SharedUpdatePaymentDto {
   status?: PaymentStatus;
   amountPaid?: number;
+}
+
+export interface SharedUpdateReservationFinalizationDto {
+  finalized: boolean;
 }

@@ -17,6 +17,7 @@ export const ReservationMapper = {
       paymentStatus: reservation.paymentStatus,
       amountPaid: reservation.amountPaid,
       comment: reservation.comment,
+      finalized: reservation.finalized,
     };
   },
 
