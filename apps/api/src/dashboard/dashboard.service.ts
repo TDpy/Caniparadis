@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
 import { ReservationService } from '../reservation/reservation.service';
-import { AdminStatsDto } from './dashboardStats.dto';
+import { AdminStatsDto, ClientStatsDto } from './dashboardStats.dto';
 
 @Injectable()
 export class DashboardService {
   constructor(private readonly reservationService: ReservationService) {}
 
-  generateStats(): Promise<AdminStatsDto> {
-    return this.reservationService.getDashboardStats();
+  generateAdminStats(): Promise<AdminStatsDto> {
+    return this.reservationService.getAdminDashboardStats();
+  }
+
+  generateClientStats(userId: number): Promise<ClientStatsDto> {
+    return this.reservationService.getClientDashboardStats(userId);
   }
 }

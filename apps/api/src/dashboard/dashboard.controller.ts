@@ -1,9 +1,11 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 
+import { CheckUserParamId } from '../decorators/userId.decorator';
 import { CheckAdminGuard } from '../guard/admin.guard';
+import { CheckUserParamIdGuard } from '../guard/userId.guard';
 import { DashboardService } from './dashboard.service';
-import { AdminStatsDto } from './dashboardStats.dto';
+import { AdminStatsDto, ClientStatsDto } from './dashboardStats.dto';
 
 @Controller('dashboard-stats')
 export class DashboardController {
@@ -15,7 +17,18 @@ export class DashboardController {
   @ApiResponse({
     type: AdminStatsDto,
   })
-  async findAll(): Promise<AdminStatsDto> {
-    return this.dashboardService.generateStats();
+  async getAdminStats(): Promise<AdminStatsDto> {
+    return this.dashboardService.generateAdminStats();
+  }
+
+  @Get('client/:id')
+  @UseGuards(CheckUserParamIdGuard)
+  @CheckUserParamId('id')
+  @ApiBearerAuth()
+  @ApiResponse({
+    type: ClientStatsDto,
+  })
+  async getClientStats(@Param('id') id: string): Promise<ClientStatsDto> {
+    return this.dashboardService.generateClientStats(+id);
   }
 }

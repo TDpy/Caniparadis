@@ -12,6 +12,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, MoreThanOrEqual, Repository } from 'typeorm';
 
 import { AnimalEntity } from '../animal/animal.entity';
+import { ClientStatsDto } from '../dashboard/dashboardStats.dto';
 import { ServiceTypeEntity } from '../service-type/service-type.entity';
 import { UserEntity } from '../user/userEntity';
 import { SearchReservationDto } from './reservation.dto';
@@ -267,7 +268,7 @@ export class ReservationService {
     return this.reservationRepository.save(reservation);
   }
 
-  async getDashboardStats() {
+  async getAdminDashboardStats() {
     const now = new Date();
     const todayStart = new Date(now);
     todayStart.setHours(0, 0, 0, 0);
@@ -303,8 +304,44 @@ export class ReservationService {
   }
 
   async updateFinalization(id: number, finalized: boolean) {
-    const reservation = await this.findOne(id)
+    const reservation = await this.findOne(id);
     reservation.finalized = finalized;
     return this.reservationRepository.save(reservation);
+  }
+
+  async getClientDashboardStats(userId: number): Promise<ClientStatsDto> {
+    const now = new Date();
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date(now);
+    todayEnd.setHours(23, 59, 0, 0);
+
+    const passedReservationsNotPaid = await this.reservationRepository.count({
+      where: {
+        animal: { owner: { id: userId } },
+        endDate: LessThan(todayStart),
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    });
+
+    const futureReservations = await this.reservationRepository.count({
+      where: {
+        animal: { owner: { id: userId } },
+        startDate: MoreThanOrEqual(todayStart),
+      },
+    });
+
+    const passedReservations = await this.reservationRepository.count({
+      where: {
+        animal: { owner: { id: userId } },
+        endDate: LessThan(todayStart),
+      },
+    });
+
+    return {
+      passedReservationsNotPaid,
+      futureReservations,
+      passedReservations,
+    };
   }
 }
