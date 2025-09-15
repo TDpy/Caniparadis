@@ -45,6 +45,7 @@ export interface SharedSearchReservationCriteriaDto {
   toDate?: string;
   userId?: number;
   paymentStatus?: PaymentStatus;
+  status?: ReservationStatus;
 }
 
 export interface SharedProposeNewSlotDto {

@@ -99,6 +99,12 @@ export class ReservationService {
       });
     }
 
+    if (criteria.status) {
+      query.andWhere('reservation.status = :status', {
+        status: criteria.status,
+      });
+    }
+
     query
       .orderBy('reservation.startDate', 'ASC')
       .addOrderBy('reservation.id', 'ASC');

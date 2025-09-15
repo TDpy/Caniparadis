@@ -10,7 +10,7 @@
     <form class="card p-3 mb-4" (ngSubmit)="onFilter()">
       <div class="row align-items-end g-3">
 
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label for="fromDate" class="form-label">Date de début</label>
           <input
             id="fromDate"
@@ -21,7 +21,7 @@
           />
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label for="toDate" class="form-label">Date de fin</label>
           <input
             id="toDate"
@@ -32,7 +32,52 @@
           />
         </div>
 
-        <div class="col-md-3" *ngIf="isAdmin">
+        <div class="col-md-2">
+          <label for="paymentStatus" class="form-label">Paiement</label>
+          <ng-select
+            [items]="paymentStatusOptions"
+            bindLabel="label"
+            bindValue="value"
+            (clear)="onPaymentStatusClear()"
+            [(ngModel)]="searchForm.paymentStatus"
+            name="paymentStatus"
+            [searchable]="false"
+            [clearable]="true"
+            [placeholder]="searchForm.paymentStatus ? '' : '-- Tous --'"
+            class="form-control"
+          >
+            <ng-template ngOptionTemplate let-status="item">
+              <i>{{ status.label }}</i>
+            </ng-template>
+            <ng-template ngLabelTemplate let-status="item">
+              <i>{{ status.label }}</i>
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <div class="col-md-2">
+          <label for="status" class="form-label">Statut réservation</label>
+          <ng-select
+            [items]="reservationStatusOptions"
+            bindLabel="label"
+            bindValue="value"
+            (clear)="onStatusClear()"
+            [(ngModel)]="searchForm.status"
+            name="status"
+            [searchable]="false"
+            [clearable]="true"
+            [placeholder]="searchForm.status ? '' : '-- Tous --'"
+            class="form-control"
+          >
+            <ng-template ngOptionTemplate let-status="item">
+              <i>{{ status.label }}</i>
+            </ng-template>
+            <ng-template ngLabelTemplate let-status="item">
+              <i>{{ status.label }}</i>
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="col-md-4" *ngIf="isAdmin">
           <label for="userId" class="form-label">Utilisateur</label>
           <ng-select
             [items]="owners"
@@ -56,28 +101,6 @@
           </ng-select>
         </div>
 
-        <div class="col-md-3">
-          <label for="paymentStatus" class="form-label">Paiement</label>
-          <ng-select
-            [items]="paymentStatusOptions"
-            bindLabel="label"
-            bindValue="value"
-            (clear)="onPaymentStatusClear()"
-            [(ngModel)]="searchForm.paymentStatus"
-            name="paymentStatus"
-            [searchable]="false"
-            [clearable]="true"
-            [placeholder]="searchForm.paymentStatus ? '' : '-- Tous --'"
-            class="form-control"
-          >
-            <ng-template ngOptionTemplate let-status="item">
-              <i>{{ status.label }}</i>
-            </ng-template>
-            <ng-template ngLabelTemplate let-status="item">
-              <i>{{ status.label }}</i>
-            </ng-template>
-          </ng-select>
-        </div>
       </div>
 
       <button type="submit" class="btn btn-primary mt-3">Rechercher</button>
