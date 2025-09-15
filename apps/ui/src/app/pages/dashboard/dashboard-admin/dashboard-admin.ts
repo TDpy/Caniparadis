@@ -5,6 +5,7 @@ import {SharedAdminStatsDto} from '@caniparadis/dtos/dist/dashboardStatsDto';
 import {DailySchedule} from '../../../components/daily-schedule/daily-schedule';
 import {DashboardCardStyle, StatCard} from '../../../components/stat-card/stat-card';
 import {DashboardService} from '../../../services/dashboard.service';
+import {formatDateForInputLocal} from '../../../utils/date.utils';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -37,7 +38,7 @@ export class DashboardAdmin {
 
     this.router.navigate(['/reservation'], {
       queryParams: {
-        fromDate: this.formatDateForInputLocal(today),
+        fromDate: formatDateForInputLocal(today),
         status: 'PENDING'
       }
     });
@@ -50,7 +51,7 @@ export class DashboardAdmin {
 
     this.router.navigate(['/reservation'], {
       queryParams: {
-        toDate: this.formatDateForInputLocal(yesterday),
+        toDate: formatDateForInputLocal(yesterday),
         paymentStatus: 'PENDING'
       }
     });
@@ -62,19 +63,9 @@ export class DashboardAdmin {
 
     this.router.navigate(['/reservation'], {
       queryParams: {
-        fromDate: this.formatDateForInputLocal(today),
+        fromDate: formatDateForInputLocal(today),
         paymentStatus: 'PENDING'
       }
     });
-  }
-
-  private formatDateForInputLocal(date: Date): string {
-    const pad = (n: number): string => n.toString().padStart(2, '0');
-    const year = date.getFullYear();
-    const month = pad(date.getMonth() + 1);
-    const day = pad(date.getDate());
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 }
