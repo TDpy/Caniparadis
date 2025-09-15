@@ -1,12 +1,20 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
+import {Role} from '@caniparadis/dtos/dist/userDto';
 
-import {DailySchedule} from '../../components/daily-schedule/daily-schedule';
-import {StatCard} from '../../components/stat-card/stat-card';
+import {AuthService} from '../../services/auth.service';
+import {DashboardAdmin} from './dashboard-admin/dashboard-admin';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [StatCard, DailySchedule],
+  imports: [DashboardAdmin],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
-export class Dashboard {}
+export class Dashboard implements OnInit{
+  private authService = inject(AuthService);
+  public isAdmin: boolean = false;
+
+  ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe(user => this.isAdmin = user.role === Role.ADMIN);
+  }
+}

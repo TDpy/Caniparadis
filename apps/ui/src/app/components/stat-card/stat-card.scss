@@ -1,0 +1,29 @@
+.card.success {
+  background-color: #d4edda;
+}
+
+.card.warning {
+  background-color: #fff3cd;
+}
+
+.card.danger {
+  background-color: #f8d7da;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+.btn {
+  background-color: #000;
+  color: #fff;
+
+  &:hover {
+    background-color: #333;
+    color: #fff;
+  }
+}
+
+h6 {
+  font-weight: bold;
+}
