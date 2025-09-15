@@ -77,15 +77,15 @@ export class ReservationService {
       .leftJoinAndSelect('reservation.serviceType', 'serviceType')
       .leftJoinAndSelect('animal.owner', 'owner');
 
-    if (criteria.fromDate) {
-      query.andWhere('reservation.startDate >= :fromDate', {
-        fromDate: criteria.fromDate,
+    if (criteria.toDate) {
+      query.andWhere('reservation.startDate < :toDate', {
+        toDate: criteria.toDate,
       });
     }
 
-    if (criteria.toDate) {
-      query.andWhere('reservation.endDate <= :toDate', {
-        toDate: criteria.toDate,
+    if (criteria.fromDate) {
+      query.andWhere('reservation.endDate >= :fromDate', {
+        fromDate: criteria.fromDate,
       });
     }
 

@@ -21,20 +21,41 @@ export class DashboardAdmin {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const inOneMonth = new Date(today);
-    inOneMonth.setMonth(today.getMonth() + 1);
-
     this.router.navigate(['/reservation'], {
       queryParams: {
         fromDate: this.formatDateForInputLocal(today),
-        toDate: this.formatDateForInputLocal(inOneMonth),
         status: 'PENDING'
       }
     });
   }
 
+  public redirectToPassedReservationNotPaid(): void {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(23, 59, 0, 0);
+
+    this.router.navigate(['/reservation'], {
+      queryParams: {
+        toDate: this.formatDateForInputLocal(yesterday),
+        paymentStatus: 'PENDING'
+      }
+    });
+  }
+
+  public redirectToFutureReservationNotPaid(): void {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    this.router.navigate(['/reservation'], {
+      queryParams: {
+        fromDate: this.formatDateForInputLocal(today),
+        paymentStatus: 'PENDING'
+      }
+    });
+  }
+
   private formatDateForInputLocal(date: Date): string {
-    const pad = (n: number) :string => n.toString().padStart(2, '0');
+    const pad = (n: number): string => n.toString().padStart(2, '0');
     const year = date.getFullYear();
     const month = pad(date.getMonth() + 1);
     const day = pad(date.getDate());
@@ -42,5 +63,4 @@ export class DashboardAdmin {
     const minutes = pad(date.getMinutes());
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
-
 }

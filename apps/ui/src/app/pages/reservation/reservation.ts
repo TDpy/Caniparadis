@@ -71,8 +71,6 @@ export class Reservation {
       value: status
     }));
 
-    this.searchForm.fromDate = this.formatDateForInputLocal(this.getTodayStart());
-    this.searchForm.toDate = this.formatDateForInputLocal(this.getTodayEnd());
 
     this.route.queryParams.subscribe(params => {
       if (params['fromDate']) this.searchForm.fromDate = params['fromDate'];
@@ -80,6 +78,11 @@ export class Reservation {
       if (params['userId']) this.searchForm.userId = Number(params['userId']);
       if (params['paymentStatus']) this.searchForm.paymentStatus = params['paymentStatus'];
       if (params['status']) this.searchForm.status = params['status'];
+
+      if (!params['toDate'] && !params['fromDate']){
+        this.searchForm.fromDate = this.formatDateForInputLocal(this.getTodayStart());
+        this.searchForm.toDate = this.formatDateForInputLocal(this.getTodayEnd());
+      }
 
       this.loadOwnersAndReservations();
     });

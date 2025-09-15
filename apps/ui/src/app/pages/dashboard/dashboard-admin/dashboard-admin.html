@@ -7,7 +7,7 @@
         [title]="'Reservations clients'"
         [totalBooking]="6"
         [cardStyle]="DashboardCardStyle.DANGER"
-      (onClick)="redirectToReservationWaitingForCompany()"/>
+        (onClick)="redirectToReservationWaitingForCompany()"/>
     </div>
   </div>
 
@@ -19,11 +19,13 @@
         <app-stat-card
           [title]="'Prestations passées'"
           [totalBooking]="0"
-          [cardStyle]="DashboardCardStyle.SUCCESS"/>
+          [cardStyle]="DashboardCardStyle.SUCCESS"
+          (onClick)="redirectToPassedReservationNotPaid()"/>
         <app-stat-card
           [title]="'Prestations à venir'"
           [totalBooking]="2"
-          [cardStyle]="DashboardCardStyle.WARNING"/>
+          [cardStyle]="DashboardCardStyle.WARNING"
+          (onClick)="redirectToFutureReservationNotPaid()"/>
       </div>
     </div>
   </div>
