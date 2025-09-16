@@ -12,6 +12,7 @@ import {AuthService} from '../../../services/auth.service';
 import {ReservationService} from '../../../services/reservation.service';
 import {ServiceTypeService} from '../../../services/service-type.service';
 import {ToasterService} from '../../../services/toaster.service';
+import {formatDateForInputLocal} from '../../../utils/date.utils';
 
 @Component({
   selector: 'app-reservation-creation',
@@ -53,8 +54,8 @@ export class ReservationCreation {
     const end = new Date(today);
     end.setHours(23, 59, 0, 0);
 
-    this.reservation.startDate = this.formatLocalDateTime(start);
-    this.reservation.endDate = this.formatLocalDateTime(end);
+    this.reservation.startDate = formatDateForInputLocal(start);
+    this.reservation.endDate = formatDateForInputLocal(end);
 
     this.authService.getCurrentUser().pipe(
       switchMap((authUser) => {
@@ -69,18 +70,6 @@ export class ReservationCreation {
     this.serviceTypeService.findAll().subscribe({
       next: (data) => (this.serviceTypes = data),
     });
-  }
-
-  formatLocalDateTime(date: Date): string {
-    const pad = (n: number): string => n.toString().padStart(2, '0');
-
-    const year = date.getFullYear();
-    const month = pad(date.getMonth() + 1);
-    const day = pad(date.getDate());
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 
   isValid(): boolean {

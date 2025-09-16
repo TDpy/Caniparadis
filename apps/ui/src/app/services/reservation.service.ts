@@ -68,4 +68,8 @@ export class ReservationService {
   payment(id: number, payment: SharedUpdatePaymentDto): Observable<SharedReservationDto> {
     return this.http.post<SharedReservationDto>(`/reservations/${id}/payment`, payment)
   }
+
+  finalize(id: number, finalized: boolean): Observable<SharedReservationDto> {
+    return this.http.post<SharedReservationDto>(`/reservations/${id}/finalize`, { finalized });
+  }
 }

@@ -32,7 +32,7 @@ import {
   ReservationDto,
   SearchReservationDto,
   UpdatePaymentDto,
-  UpdateReservationDto,
+  UpdateReservationDto, UpdateReservationFinalizationDto,
 } from './reservation.dto';
 import { ReservationMapper } from './reservation.mapper';
 import { ReservationService } from './reservation.service';
@@ -176,4 +176,17 @@ export class ReservationController {
     });
     return ReservationMapper.toDto(data);
   }
+
+  @Post(':id/finalize')
+  @ApiBearerAuth()
+  @ApiBody({ type: UpdateReservationFinalizationDto })
+  @ApiCreatedResponse({ type: ReservationDto })
+  async finalize(
+    @Param('id') id: string,
+    @Body() dto: UpdateReservationFinalizationDto,
+  ): Promise<SharedReservationDto> {
+    const data = await this.reservationService.updateFinalization(+id, dto.finalized);
+    return ReservationMapper.toDto(data);
+  }
+
 }

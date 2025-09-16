@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     @for (row of data; track row) {
-      <tr>
+      <tr  [ngClass]="rowClass ? rowClass(row) : ''">
         @for (col of columns; track col.name) {
           <td>
             <ng-container *ngTemplateOutlet="col.template; context: { $implicit: row }"></ng-container>

@@ -1,12 +1,51 @@
-import { Component, Input } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-stat-card',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './stat-card.html',
   styleUrl: './stat-card.scss'
 })
 export class StatCard {
   @Input({required: true}) title: string = '';
-  public totalBooking: number = 0;
+  @Input({required: true}) totalBooking: number = 0;
+  @Input() cardStyle: DashboardCardStyle | undefined = undefined;
+  @Input() displayRedirection: boolean = true;
+
+  @Output() onClick: EventEmitter<void> = new EventEmitter<void>();
+
+  generateCardClass(): string {
+    if (this.cardStyle === DashboardCardStyle.INFO) {
+      return "info";
+    } else if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.WARNING) {
+      return "warning";
+    } else if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.DANGER) {
+      return "danger";
+    }
+    return "success";
+  }
+
+  generateIconClass(): string {
+    if (this.cardStyle === DashboardCardStyle.INFO) {
+      return 'fas fa-calendar text-info';
+    } else if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.WARNING) {
+      return 'fas fa-exclamation-triangle text-warning';
+    } else if (this.totalBooking > 0 && this.cardStyle === DashboardCardStyle.DANGER) {
+      return 'fas fa-exclamation-triangle text-danger';
+    }
+    return 'fas fa-check-circle text-success';
+  }
+
+  public onRedirectionClick(): void {
+    this.onClick.emit();
+  }
 }
+
+export enum DashboardCardStyle {
+  DANGER = 'DANGER',
+  INFO = 'INFO',
+  SUCCESS = 'SUCCESS',
+  WARNING = 'WARNING',
+}
+

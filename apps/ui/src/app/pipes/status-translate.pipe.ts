@@ -1,9 +1,10 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Injectable, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   standalone: true,
   name: 'statusTranslate'
 })
+@Injectable({ providedIn: 'root' })
 export class StatusTranslatePipe implements PipeTransform {
 
   private translations: Record<string, string> = {

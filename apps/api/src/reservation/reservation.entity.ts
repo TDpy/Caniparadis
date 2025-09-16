@@ -56,4 +56,7 @@ export class ReservationEntity {
 
   @Column({ type: 'text', nullable: true })
   comment?: string | null;
+
+  @Column({ default: false })
+  finalized: boolean;
 }

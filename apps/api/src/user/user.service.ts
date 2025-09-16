@@ -1,3 +1,4 @@
+import { Role } from '@caniparadis/dtos/dist/userDto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -80,5 +81,11 @@ export class UserService {
   async remove(id: number): Promise<UserEntity> {
     const user = await this.findById(id);
     return this.userRepository.remove(user);
+  }
+
+  async findAdmins(): Promise<UserEntity[]> {
+    return this.userRepository.find({
+      where: { role: Role.ADMIN },
+    });
   }
 }

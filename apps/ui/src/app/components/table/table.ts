@@ -34,6 +34,7 @@ export class Table implements AfterContentInit {
   @Input() data: any[] = [];
   @Input() isActionColumnDisplayed: boolean = false;
   @Input() getDeleteConfirmText!: (row: any) => string;
+  @Input() rowClass?: (row: any) => string;
 
   @Output() delete = new EventEmitter<any>();
   @Output() edit = new EventEmitter<any>();

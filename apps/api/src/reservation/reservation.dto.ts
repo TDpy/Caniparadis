@@ -6,7 +6,7 @@ import {
   SharedReservationDto,
   SharedSearchReservationCriteriaDto,
   SharedUpdatePaymentDto,
-  SharedUpdateReservationDto,
+  SharedUpdateReservationDto, SharedUpdateReservationFinalizationDto,
 } from '@caniparadis/dtos/dist/reservationDto';
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
@@ -105,6 +105,9 @@ export class ReservationDto implements SharedReservationDto {
     example: "Retard possible suite examen de l'animal",
   })
   comment?: string;
+
+  @ApiProperty({example: false})
+  finalized: boolean;
 }
 
 export class ProposeNewSlotDto implements SharedProposeNewSlotDto {
@@ -155,4 +158,15 @@ export class SearchReservationDto
   @IsOptional()
   @IsEnum(PaymentStatus)
   paymentStatus?: PaymentStatus;
+
+  @IsOptional()
+  @IsEnum(ReservationStatus)
+  status?: ReservationStatus;
 }
+
+export class UpdateReservationFinalizationDto implements SharedUpdateReservationFinalizationDto {
+  @ApiProperty({ example: true })
+  @IsNotEmpty()
+  finalized: boolean;
+}
+

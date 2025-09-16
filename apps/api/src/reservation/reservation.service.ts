@@ -9,11 +9,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, MoreThanOrEqual, Repository } from 'typeorm';
 
 import { AnimalEntity } from '../animal/animal.entity';
+import { ClientStatsDto } from '../dashboard/dashboardStats.dto';
+import { EmailService } from '../email/email.service';
 import { ServiceTypeEntity } from '../service-type/service-type.entity';
+import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/userEntity';
+import { DateUtilsService } from '../utils/date-utils.service';
 import { SearchReservationDto } from './reservation.dto';
 import { ReservationEntity } from './reservation.entity';
 import {
@@ -32,6 +36,9 @@ export class ReservationService {
     private readonly animalRepository: Repository<AnimalEntity>,
     @InjectRepository(ServiceTypeEntity)
     private readonly serviceTypeRepository: Repository<ServiceTypeEntity>,
+    private emailService: EmailService,
+    private dateUtilsService: DateUtilsService,
+    private userService: UserService,
   ) {}
 
   async create(
@@ -64,10 +71,39 @@ export class ReservationService {
       animal,
       serviceType,
       status,
+      startDate: new Date(createReservation.startDate),
+      endDate: new Date(createReservation.endDate),
     });
-    reservation.startDate = new Date(createReservation.startDate);
-    reservation.endDate = new Date(createReservation.endDate);
-    return this.reservationRepository.save(reservation);
+
+    const savedReservation = await this.reservationRepository.save(reservation);
+
+    if (user.role === Role.ADMIN) {
+      await this.emailService.sendReservationCreationToClientEmail(
+        savedReservation.id,
+        animal.owner.email,
+        animal.owner.firstName,
+        animal.owner.lastName,
+        this.dateUtilsService.formatDateForEmail(savedReservation.startDate),
+        animal.name,
+        savedReservation.serviceType.name,
+      );
+    } else {
+      const admins = await this.userService.findAdmins();
+
+      for (const admin of admins) {
+        await this.emailService.sendReservationRequestToAdminsEmail(
+          savedReservation.id,
+          admin.email, // destinataire = admin
+          animal.owner.firstName, // infos client
+          animal.owner.lastName,
+          this.dateUtilsService.formatDateForEmail(savedReservation.startDate),
+          animal.name,
+          savedReservation.serviceType.name,
+        );
+      }
+    }
+
+    return savedReservation;
   }
 
   findAll(criteria: SearchReservationDto): Promise<ReservationEntity[]> {
@@ -77,15 +113,15 @@ export class ReservationService {
       .leftJoinAndSelect('reservation.serviceType', 'serviceType')
       .leftJoinAndSelect('animal.owner', 'owner');
 
-    if (criteria.fromDate) {
-      query.andWhere('reservation.startDate >= :fromDate', {
-        fromDate: criteria.fromDate,
+    if (criteria.toDate) {
+      query.andWhere('reservation.startDate < :toDate', {
+        toDate: criteria.toDate,
       });
     }
 
-    if (criteria.toDate) {
-      query.andWhere('reservation.endDate <= :toDate', {
-        toDate: criteria.toDate,
+    if (criteria.fromDate) {
+      query.andWhere('reservation.endDate >= :fromDate', {
+        fromDate: criteria.fromDate,
       });
     }
 
@@ -96,6 +132,12 @@ export class ReservationService {
     if (criteria.paymentStatus) {
       query.andWhere('reservation.paymentStatus = :paymentStatus', {
         paymentStatus: criteria.paymentStatus,
+      });
+    }
+
+    if (criteria.status) {
+      query.andWhere('reservation.status = :status', {
+        status: criteria.status,
       });
     }
 
@@ -177,6 +219,16 @@ export class ReservationService {
       );
     }
 
+    await this.emailService.sendReservationAcceptedEmail(
+      reservation.id,
+      reservation.animal.owner.email,
+      reservation.animal.owner.firstName,
+      reservation.animal.owner.lastName,
+      this.dateUtilsService.formatDateForEmail(reservation.startDate),
+      reservation.animal.name,
+      reservation.serviceType.name,
+    );
+
     reservation.status = ReservationStatus.CONFIRMED;
     return this.reservationRepository.save(reservation);
   }
@@ -212,6 +264,17 @@ export class ReservationService {
         ? ReservationStatus.PROPOSED
         : ReservationStatus.PENDING;
     reservation.comment = dto.comment ?? null;
+
+    await this.emailService.sendReservationProposedSlotEmail(
+      reservation.id,
+      reservation.animal.owner.email,
+      reservation.animal.owner.firstName,
+      reservation.animal.owner.lastName,
+      this.dateUtilsService.formatDateForEmail(reservation.startDate),
+      reservation.animal.name,
+      reservation.serviceType.name,
+      reservation.comment,
+    );
 
     return this.reservationRepository.save(reservation);
   }
@@ -254,10 +317,98 @@ export class ReservationService {
     }
 
     reservation.paymentStatus =
-      reservation.amountPaid === reservation.serviceType.price
+      Number(reservation.amountPaid) === Number(reservation.serviceType.price)
         ? PaymentStatus.PAID
         : PaymentStatus.PENDING;
 
+    await this.emailService.sendReservationPaidEmail(
+      reservation.id,
+      reservation.animal.owner.email,
+      reservation.animal.owner.firstName,
+      reservation.animal.owner.lastName,
+      reservation.amountPaid,
+      reservation.serviceType.price,
+      reservation.animal.name,
+      reservation.serviceType.name,
+    );
+
     return this.reservationRepository.save(reservation);
+  }
+
+  async getAdminDashboardStats() {
+    const now = new Date();
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date(now);
+    todayEnd.setHours(23, 59, 0, 0);
+
+    const pendingReservations = await this.reservationRepository.count({
+      where: {
+        startDate: MoreThanOrEqual(todayStart),
+        status: ReservationStatus.PENDING,
+      },
+    });
+
+    const passedReservationsNotPaid = await this.reservationRepository.count({
+      where: {
+        endDate: LessThan(todayEnd),
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    });
+
+    const futureReservationsNotPaid = await this.reservationRepository.count({
+      where: {
+        startDate: MoreThanOrEqual(todayStart),
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    });
+
+    return {
+      pendingReservations,
+      passedReservationsNotPaid,
+      futureReservationsNotPaid,
+    };
+  }
+
+  async updateFinalization(id: number, finalized: boolean) {
+    const reservation = await this.findOne(id);
+    reservation.finalized = finalized;
+    return this.reservationRepository.save(reservation);
+  }
+
+  async getClientDashboardStats(userId: number): Promise<ClientStatsDto> {
+    const now = new Date();
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date(now);
+    todayEnd.setHours(23, 59, 0, 0);
+
+    const passedReservationsNotPaid = await this.reservationRepository.count({
+      where: {
+        animal: { owner: { id: userId } },
+        endDate: LessThan(todayStart),
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    });
+
+    const futureReservations = await this.reservationRepository.count({
+      where: {
+        animal: { owner: { id: userId } },
+        startDate: MoreThanOrEqual(todayStart),
+      },
+    });
+
+    const passedReservations = await this.reservationRepository.count({
+      where: {
+        animal: { owner: { id: userId } },
+        endDate: LessThan(todayStart),
+      },
+    });
+
+    return {
+      passedReservationsNotPaid,
+      futureReservations,
+      passedReservations,
+    };
   }
 }

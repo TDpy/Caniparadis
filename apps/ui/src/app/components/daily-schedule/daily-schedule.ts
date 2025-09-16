@@ -1,64 +1,54 @@
 import {formatDate} from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {SharedReservationDto} from '@caniparadis/dtos/dist/reservationDto';
 
+import {PaymentTranslatePipe} from '../../pipes/payment-translate.pipe';
+import {ReservationService} from '../../services/reservation.service';
 import {Table, TableColumnDirective} from '../table/table';
 
 @Component({
   selector: 'app-daily-schedule',
-  imports: [Table, TableColumnDirective],
+  imports: [Table, TableColumnDirective, PaymentTranslatePipe, RouterModule,],
   templateUrl: './daily-schedule.html',
   styleUrl: './daily-schedule.scss',
 })
 export class DailySchedule {
+
+  nurseryReservations!: SharedReservationDto[];
+  otherReservations!: SharedReservationDto[];
+  getRowClass = (reservation: SharedReservationDto): string => {
+    return reservation.finalized ? 'reservation-finalized' : '';
+  };
+
   public tabMode: 'nursery' | 'other' = 'nursery';
+  private reservationService = inject(ReservationService);
 
-  public datas = [
-    {
-      id: '1',
-      name: 'Woof',
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 3_600_000),
-      price: 100
-    },
-  ];
 
-  public otherDatas = [
-    {
-      id: '1',
-      name: 'Miaou',
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 3_600_000),
-      price: 100,
-    },
-    {
-      id: '1',
-      name: 'Awouuuuuuuu',
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 3_600_000),
-      price: 100,
-    },
-  ];
+  public ngOnInit(): void {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
 
-  get dtaDtos(): any {
-    return this.datas.map((data) => ({
-      name: data.name,
-      startDate: formatDate(data.startDate, 'HH:mm', 'en-US'),
-      endDate: formatDate(data.endDate, 'HH:mm', 'en-US'),
-      price: `${data.price} €`,
-    }));
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 0, 0);
+
+    this.reservationService.findAll({
+      fromDate: todayStart.toISOString(),
+      toDate: todayEnd.toISOString(),
+    }).subscribe({
+      next: (dailyReservations) => {
+        this.nurseryReservations = dailyReservations
+          .filter(r => r.serviceType.name.toUpperCase() === 'GARDERIE')
+          .sort((a, b) => Number(a.finalized) - Number(b.finalized));;
+
+        this.otherReservations = dailyReservations
+          .filter(r => r.serviceType.name.toUpperCase() !== 'GARDERIE')
+          .sort((a, b) => Number(a.finalized) - Number(b.finalized));;
+      }
+    });
   }
 
-  get otherDataDtos(): any {
-    return this.otherDatas.map((data) => ({
-      val1: data.name,
-      val2: formatDate(data.startDate, 'HH:mm', 'en-US'),
-      val3: formatDate(data.endDate, 'HH:mm', 'en-US'),
-      val4: `${data.price} €`,
-      val5: `Valeur blablaablabla`,
-    }));
-  }
-
-  dataClicked($event: any): void {
-    console.log($event);
+  formatHour(date: string): string {
+    return formatDate(date, 'HH:mm', 'en-US');
   }
 }
