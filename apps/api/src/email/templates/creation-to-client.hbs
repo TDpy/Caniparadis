@@ -1,12 +1,15 @@
-Bonjour {{firstName}} {{lastName}},<br>
-<br>
-Votre réservation chez <strong>Caniparadis</strong> a bien été enregistrée.<br>
-<br>
-<strong>Date :</strong> {{date}}<br>
-<strong>Animal :</strong> {{animalName}}<br>
-<strong>Prestation :</strong> {{serviceType}}<br>
-<br>
-Pour consulter les détails de votre réservation, cliquez sur le bouton ci-dessous :<br>
-<a href="{{url}}">
-  <button>Voir ma réservation</button>
-</a>
+<p>Bonjour {{firstName}} {{lastName}},</p>
+
+<p>Votre réservation chez <strong>Caniparadis</strong> a bien été enregistrée.</p>
+
+<ul>
+  <li><strong>Date :</strong> {{date}}</li>
+  <li><strong>Animal :</strong> {{animalName}}</li>
+  <li><strong>Prestation :</strong> {{serviceType}}</li>
+</ul>
+
+<p>
+  <a href="{{url}}" style="display:inline-block;padding:10px 20px;background-color:#FABB00;color:#000;text-decoration:none;border-radius:5px;font-weight:bold;">
+    Voir ma réservation
+  </a>
+</p>
