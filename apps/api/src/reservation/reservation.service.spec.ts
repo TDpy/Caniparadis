@@ -8,8 +8,11 @@ import { Test, type TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 import { AnimalEntity } from '../animal/animal.entity';
+import {EmailService} from "../email/email.service";
 import { ServiceTypeEntity } from '../service-type/service-type.entity';
+import {UserService} from "../user/user.service";
 import { UserEntity } from '../user/userEntity';
+import {DateUtilsService} from "../utils/date-utils.service";
 import { ReservationEntity } from './reservation.entity';
 import { ReservationService } from './reservation.service';
 import { CreateReservation } from './reservation.type';
@@ -48,28 +51,51 @@ describe('ReservationService', () => {
     ...overrides,
   });
 
-  beforeEach(async () => {
-    reservationRepo = mockRepository();
-    animalRepo = mockRepository();
-    serviceTypeRepo = mockRepository();
-
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ReservationService,
-        {
-          provide: getRepositoryToken(ReservationEntity),
-          useValue: reservationRepo,
-        },
-        { provide: getRepositoryToken(AnimalEntity), useValue: animalRepo },
-        {
-          provide: getRepositoryToken(ServiceTypeEntity),
-          useValue: serviceTypeRepo,
-        },
-      ],
-    }).compile();
-
-    service = module.get(ReservationService);
+  const mockEmailService = () => ({
+    sendReservationCreationToClientEmail: jest.fn(),
+    sendReservationRequestToAdminsEmail: jest.fn(),
+    sendReservationProposedSlotEmail: jest.fn(),
+    sendReservationAcceptedEmail: jest.fn(),
+    sendReservationPaidEmail: jest.fn(),
+    sendReservationCancelledEmail: jest.fn(),
+    sendReservationRefundedEmail: jest.fn(),
   });
+
+  const mockDateUtilsService = () => ({
+    formatDateForEmail: jest.fn().mockImplementation((date) => date.toISOString()),
+  });
+
+  const mockUserService = () => ({
+    findAdmins: jest.fn().mockResolvedValue([]),
+  });
+
+
+  beforeEach(async () => {
+      reservationRepo = mockRepository();
+      animalRepo = mockRepository();
+      serviceTypeRepo = mockRepository();
+
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          ReservationService,
+          {
+            provide: getRepositoryToken(ReservationEntity),
+            useValue: reservationRepo,
+          },
+          { provide: getRepositoryToken(AnimalEntity), useValue: animalRepo },
+          {
+            provide: getRepositoryToken(ServiceTypeEntity),
+            useValue: serviceTypeRepo,
+          },
+          { provide: EmailService, useValue: mockEmailService() },
+          { provide: DateUtilsService, useValue: mockDateUtilsService() },
+          { provide: UserService, useValue: mockUserService() },
+        ],
+      }).compile();
+
+      service = module.get(ReservationService);
+    });
+
 
   describe('create', () => {
     it('should throw if animal not found', async () => {
@@ -106,7 +132,12 @@ describe('ReservationService', () => {
     });
 
     it('should create a reservation with correct status based on user role', async () => {
-      const animal = { id: 1 };
+      const animal = { id: 1,   owner: {
+          email: 'client@test.com',
+          firstName: 'Client',
+          lastName: 'Test',
+        }
+      };
       const serviceType = { id: 2, price: 100 };
       const dto: CreateReservation = {
         animalId: 1,
@@ -172,6 +203,17 @@ describe('ReservationService', () => {
         startDate: new Date(),
         endDate: new Date(),
         comment: '',
+        animal: {
+          owner: {
+            email: 'client@test.com',
+            firstName: 'Client',
+            lastName: 'Test',
+          },
+        },
+        serviceType: {
+          name: 'Toilettage',
+          price: 100,
+        },
       };
       reservationRepo.findOne!.mockResolvedValue(reservation);
       reservationRepo.save!.mockResolvedValue({
@@ -201,7 +243,14 @@ describe('ReservationService', () => {
         paymentStatus: PaymentStatus.PENDING,
         status: ReservationStatus.CONFIRMED,
         serviceType: { price: 100 },
-      } as ReservationEntity;
+        animal: {
+          owner: {
+            email: 'client@test.com',
+            firstName: 'Client',
+            lastName: 'Test',
+          },
+        },
+      };
 
       reservationRepo.findOne!.mockResolvedValue(reservation);
       reservationRepo.save!.mockImplementation(async (r) => r);
@@ -307,6 +356,21 @@ describe('ReservationService', () => {
       const reservation = {
         id: 1,
         status: ReservationStatus.PENDING,
+        startDate: new Date(),
+        endDate: new Date(),
+        comment: '',
+        animal: {
+          name: 'Rex',
+          owner: {
+            email: 'client@test.com',
+            firstName: 'Client',
+            lastName: 'Test',
+          },
+        },
+        serviceType: {
+          name: 'Toilettage',
+          price: 100,
+        },
       };
       jest.spyOn(service, 'findOne').mockResolvedValue(reservation as any);
       reservationRepo.save!.mockImplementation(async (r) => r);
@@ -334,7 +398,25 @@ describe('ReservationService', () => {
     });
 
     it('should propose as ADMIN', async () => {
-      const reservation = { id: 1, status: ReservationStatus.PENDING };
+      const reservation = {
+        id: 1,
+        status: ReservationStatus.PENDING,
+        startDate: new Date(),
+        endDate: new Date(),
+        comment: '',
+        animal: {
+          name: 'Rex',
+          owner: {
+            email: 'client@test.com',
+            firstName: 'Client',
+            lastName: 'Test',
+          },
+        },
+        serviceType: {
+          name: 'Toilettage',
+          price: 100,
+        },
+      };
       jest.spyOn(service, 'findOne').mockResolvedValue(reservation as any);
       reservationRepo.save!.mockImplementation(async (r) => r);
       const result = await service.proposeNewSlot(

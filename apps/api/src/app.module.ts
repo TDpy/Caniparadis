@@ -17,6 +17,7 @@ import { SeederModule } from './seeder/seeder.module';
 import { SeederService } from './seeder/seeder.service';
 import { ServiceTypeModule } from './service-type/service-type.module';
 import { UserModule } from './user/user.module';
+import { DateUtilsService } from './utils/date-utils.service';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { UserModule } from './user/user.module';
       provide: APP_GUARD,
       useClass: AuthenticationGuard,
     },
+    DateUtilsService,
   ],
 })
 export class AppModule implements OnModuleInit {

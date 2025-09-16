@@ -1,0 +1,18 @@
+<p>Bonjour {{firstName}} {{lastName}},</p>
+
+<p>Un nouveau créneau a été proposé pour votre réservation chez <strong>Caniparadis</strong>.</p>
+
+<ul>
+  <li><strong>Date proposée :</strong> {{date}}</li>
+  <li><strong>Animal :</strong> {{animalName}}</li>
+  <li><strong>Prestation :</strong> {{serviceType}}</li>
+  {{#if comment}}
+    <li><strong>Commentaire :</strong> {{comment}}</li>
+  {{/if}}
+</ul>
+
+<p>
+  <a href="{{url}}" style="display:inline-block;padding:10px 20px;background-color:#FABB00;color:#000;text-decoration:none;border-radius:5px;font-weight:bold;">
+    Voir la réservation
+  </a>
+</p>
