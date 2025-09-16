@@ -1,0 +1,9 @@
+Bonjour {{firstName}} {{lastName}},<br><br>
+Un nouveau créneau a été proposé pour votre réservation chez <strong>Caniparadis</strong>.<br><br>
+<strong>Date proposée :</strong> {{date}}<br>
+<strong>Animal :</strong> {{animalName}}<br>
+<strong>Prestation :</strong> {{serviceType}}<br>
+{{#if comment}}<br><em>Commentaire :</em> {{comment}}{{/if}}<br><br>
+<a href="{{url}}">
+  <button>Voir la réservation</button>
+</a>
